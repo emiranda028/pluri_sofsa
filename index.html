@@ -234,6 +234,7 @@ tr.leaf td{background:#FBFCFE;font-size:12px}
 
 <div class="tabs">
   <div class="tab on new" data-tab="anual">Presupuesto 2027</div>
+  <div class="tab new" data-tab="inc4">Inciso IV · SIFER</div>
   <div class="tab new" data-tab="lin">Lineamientos Presidencia</div>
   <div class="tab new" data-tab="pres">Presentación</div>
   <div class="tab" data-tab="pano">Panorama plurianual</div>
@@ -286,8 +287,58 @@ tr.leaf td{background:#FBFCFE;font-size:12px}
     </div>
     <div class="panel" style="padding:18px 22px">
       <div class="sectitle" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><div class="bar"></div><h2>Detalle por PosPre</h2><span class="note">millones de $ · clic en el encabezado para ordenar</span></div>
-        <input class="search" id="an-pp-q" placeholder="buscar PosPre, descripción o rubro"/></div>
+      </div>
+      <div class="lfilters">
+        <div class="fgroup"><label>Inciso</label><select id="ppf-inc"></select></div>
+        <div class="fgroup"><label>Rubro</label><select id="ppf-rub"></select></div>
+        <div class="fgroup"><label>Criticidad</label><select id="ppf-cri"></select></div>
+        <div class="fgroup"><label>Lineamiento</label><select id="ppf-L"></select></div>
+        <div class="fgroup"><label>Componente</label><select id="ppf-efgh"><option value="">Ambos</option><option value="GH">Gasto Habitual</option><option value="EF">Emergencia Ferroviaria</option></select></div>
+        <div class="fgroup"><label>Fuente</label><select id="ppf-fin"><option value="">Todas</option><option>Tesoro (techo ME)</option><option>Ingresos propios</option><option>SIFER</option></select></div>
+        <div class="fgroup"><label>Buscar</label><input class="search" id="an-pp-q" placeholder="PosPre, descripción o rubro"/></div>
+        <label class="toggle"><input type="checkbox" id="ppf-cero"/> Incluir PosPres sin techo</label>
+        <div class="spacer"></div>
+        <button class="btn" id="ppf-clear" style="padding:8px 12px">Limpiar</button>
+        <button class="btn gold" id="ppf-csv" style="padding:8px 14px">Exportar CSV</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin:-4px 0 8px" id="ppf-note"></div>
       <div class="tablewrap" style="max-height:75vh"><table id="an-pp"></table></div>
+    </div>
+  </section>
+
+  <!-- INCISO IV -->
+  <section id="tab-inc4" class="hidden">
+    <div class="kpis" id="i4-kpis"></div>
+    <div class="charts">
+      <div class="panel" style="padding:18px 22px">
+        <div class="sectitle"><div class="bar"></div><h2>Financiamiento del inciso IV</h2><span class="note">fuente × PosPre · millones de $</span></div>
+        <div class="tablewrap"><table id="i4-fin"></table></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:10px">SIFER financia exclusivamente Material Rodante (PosPre 4.3.3.0.1): adquisición de unidades DMU. El resto del inciso se financia con el techo del Ministerio de Economía más el sobre techo de Bienes de Uso.</div>
+      </div>
+      <div class="panel chartbox">
+        <div class="sectitle"><div class="bar"></div><h2>Cuota mensual por fuente</h2><span class="note">millones de $</span></div>
+        <div class="ch" style="height:300px"><canvas id="ch-i4-mes"></canvas></div>
+      </div>
+    </div>
+    <div class="panel" style="padding:18px 22px;margin-bottom:16px">
+      <div class="sectitle"><div class="bar"></div><h2>SIFER · Material Rodante DMU</h2><span class="note">unidades diésel múltiples · millones de $</span></div>
+      <div class="tablewrap"><table id="i4-sifer"></table></div>
+    </div>
+    <div class="panel" style="padding:18px 22px">
+      <div class="sectitle"><div class="bar"></div><h2>Proyectos del inciso IV</h2><span class="note" id="i4-note"></span></div>
+      <div class="lfilters">
+        <div class="fgroup"><label>Fuente</label><select id="i4f-fin"><option value="">Todas</option><option>SIFER</option><option>Tesoro (techo ME)</option></select></div>
+        <div class="fgroup"><label>PosPre</label><select id="i4f-pp"></select></div>
+        <div class="fgroup"><label>Centro gestor</label><select id="i4f-cege"></select></div>
+        <div class="fgroup"><label>Componente</label><select id="i4f-efgh"><option value="">Ambos</option><option value="GH">Gasto Habitual</option><option value="EF">Emergencia Ferroviaria</option></select></div>
+        <div class="fgroup"><label>Lineamiento</label><select id="i4f-L"></select></div>
+        <div class="fgroup"><label>Buscar</label><input class="search" id="i4f-q" placeholder="obra, línea, ramal…"/></div>
+        <label class="toggle"><input type="checkbox" id="i4f-cero"/> Incluir proyectos sin techo</label>
+        <label class="toggle"><input type="checkbox" id="i4f-mes"/> Apertura mensual</label>
+        <div class="spacer"></div>
+        <button class="btn gold" id="i4f-csv" style="padding:8px 14px">Exportar CSV</button>
+      </div>
+      <div class="tablewrap" style="max-height:78vh"><table id="i4-proj"></table></div>
     </div>
   </section>
 
@@ -950,6 +1001,7 @@ function refresh(){
   if(state.tab==='esc')renderEscenario(rows);
   if(state.tab==='anual')renderAnual();
   if(state.tab==='lin')renderLin();
+  if(state.tab==='inc4')renderInc4();
   if(state.tab==='pres')renderPres();
 }
 
@@ -1719,8 +1771,8 @@ document.getElementById('btn-reset').onclick=()=>{
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
   state.tab=t.dataset.tab;
-  ['anual','lin','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
-  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','lin','pres'].includes(state.tab));
+  ['anual','inc4','lin','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
+  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','inc4','lin','pres'].includes(state.tab));
   refresh();});
 
 document.getElementById('btn-csv').onclick=()=>{
@@ -1766,6 +1818,8 @@ const pctTxt = (a,b)=> b? nf1.format(a/b*100)+'%' : '—';
 const M = x => nf0.format(Math.round(x/1e6));                    // millones
 const MM = x => (x<0?'−':'')+'$ '+nf0.format(Math.abs(Math.round(x/1e6)))+' M';
 const dCls = p => p===null?'':(p>=0?'up':'down');
+const isSIFER = r => r.pp==='4.3.3.0.1';
+const finOf = r => isSIFER(r)?'SIFER':r.inc==='5. Impuestos'?'Ingresos propios':'Tesoro (techo ME)';
 const isStruct = r => r.inc==='1. Gastos en Personal' || r.inc==='5. Impuestos';
 function groupBy(rows,fk){const m=new Map();rows.forEach(r=>{const k=typeof fk==='function'?fk(r):r[fk];if(!m.has(k))m.set(k,[]);m.get(k).push(r)});return m;}
 function killChart(id){ if(charts[id]){charts[id].destroy();delete charts[id];} }
@@ -1781,8 +1835,10 @@ const TOT = (()=>{
   const bu = AL.filter(r=>r.inc==='4. Bienes de Uso');
   const buTecho = aSum(bu,'t');
   const buExtra = buTecho - DI['Bienes de Uso - Inversiones'].techo_pluri;
+  const sifer = aSum(bu.filter(isSIFER),'t');            // Material Rodante DMU financiado por SIFER
+  const buSobre = buExtra - sifer;                        // sobre techo de Bienes de Uso (Tesoro)
   const m = Array(12).fill(0); AL.forEach(r=>r.m.forEach((v,i)=>m[i]+=v));
-  return {techo,req,sobre,pluri,techoME,ingresos,pedidoST,buTecho,buExtra,m,tesoro:techo-ingresos};
+  return {techo,req,sobre,pluri,techoME,ingresos,pedidoST,buTecho,buExtra,sifer,buSobre,m,tesoro:techo-ingresos-sifer};
 })();
 
 // ---------- estado local de las pestañas nuevas ----------
@@ -1811,7 +1867,7 @@ function renderAnual(){
    <div class="kpi navy"><div class="k-lab">Presupuesto 2027 presentado</div><div class="k-val" style="font-size:22px">${MM(t.techo)}</div>
      <div class="k-sub">Corrientes ${MM(t.techo-t.buTecho)} · Capital ${MM(t.buTecho)}</div></div>
    <div class="kpi"><div class="k-lab">Techo Ministerio de Economía</div><div class="k-val" style="font-size:22px">${MM(t.techoME)}</div>
-     <div class="k-sub">+ ingresos propios ${MM(t.ingresos)} · + Bs. de Uso EF ${MM(t.buExtra)}</div></div>
+     <div class="k-sub">+ ingresos propios ${MM(t.ingresos)} · + SIFER (DMU) ${MM(t.sifer)} · + sobre techo Bs. de Uso ${MM(t.buSobre)}</div></div>
    <div class="kpi"><div class="k-lab">Requerido por las áreas</div><div class="k-val" style="font-size:22px">${MM(t.req)}</div>
      <div class="k-sub">cobertura del techo <b>${pctTxt(t.techo,t.req)}</b> · brecha ${MM(t.req-t.techo)}</div></div>
    <div class="kpi"><div class="k-lab">vs Plurianual 2027 relevado</div><div class="k-val"><span class="delta down">▼ ${fmtPct(deltaPct(t.techo,t.pluri))}</span></div>
@@ -1828,7 +1884,7 @@ function renderFindings(){
   const oper=D.incs[1].t+D.incs[2].t, operR=D.incs[1].r+D.incs[2].r;
   const items=[
     ['',`El presupuesto presentado (<b>${MM(t.techo)}</b>) es un <b>${fmtPct(deltaPct(t.techo,t.pluri))}</b> menor que el plurianual 2027 relevado y cubre el <b>${pctTxt(t.techo,t.req)}</b> de lo requerido por las áreas.`],
-    ['',`Se financia con techo del Ministerio de Economía (${MM(t.techoME)}), ingresos propios (${MM(t.ingresos)}, ${pctTxt(t.ingresos,t.techo)}) y ${MM(t.buExtra)} adicionales de Bienes de Uso de Emergencia Ferroviaria.`],
+    ['',`Se financia con techo del Ministerio de Economía (${MM(t.techoME)}), ingresos propios (${MM(t.ingresos)}, ${pctTxt(t.ingresos,t.techo)}), <b>SIFER ${MM(t.sifer)}</b> para Material Rodante DMU (inciso IV) y ${MM(t.buSobre)} de sobre techo de Bienes de Uso; el Tesoro aporta ${MM(t.techoME+t.buSobre)}.`],
     ['',`Personal (${MM(D.incs[0].t)}) concentra el <b>${pctTxt(D.incs[0].t,t.techo)}</b> del presupuesto y conserva ${pctTxt(D.incs[0].t,D.incs[0].r)} de cobertura; el ajuste recae sobre el gasto operativo.`],
     ['risk',`Bienes de Consumo y Servicios No Personales quedan cubiertos al <b>${pctTxt(oper,operR)}</b>: queda pendiente el pedido a la S.T. (${MM(t.pedidoST)}) y ${MM(t.sobre)} de sobre techos.`],
     ['risk',`Material Rodante tiene <b>${MM(D.mr.oc)}</b> en OC comprometidas para 2027 contra un techo de ${MM(D.mr.techo)} (Inc. II y III): déficit de <b>${MM(-D.mr.disp)}</b>.`],
@@ -1870,7 +1926,8 @@ function drawCascada(cid='ch-an-casc',key='an-casc'){
     {l:'Ajuste a techo ME',v:ajuste,type:'neg'},
     {l:'Techo Min. Economía',v:t.techoME,type:'tot'},
     {l:'+ Ingresos propios',v:t.ingresos,type:'pos'},
-    {l:'+ Bs. de Uso (EF)',v:t.buExtra,type:'pos'},
+    {l:'+ Sobre techo Bs. de Uso',v:t.buSobre,type:'pos'},
+    {l:'+ SIFER (DMU)',v:t.sifer,type:'pos'},
     {l:'Presupuesto 2027',v:t.techo,type:'fin'},
     {l:'Pedido a S.T.',v:t.pedidoST,type:'ask'},
     {l:'Sobre techos áreas',v:t.sobre,type:'ask'},
@@ -1931,14 +1988,25 @@ function renderCeges(){
   el.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const kk=th.dataset.k;AS.cgSort={k:kk,d:AS.cgSort.k===kk?-AS.cgSort.d:-1};renderCeges();});
 }
 
+const PPF={inc:'',rub:'',cri:'',L:'',efgh:'',fin:'',cero:false};
 function ppRows(){
   const m=new Map();
-  AL.forEach(r=>{const k=r.inc==='1. Gastos en Personal'?'Personal':r.pp;
-    if(!m.has(k))m.set(k,{pp:k,desc:k==='Personal'?'Gastos en Personal':r.ppd,inc:r.inc,rub:r.rub,cri:r.cri,req:0,t:0,s:0,ef:0,L:{}});
+  const src=AL.filter(r=>(!PPF.inc||r.inc===PPF.inc)&&(!PPF.rub||r.rub===PPF.rub)&&(!PPF.cri||r.cri===PPF.cri)&&(!PPF.L||r.L===PPF.L)&&(!PPF.efgh||r.efgh===PPF.efgh)&&(!PPF.fin||finOf(r)===PPF.fin));
+  src.forEach(r=>{const k=r.inc==='1. Gastos en Personal'?'Personal':r.pp;
+    if(!m.has(k))m.set(k,{pp:k,desc:k==='Personal'?'Gastos en Personal':r.ppd,inc:r.inc,rub:r.rub,cri:r.cri,fin:finOf(r),req:0,t:0,s:0,ef:0,L:{}});
     const x=m.get(k);x.req+=r.req;x.t+=r.t;x.s+=r.s;if(r.efgh==='EF')x.ef+=r.t;x.L[r.L]=(x.L[r.L]||0)+r.t;});
-  Object.entries(ANUAL.pluri_pp).forEach(([k,v])=>{ if(!m.has(k)&&v.pluri) m.set(k,{pp:k,desc:v.desc,inc:'—',rub:'',cri:'',req:0,t:0,s:0,ef:0,L:{}}); });
-  return [...m.values()].map(x=>{x.pluri=(ANUAL.pluri_pp[x.pp]||{}).pluri||0;x.dP=deltaPct(x.t,x.pluri);x.cov=x.req?x.t/x.req:null;
+  const onlyLine = PPF.L||PPF.efgh||PPF.fin||PPF.inc||PPF.rub||PPF.cri;
+  if(PPF.cero&&!onlyLine) Object.entries(ANUAL.pluri_pp).forEach(([k,v])=>{ if(!m.has(k)&&v.pluri) m.set(k,{pp:k,desc:v.desc,inc:'—',rub:'',cri:'',fin:'',req:0,t:0,s:0,ef:0,L:{}}); });
+  return [...m.values()].filter(x=>PPF.cero||x.t>0||x.req>0).map(x=>{x.pluri=(ANUAL.pluri_pp[x.pp]||{}).pluri||0;x.dP=deltaPct(x.t,x.pluri);x.cov=x.req?x.t/x.req:null;
     x.Lmain=Object.entries(x.L).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';return x;});
+}
+let PP_LAST=[];
+function exportPPCSV(){
+  const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"';
+  const lines=[['PosPre','Descripcion','Inciso','Rubro','Criticidad','Fuente','Lineamiento_principal','Plurianual_2027','Requerido_2027','Techo_2027','Var%_vs_pluri','Cobertura%','de_EF'].join(';')];
+  PP_LAST.forEach(r=>lines.push([r.pp,q(r.desc),q(r.inc),q(r.rub),r.cri,q(r.fin),r.Lmain,Math.round(r.pluri),Math.round(r.req),Math.round(r.t),r.dP===null?'':(r.dP*100).toFixed(2),r.cov===null?'':(r.cov*100).toFixed(2),Math.round(r.ef)].join(';')));
+  const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='presupuesto_2027_pospres.csv';a.click();
 }
 function renderPosPres(){
   const q=(document.getElementById('an-pp-q').value||'').toLowerCase();
@@ -1956,6 +2024,9 @@ function renderPosPres(){
   const T=rows.reduce((a,r)=>{a.p+=r.pluri;a.r+=r.req;a.t+=r.t;a.e+=r.ef;return a;},{p:0,r:0,t:0,e:0});
   h+=`<tr class="total"><td class="l" colspan="4">TOTAL (${rows.length} PosPres)</td><td class="mono">${M(T.p)}</td><td class="mono">${M(T.r)}</td><td class="mono gold"><b>${M(T.t)}</b></td><td class="mono">${fmtPct(deltaPct(T.t,T.p))}</td><td class="mono">${pctTxt(T.t,T.r)}</td><td class="mono">${M(T.e)}</td></tr></tbody>`;
   const el=document.getElementById('an-pp');el.innerHTML=h;
+  const partial=PPF.L||PPF.efgh||PPF.fin;
+  document.getElementById('ppf-note').textContent=partial?'Con filtros de lineamiento, componente o fuente, "Plurianual 27" muestra el total de la PosPre (el plurianual no tiene esa apertura); la Δ vs pluri es sólo orientativa.':'';
+  PP_LAST=rows;
   el.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const kk=th.dataset.k;AS.ppSort={k:kk,d:AS.ppSort.k===kk?-AS.ppSort.d:-1};renderPosPres();});
 }
 
@@ -2163,7 +2234,7 @@ function slideHTML(){
     <div class="s-meta mono">${esc(META.expediente)} · versión ${esc(ANUAL.version)}</div></div>`);
   S.push(`<h3>Resumen ejecutivo</h3><div class="s-kpis">${big(MM(t.techo),'Presupuesto 2027 presentado','conciliado con la versión final · Δ $ 0')}${big(pctTxt(t.techo,t.req),'Cobertura del requerido','brecha '+MM(t.req-t.techo))}${big(fmtPct(deltaPct(t.techo,t.pluri)),'vs plurianual 2027','plurianual '+MM(t.pluri))}</div>
     <ul class="s-list">
-      <li>El Ministerio de Economía fijó un techo de <b>${MM(t.techoME)}</b>; con <b>${MM(t.ingresos)}</b> de ingresos propios y <b>${MM(t.buExtra)}</b> de Bienes de Uso de Emergencia Ferroviaria, el presupuesto presentado asciende a <b>${MM(t.techo)}</b>.</li>
+      <li>El Ministerio de Economía fijó un techo de <b>${MM(t.techoME)}</b>; con <b>${MM(t.ingresos)}</b> de ingresos propios, <b>${MM(t.sifer)}</b> de SIFER (Material Rodante DMU) y <b>${MM(t.buSobre)}</b> de sobre techo de Bienes de Uso, el presupuesto presentado asciende a <b>${MM(t.techo)}</b>.</li>
       <li>Personal absorbe el <b>${pctTxt(D.incs[0].t,t.techo)}</b> del total con una cobertura del ${pctTxt(D.incs[0].t,D.incs[0].r)}; los incisos operativos (Bienes de Consumo y Servicios) quedan cubiertos sólo al <b>${pctTxt(D.incs[1].t+D.incs[2].t,D.incs[1].r+D.incs[2].r)}</b>.</li>
       <li>Quedan por encima del techo <b>${MM(t.pedidoST)}</b> pedidos a la Secretaría de Transporte y <b>${MM(t.sobre)}</b> de sobre techos de las áreas.</li>
       <li>El gasto discrecional (sin Personal e Impuestos) se concentra en la premisa 2 · Seguridad y mantenimiento (<b>${pctTxt(D.sd.L2.t,D.tDisc)}</b>).</li></ul>`);
@@ -2171,7 +2242,7 @@ function slideHTML(){
   S.push(`<h3>Techos por inciso</h3><table class="s-table"><thead><tr><th class="l">Inciso</th><th>Plurianual 27</th><th>Requerido</th><th>Techo 2027</th><th>Δ vs pluri</th><th>Cobertura</th></tr></thead><tbody>
     ${D.incs.map(i=>`<tr><td class="l">${i.inc}</td><td>${MM(i.p)}</td><td>${MM(i.r)}</td><td><b>${MM(i.t)}</b></td><td class="delta ${dCls(deltaPct(i.t,i.p))}">${fmtPct(deltaPct(i.t,i.p))}</td><td>${pctTxt(i.t,i.r)}</td></tr>`).join('')}
     <tr class="s-tot"><td class="l">Total</td><td>${MM(t.pluri)}</td><td>${MM(t.req)}</td><td>${MM(t.techo)}</td><td>${fmtPct(deltaPct(t.techo,t.pluri))}</td><td>${pctTxt(t.techo,t.req)}</td></tr></tbody></table>
-    <p class="s-note">Impuestos se financia íntegramente con ingresos propios (${MM(t.ingresos)}). Bienes de Uso: techo ME ${MM(DI['Bienes de Uso - Inversiones'].techo_pluri)} + ${MM(t.buExtra)} de Emergencia Ferroviaria (material rodante y obras).</p>`);
+    <p class="s-note">Impuestos se financia íntegramente con ingresos propios (${MM(t.ingresos)}). Bienes de Uso: techo ME ${MM(DI['Bienes de Uso - Inversiones'].techo_pluri)} + sobre techo ${MM(t.buSobre)} + SIFER ${MM(t.sifer)} (Material Rodante DMU).</p>`);
   S.push(`<h3>Cuota mensual del techo 2027</h3><div class="s-chart"><canvas id="sl-mes"></canvas></div><p class="s-note">Picos en junio y diciembre por SAC. Promedio mensual ${MM(t.techo/12)}.</p>`);
   S.push(`<h3>Lineamientos de Presidencia · asignación del techo</h3><div class="s-lin">${LKEYS.map(k=>`<div class="s-lc" style="--c:${L_COLOR[k]}"><div class="s-ln">${k.replace('L','')}</div><div class="s-lt">${esc(LIN[k].nombre)}</div><div class="s-lv">${MM(D.st[k].t)}</div><div class="s-ls">${pctTxt(D.st[k].t,t.techo)} del total · ${pctTxt(D.sd[k].t,D.tDisc)} del discrecional</div><div class="s-ls">cobertura ${pctTxt(D.st[k].t,D.st[k].req)}</div></div>`).join('')}</div>
     <p class="s-note">Cada proyecto/producto de la formulación se asignó a una premisa principal y, cuando corresponde, a premisas secundarias. Personal → premisa 4; Impuestos → premisa 3.</p>`);
@@ -2212,6 +2283,88 @@ function drawLinDiscOn(id){ const sd=linStats(AL.filter(r=>!isStruct(r)));
     options:{maintainAspectRatio:false,layout:{padding:{top:18}},plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>nf0.format(v)},title:{display:true,text:'millones de $'}}}}});
 }
 
+
+// =====================================================================
+//  PESTAÑA: INCISO IV · SIFER
+// =====================================================================
+const I4 = AL.filter(r=>r.inc==='4. Bienes de Uso');
+const I4F={fin:'',pp:'',cege:'',efgh:'',L:'',q:'',cero:false,mes:false,sort:{k:'t',d:-1}};
+function i4Proj(){
+  const q=I4F.q.toLowerCase();
+  const rows=I4.filter(r=>(!I4F.fin||finOf(r)===I4F.fin)&&(!I4F.pp||r.pp===I4F.pp)&&(!I4F.cege||r.cege===I4F.cege)&&(!I4F.efgh||r.efgh===I4F.efgh)&&(!I4F.L||r.L===I4F.L)&&(!q||(r.proy+' '+r.prod+' '+r.ppd+' '+r.cege).toLowerCase().includes(q)));
+  const m=new Map();
+  rows.forEach(r=>{const k=r.cege+'|'+r.proy+'|'+r.pp;if(!m.has(k))m.set(k,{cege:r.cege,proy:r.proy,pp:r.pp,ppd:r.ppd,fin:finOf(r),efgh:new Set(),prio:new Set(),L:r.L,req:0,t:0,m:Array(12).fill(0)});
+    const x=m.get(k);x.req+=r.req;x.t+=r.t;x.efgh.add(r.efgh);x.prio.add(r.prio);r.m.forEach((v,i)=>x.m[i]+=v);});
+  return [...m.values()].filter(x=>I4F.cero||x.t>0);
+}
+function renderInc4(){
+  const t=TOT, d=DI['Bienes de Uso - Inversiones'];
+  const req=aSum(I4,'req'), sif=I4.filter(isSIFER), sifReq=aSum(sif,'req');
+  const ef=aSum(I4.filter(r=>r.efgh==='EF'),'t');
+  document.getElementById('i4-kpis').innerHTML=`
+   <div class="kpi navy"><div class="k-lab">Inciso IV · techo 2027</div><div class="k-val" style="font-size:22px">${MM(t.buTecho)}</div><div class="k-sub">${pctTxt(t.buTecho,t.techo)} del presupuesto · cobertura ${pctTxt(t.buTecho,req)}</div></div>
+   <div class="kpi"><div class="k-lab">Financiado por SIFER</div><div class="k-val" style="font-size:22px">${MM(t.sifer)}</div><div class="k-sub">Material Rodante DMU · ${pctTxt(t.sifer,t.buTecho)} del inciso · cobertura ${pctTxt(t.sifer,sifReq)}</div></div>
+   <div class="kpi"><div class="k-lab">Financiado por Tesoro</div><div class="k-val" style="font-size:22px">${MM(t.buTecho-t.sifer)}</div><div class="k-sub">techo ME ${MM(d.techo_pluri)} + sobre techo ${MM(t.buSobre)}</div></div>
+   <div class="kpi"><div class="k-lab">Emergencia Ferroviaria</div><div class="k-val" style="font-size:22px">${MM(ef)}</div><div class="k-sub">${pctTxt(ef,t.buTecho)} del inciso · Gasto Habitual ${MM(t.buTecho-ef)}</div></div>
+   <div class="kpi"><div class="k-lab">vs plurianual 2027</div><div class="k-val"><span class="delta ${dCls(deltaPct(t.buTecho,d.pluri))}">${fmtPct(deltaPct(t.buTecho,d.pluri))}</span></div><div class="k-sub">plurianual ${MM(d.pluri)} · requerido ${MM(req)}</div></div>`;
+  // financiamiento fuente × pospre
+  const pps=[...new Set(I4.map(r=>r.pp))].map(pp=>{const g=I4.filter(r=>r.pp===pp);return {pp,desc:g[0].ppd,req:aSum(g,'req'),t:aSum(g,'t'),sif:aSum(g.filter(isSIFER),'t'),ef:aSum(g.filter(r=>r.efgh==='EF'),'t'),pl:(ANUAL.pluri_pp[pp]||{}).pluri||0};}).sort((a,b)=>b.t-a.t);
+  let h=`<thead><tr><th class="l">PosPre</th><th>Plurianual 27</th><th>Requerido</th><th>SIFER</th><th>Tesoro</th><th>Techo total</th><th>de EF</th><th>Cobertura</th></tr></thead><tbody>`;
+  pps.forEach(p=>{h+=`<tr><td class="l"><span class="pp">${p.pp}</span> <b>${esc(p.desc)}</b></td><td class="mono">${M(p.pl)}</td><td class="mono">${M(p.req)}</td><td class="mono">${p.sif?'<b>'+M(p.sif)+'</b>':'—'}</td><td class="mono">${M(p.t-p.sif)}</td><td class="mono"><b>${M(p.t)}</b></td><td class="mono" style="color:var(--muted)">${p.ef?M(p.ef):'—'}</td><td class="mono">${pctTxt(p.t,p.req)}</td></tr>`;});
+  const T=pps.reduce((a,p)=>{a.pl+=p.pl;a.req+=p.req;a.sif+=p.sif;a.t+=p.t;a.ef+=p.ef;return a;},{pl:0,req:0,sif:0,t:0,ef:0});
+  h+=`<tr class="total"><td class="l">TOTAL INCISO IV</td><td class="mono">${M(T.pl)}</td><td class="mono">${M(T.req)}</td><td class="mono gold"><b>${M(T.sif)}</b></td><td class="mono">${M(T.t-T.sif)}</td><td class="mono gold"><b>${M(T.t)}</b></td><td class="mono">${M(T.ef)}</td><td class="mono">${pctTxt(T.t,T.req)}</td></tr></tbody>`;
+  document.getElementById('i4-fin').innerHTML=h;
+  // SIFER detalle DMU
+  const sp=new Map(); sif.forEach(r=>{if(!sp.has(r.proy))sp.set(r.proy,{proy:r.proy,cege:r.cege,req:0,t:0,m:Array(12).fill(0),prio:r.prio});const x=sp.get(r.proy);x.req+=r.req;x.t+=r.t;r.m.forEach((v,i)=>x.m[i]+=v);});
+  const spa=[...sp.values()].sort((a,b)=>b.t-a.t);
+  let hs=`<thead><tr><th class="l">Proyecto (unidades DMU)</th><th class="l">Prioridad</th><th>Requerido</th><th>Techo SIFER</th><th>Cobertura</th><th>% del SIFER</th>${MES.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody>`;
+  spa.forEach(p=>{hs+=`<tr><td class="l desc" style="max-width:420px;white-space:normal">${esc(p.proy)}</td><td class="l">${esc(p.prio)}</td><td class="mono">${M(p.req)}</td><td class="mono"><b>${M(p.t)}</b></td><td class="mono">${pctTxt(p.t,p.req)}</td><td class="mono" style="color:var(--muted)">${pctTxt(p.t,t.sifer)}</td>${p.m.map(v=>`<td class="mono" style="font-size:11.5px">${v?M(v):'—'}</td>`).join('')}</tr>`;});
+  const sm=Array(12).fill(0);spa.forEach(p=>p.m.forEach((v,i)=>sm[i]+=v));
+  hs+=`<tr class="total"><td class="l" colspan="2">TOTAL SIFER</td><td class="mono">${M(sifReq)}</td><td class="mono gold"><b>${M(t.sifer)}</b></td><td class="mono">${pctTxt(t.sifer,sifReq)}</td><td class="mono">100%</td>${sm.map(v=>`<td class="mono">${M(v)}</td>`).join('')}</tr></tbody>`;
+  document.getElementById('i4-sifer').innerHTML=hs;
+  // chart mensual
+  killChart('i4-mes');
+  const ms=f=>{const a=Array(12).fill(0);I4.filter(f).forEach(r=>r.m.forEach((v,i)=>a[i]+=v));return a.map(v=>v/1e6);};
+  charts['i4-mes']=new Chart(document.getElementById('ch-i4-mes'),{type:'bar',data:{labels:MES,datasets:[
+    {label:'SIFER (Material Rodante DMU)',data:ms(isSIFER),backgroundColor:'#E7B860',stack:'s',borderRadius:2},
+    {label:'Tesoro · Emergencia Ferroviaria',data:ms(r=>!isSIFER(r)&&r.efgh==='EF'),backgroundColor:'#2E6FA8',stack:'s',borderRadius:2},
+    {label:'Tesoro · Gasto Habitual',data:ms(r=>!isSIFER(r)&&r.efgh==='GH'),backgroundColor:'#222C4F',stack:'s',borderRadius:2}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:11,font:{size:11}}},tooltip:{mode:'index',callbacks:{label:c=>' '+c.dataset.label+': $ '+nf0.format(c.raw)+' M'}}},scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:v=>nf0.format(v)}}}}});
+  renderInc4Proj();
+}
+let I4_LAST=[];
+function renderInc4Proj(){
+  const rows=i4Proj(); const k=I4F.sort.k,d=I4F.sort.d;
+  rows.sort((a,b)=>{const va=a[k],vb=b[k];return (typeof va==='string'?va.localeCompare(vb):va-vb)*d;});
+  I4_LAST=rows;
+  const th=(key,lab,l)=>`<th class="${l?'l':''}" data-k="${key}">${lab}${I4F.sort.k===key?`<span class="ar">${d<0?'▼':'▲'}</span>`:''}</th>`;
+  let h=`<thead><tr>${th('proy','Proyecto / obra',1)}${th('cege','Centro gestor',1)}${th('pp','PosPre',1)}${th('fin','Fuente',1)}<th class="l">Comp.</th><th class="l">Prioridad</th>${th('L','Lineamiento',1)}${th('req','Requerido')}${th('t','Techo 2027')}<th>Cobertura</th>${I4F.mes?MES.map(m=>`<th>${m}</th>`).join(''):''}</tr></thead><tbody>`;
+  rows.forEach(p=>{h+=`<tr><td class="l desc" style="max-width:380px;white-space:normal" title="${esc(p.proy)}">${esc(p.proy)}</td><td class="l" style="color:var(--muted)">${esc(p.cege)}</td><td class="l"><span class="pp">${p.pp}</span> ${esc(p.ppd)}</td>
+    <td class="l">${p.fin==='SIFER'?'<span class="st st-mid">SIFER</span>':'<span class="chip">Tesoro</span>'}</td><td class="l">${[...p.efgh].join('/')}</td><td class="l">${[...p.prio].join(', ')}</td><td class="l">${chipL(p.L,true)}</td>
+    <td class="mono">${M(p.req)}</td><td class="mono"><b>${M(p.t)}</b></td><td class="mono">${pctTxt(p.t,p.req)}</td>${I4F.mes?p.m.map(v=>`<td class="mono" style="font-size:11.5px">${v?M(v):'—'}</td>`).join(''):''}</tr>`;});
+  const tm=Array(12).fill(0);rows.forEach(p=>p.m.forEach((v,i)=>tm[i]+=v));
+  h+=`<tr class="total"><td class="l" colspan="7">TOTAL (${rows.length} proyectos)</td><td class="mono">${M(aSum(rows,'req'))}</td><td class="mono gold"><b>${M(aSum(rows,'t'))}</b></td><td class="mono">${pctTxt(aSum(rows,'t'),aSum(rows,'req'))}</td>${I4F.mes?tm.map(v=>`<td class="mono">${M(v)}</td>`).join(''):''}</tr></tbody>`;
+  const el=document.getElementById('i4-proj');el.innerHTML=h;
+  el.querySelectorAll('th[data-k]').forEach(t=>t.onclick=()=>{const kk=t.dataset.k;I4F.sort={k:kk,d:I4F.sort.k===kk?-I4F.sort.d:-1};renderInc4Proj();});
+  document.getElementById('i4-note').textContent=`${rows.length} proyectos · techo ${MM(aSum(rows,'t'))} · requerido ${MM(aSum(rows,'req'))} · millones de $ · clic en el encabezado para ordenar`;
+}
+function initInc4(fs){
+  fs('i4f-pp',[...new Set(I4.map(r=>r.pp))].sort(),'PosPre');
+  document.getElementById('i4f-pp').innerHTML='<option value="">PosPre (todas)</option>'+[...new Map(I4.map(r=>[r.pp,r.ppd])).entries()].sort().map(([p,dsc])=>`<option value="${p}">${p} · ${esc(dsc)}</option>`).join('');
+  fs('i4f-cege',[...new Set(I4.map(r=>r.cege))].sort(),'Centro gestor');
+  document.getElementById('i4f-L').innerHTML='<option value="">Todos</option>'+LKEYS.map(k=>`<option value="${k}">${k.replace('L','')} · ${esc(LIN[k].corto)}</option>`).join('');
+  [['i4f-fin','fin'],['i4f-pp','pp'],['i4f-cege','cege'],['i4f-efgh','efgh'],['i4f-L','L']].forEach(([id,k])=>document.getElementById(id).onchange=e=>{I4F[k]=e.target.value;renderInc4Proj();});
+  document.getElementById('i4f-q').oninput=e=>{I4F.q=e.target.value;renderInc4Proj();};
+  document.getElementById('i4f-cero').onchange=e=>{I4F.cero=e.target.checked;renderInc4Proj();};
+  document.getElementById('i4f-mes').onchange=e=>{I4F.mes=e.target.checked;renderInc4Proj();};
+  document.getElementById('i4f-csv').onclick=()=>{
+    const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"';
+    const lines=[['Proyecto','Centro_gestor','PosPre','PosPre_desc','Fuente','Componente','Prioridad','Lineamiento','Requerido_2027','Techo_2027',...MES.map(m=>'Techo_'+m)].join(';')];
+    I4_LAST.forEach(p=>lines.push([q(p.proy),q(p.cege),p.pp,q(p.ppd),q(p.fin),[...p.efgh].join('/'),[...p.prio].join('/'),p.L,Math.round(p.req),Math.round(p.t),...p.m.map(Math.round)].join(';')));
+    const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='presupuesto_2027_inciso_IV.csv';a.click();};
+}
+
 // ---------- wiring ----------
 (function initAnual(){
   const fs=(id,vals,lab)=>{const s=document.getElementById(id);s.innerHTML=`<option value="">${lab} (todos)</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');};
@@ -2226,6 +2379,13 @@ function drawLinDiscOn(id){ const sd=linStats(AL.filter(r=>!isStruct(r)));
   document.getElementById('lf-collapse').onclick=()=>{AS.open.clear();renderLinTree();};
   document.getElementById('lf-csv').onclick=exportLinCSV;
   document.getElementById('an-pp-q').oninput=renderPosPres;
+  fs('ppf-inc',INC_ORDER,'Inciso'); fs('ppf-rub',[...new Set(AL.map(r=>r.rub))].sort(),'Rubro'); fs('ppf-cri',[...new Set(AL.map(r=>r.cri))].sort(),'Criticidad');
+  document.getElementById('ppf-L').innerHTML='<option value="">Lineamiento (todos)</option>'+LKEYS.map(k=>`<option value="${k}">${k.replace('L','')} · ${esc(LIN[k].corto)}</option>`).join('');
+  [['ppf-inc','inc'],['ppf-rub','rub'],['ppf-cri','cri'],['ppf-L','L'],['ppf-efgh','efgh'],['ppf-fin','fin']].forEach(([id,k])=>document.getElementById(id).onchange=e=>{PPF[k]=e.target.value;renderPosPres();});
+  document.getElementById('ppf-cero').onchange=e=>{PPF.cero=e.target.checked;renderPosPres();};
+  document.getElementById('ppf-clear').onclick=()=>{Object.assign(PPF,{inc:'',rub:'',cri:'',L:'',efgh:'',fin:'',cero:false});['ppf-inc','ppf-rub','ppf-cri','ppf-L','ppf-efgh','ppf-fin','an-pp-q'].forEach(i=>document.getElementById(i).value='');document.getElementById('ppf-cero').checked=false;renderPosPres();};
+  document.getElementById('ppf-csv').onclick=exportPPCSV;
+  initInc4(fs);
   document.getElementById('pres-prev').onclick=()=>{SLIDE--;renderPres();};
   document.getElementById('pres-next').onclick=()=>{SLIDE++;renderPres();};
   document.getElementById('pres-fs').onclick=()=>{const el=document.getElementById('pres-wrap');(el.requestFullscreen||el.webkitRequestFullscreen).call(el);};

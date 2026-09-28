@@ -219,7 +219,7 @@ def main(xlsx, xlsx_ing=None):
         pm = pmeta.get(a['pp'], {})
         rub = pm.get('rubro') or ('Gastos en Personal' if a['inc'].startswith('1') else 'Otros bienes esenciales de consumo')
         cri = pm.get('criticidad') or ('Gastos en Personal' if a['inc'].startswith('1') else 'Complementario')
-        L.append(dict(cege=a['cege'], proy=a['proy'], prod=a['prod'], prio=a['prio'], pp=a['pp'], ppd=a['ppd'],
+        L.append(dict(cege=a['cege'], cod=str(a['cod']).split('.')[0], proy=a['proy'], prod=a['prod'], prio=a['prio'], pp=a['pp'], ppd=a['ppd'],
                       inc=a['inc'], rub=rub, cri=cri, efgh=a['efgh'], req=round(a['req'], 2), t=round(a['t'], 2),
                       s=round(a['s'], 2), m=[round(x, 2) for x in a['m']], L=a['L'], Ls=a['Ls'], crit=a['crit'], n=a['n']))
 

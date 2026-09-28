@@ -1,6 +1,6 @@
 """Genera data/anual_2027.json a partir del Excel "Ppto 2027 - V3" y lo embebe en index.html.
 
-Uso:  python3 tools/build_anual_2027.py <ruta/Ppto_2027_V3.xlsx>
+Uso:  python3 tools/build_anual_2027.py <ruta/Ppto_2027_V3.xlsx> [ruta/PPTO_2027_Ingresos_Totales.xlsx]
 
 Toma:
   - "Formulación 27": líneas de requerimiento (proyecto, producto, prioridad, PosPre,
@@ -156,7 +156,22 @@ def rows_of(ws):
     return [list(r) for r in ws.iter_rows(values_only=True)]
 
 
-def main(xlsx):
+def ingresos_detalle(xlsx):
+    """Hoja "Detalle" del archivo de ingresos: ámbito, línea, tipo, concepto y 12 meses (incluye PPT)."""
+    wb = openpyxl.load_workbook(xlsx, data_only=True, read_only=True)
+    out = []
+    for r in list(wb['Detalle'].iter_rows(values_only=True))[1:]:
+        if not r or not r[1]:
+            continue
+        m = [num(x) for x in r[4:16]]
+        if not any(m):
+            continue
+        out.append(dict(amb=str(r[0]).strip(), linea=str(r[1]).strip(), tipo=str(r[2]).strip(),
+                        c=str(r[3]).strip(), m=[round(x, 2) for x in m]))
+    return out
+
+
+def main(xlsx, xlsx_ing=None):
     wb = openpyxl.load_workbook(xlsx, data_only=True, read_only=True)
     meta = json.load(open(os.path.join(ROOT, 'data', 'meta_pluri.json'), encoding='utf-8'))
     pmeta = {d['pospre']: d for d in meta['data']}
@@ -249,7 +264,7 @@ def main(xlsx):
     out = dict(
         version='Ppto 2027 - V3 (versión final presentada)',
         lineamientos=LINEAMIENTOS, lines=L, dist=dist_rows, ingresos_op=ingresos_op, ceges=ceges,
-        ingresos=ing, pax=[num(x) for x in pax[2:14]] if pax else [], pluri_pp=pluri_pp,
+        ingresos=ing, ing_det=ingresos_detalle(xlsx_ing) if xlsx_ing else [], pax=[num(x) for x in pax[2:14]] if pax else [], pluri_pp=pluri_pp,
     )
     json.dump(out, open(os.path.join(ROOT, 'data', 'anual_2027.json'), 'w', encoding='utf-8'), ensure_ascii=False)
 
@@ -265,4 +280,4 @@ def main(xlsx):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None)

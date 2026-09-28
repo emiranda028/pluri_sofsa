@@ -258,12 +258,20 @@ tr.leaf td{background:#FBFCFE;font-size:12px}
       <ul class="findings" id="an-find"></ul>
     </div>
     <div class="panel" style="padding:18px 22px;margin-bottom:16px">
+      <div class="sectitle"><div class="bar"></div><h2>Techos comunicados y financiamiento</h2><span class="note">según notas oficiales · pesos corrientes</span></div>
+      <div style="display:grid;grid-template-columns:1fr;gap:14px">
+        <div class="tablewrap"><table id="an-notas"></table></div>
+        <div class="tablewrap"><table id="an-fin"></table></div>
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:10px" id="an-macro"></div>
+    </div>
+    <div class="panel" style="padding:18px 22px;margin-bottom:16px">
       <div class="sectitle"><div class="bar"></div><h2>Del plurianual al presupuesto anual por inciso</h2><span class="note">techos informados por el Ministerio de Economía · pesos corrientes</span></div>
       <div class="tablewrap"><table id="an-inc"></table></div>
     </div>
     <div class="charts">
       <div class="panel chartbox tall">
-        <div class="sectitle"><div class="bar"></div><h2>Cascada: plurianual → techo → presupuesto</h2><span class="note">millones de $ · en amarillo, lo solicitado por encima del techo</span></div>
+        <div class="sectitle"><div class="bar"></div><h2>Cascada: plurianual → techo → presupuesto</h2><span class="note">millones de $ · en amarillo, lo pedido por encima del techo que no fue otorgado</span></div>
         <div class="ch" style="height:360px"><canvas id="ch-an-casc"></canvas></div>
       </div>
       <div class="panel chartbox tall">
@@ -314,7 +322,7 @@ tr.leaf td{background:#FBFCFE;font-size:12px}
       <div class="panel" style="padding:18px 22px">
         <div class="sectitle"><div class="bar"></div><h2>Financiamiento del inciso IV</h2><span class="note">fuente × PosPre · millones de $</span></div>
         <div class="tablewrap"><table id="i4-fin"></table></div>
-        <div style="font-size:11.5px;color:var(--muted);margin-top:10px">SIFER financia exclusivamente Material Rodante (PosPre 4.3.3.0.1): adquisición de unidades DMU. El resto del inciso se financia con el techo del Ministerio de Economía más el sobre techo de Bienes de Uso.</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:10px">SIFER financia exclusivamente Material Rodante (PosPre 4.3.3.0.1): adquisición de unidades DMU. El resto del inciso se financia con transferencias de capital del Tesoro: techo SSTF ($ 157.912 M) más el sobre techo otorgado en el Proyecto de Ley ($ 42.088 M), que totalizan $ 200.000 M. El resto con el sobre techo de Bienes de Uso.</div>
       </div>
       <div class="panel chartbox">
         <div class="sectitle"><div class="bar"></div><h2>Cuota mensual por fuente</h2><span class="note">millones de $</span></div>
@@ -1859,6 +1867,12 @@ const pctTxt = (a,b)=> b? nf1.format(a/b*100)+'%' : '—';
 const M = x => nf0.format(Math.round(x/1e6));                    // millones
 const MM = x => (x<0?'−':'')+'$ '+nf0.format(Math.abs(Math.round(x/1e6)))+' M';
 const dCls = p => p===null?'':(p>=0?'up':'down');
+// Techos comunicados oficialmente (en pesos)
+const NOTAS = {
+  sstf:{nro:'NO-2026-72445519-APN-SSTFMEC',org:'Subsecretaría de Transporte Ferroviario',tit:'Techos presupuestarios 2027 comunicados por la Secretaría de Transporte',corr:1379892e6,cap:157912e6},
+  dpep:{nro:'NO-2026-92457562-APN-DPEPMEC',org:'Dirección de Presupuesto de Empresas Públicas (ONP)',tit:'Transferencias directas del Proyecto de Ley de Presupuesto 2027 (Anexo SOF)',corr:1379892e6,cap:200000e6},
+  macro:{ipc27:18.0,ipc28:10.0,ipc29:6.0,tcn27:1847.6,tcn28:1989.4,tcn29:2063.4,pib27:4.0}
+};
 const isSIFER = r => r.pp==='4.3.3.0.1';
 const finOf = r => isSIFER(r)?'SIFER':r.inc==='5. Impuestos'?'Ingresos propios':'Tesoro (techo ME)';
 const isStruct = r => r.inc==='1. Gastos en Personal' || r.inc==='5. Impuestos';
@@ -1877,7 +1891,7 @@ const TOT = (()=>{
   const buTecho = aSum(bu,'t');
   const buExtra = buTecho - DI['Bienes de Uso - Inversiones'].techo_pluri;
   const sifer = aSum(bu.filter(isSIFER),'t');            // Material Rodante DMU financiado por SIFER
-  const buSobre = buExtra - sifer;                        // sobre techo de Bienes de Uso (Tesoro)
+  const buSobre = buExtra - sifer;                        // sobre techo otorgado: sólo capital (Nota DPEP − Nota SSTF)
   const m = Array(12).fill(0); AL.forEach(r=>r.m.forEach((v,i)=>m[i]+=v));
   return {techo,req,sobre,pluri,techoME,ingresos,pedidoST,buTecho,buExtra,sifer,buSobre,m,tesoro:techo-ingresos-sifer};
 })();
@@ -1908,15 +1922,15 @@ function renderAnual(){
    <div class="kpi navy"><div class="k-lab">Presupuesto 2027 presentado</div><div class="k-val" style="font-size:22px">${MM(t.techo)}</div>
      <div class="k-sub">Corrientes ${MM(t.techo-t.buTecho)} · Capital ${MM(t.buTecho)}</div></div>
    <div class="kpi"><div class="k-lab">Techo Ministerio de Economía</div><div class="k-val" style="font-size:22px">${MM(t.techoME)}</div>
-     <div class="k-sub">+ ingresos propios ${MM(t.ingresos)} · + SIFER (DMU) ${MM(t.sifer)} · + sobre techo Bs. de Uso ${MM(t.buSobre)}</div></div>
+     <div class="k-sub">+ sobre techo otorgado (capital) ${MM(t.buSobre)} · + ingresos propios ${MM(t.ingresos)} · + SIFER (DMU) ${MM(t.sifer)}</div></div>
    <div class="kpi"><div class="k-lab">Requerido por las áreas</div><div class="k-val" style="font-size:22px">${MM(t.req)}</div>
      <div class="k-sub">cobertura del techo <b>${pctTxt(t.techo,t.req)}</b> · brecha ${MM(t.req-t.techo)}</div></div>
    <div class="kpi"><div class="k-lab">vs Plurianual 2027 relevado</div><div class="k-val"><span class="delta down">▼ ${fmtPct(deltaPct(t.techo,t.pluri))}</span></div>
      <div class="k-sub">plurianual ${MM(t.pluri)} · Δ ${MM(t.techo-t.pluri)}</div></div>
-   <div class="kpi"><div class="k-lab">Solicitudes por encima del techo</div><div class="k-val" style="font-size:22px">${MM(t.pedidoST+t.sobre)}</div>
-     <div class="k-sub">pedido a la S.T. ${MM(t.pedidoST)} · sobre techos áreas ${MM(t.sobre)}</div></div>`;
+   <div class="kpi"><div class="k-lab">Sobre techo corriente pedido · no otorgado</div><div class="k-val" style="font-size:22px">${MM(t.pedidoST)}</div>
+     <div class="k-sub">el sobre techo sólo se otorgó para capital (${MM(t.buSobre)}) · además ${MM(t.sobre)} de sobre techos de áreas sin cubrir</div></div>`;
   document.getElementById('an-conc').innerHTML=`<b>Conciliación con la versión final presentada:</b> el archivo final (Ppto 2027 - V3) es idéntico al de trabajo · total ${fmtFull(t.techo)} · diferencia <b>$ 0</b> ✓`;
-  renderFindings(); renderAnualIncisos(); drawCascada(); drawMensual(); renderEFGH(); renderCeges(); renderPosPres(); renderAnualIngresos();
+  renderFindings(); renderNotas(); renderAnualIncisos(); drawCascada(); drawMensual(); renderEFGH(); renderCeges(); renderPosPres(); renderAnualIngresos();
 }
 
 
@@ -1925,9 +1939,9 @@ function renderFindings(){
   const oper=D.incs[1].t+D.incs[2].t, operR=D.incs[1].r+D.incs[2].r;
   const items=[
     ['',`El presupuesto presentado (<b>${MM(t.techo)}</b>) es un <b>${fmtPct(deltaPct(t.techo,t.pluri))}</b> menor que el plurianual 2027 relevado y cubre el <b>${pctTxt(t.techo,t.req)}</b> de lo requerido por las áreas.`],
-    ['',`Se financia con techo del Ministerio de Economía (${MM(t.techoME)}), ingresos propios (${MM(t.ingresos)}, ${pctTxt(t.ingresos,t.techo)}), <b>SIFER ${MM(t.sifer)}</b> para Material Rodante DMU (inciso IV) y ${MM(t.buSobre)} de sobre techo de Bienes de Uso; el Tesoro aporta ${MM(t.techoME+t.buSobre)}.`],
+    ['',`Se financia con techo del Ministerio de Economía (${MM(t.techoME)}), ingresos propios (${MM(t.ingresos)}, ${pctTxt(t.ingresos,t.techo)}), <b>SIFER ${MM(t.sifer)}</b> para Material Rodante DMU (inciso IV) y ${MM(t.buSobre)} de sobre techo otorgado sólo para gastos de capital (Nota DPEP); el Tesoro transfiere ${MM(NOTAS.dpep.corr+NOTAS.dpep.cap)} según el Proyecto de Ley. `],
     ['',`Personal (${MM(D.incs[0].t)}) concentra el <b>${pctTxt(D.incs[0].t,t.techo)}</b> del presupuesto y conserva ${pctTxt(D.incs[0].t,D.incs[0].r)} de cobertura; el ajuste recae sobre el gasto operativo.`],
-    ['risk',`Bienes de Consumo y Servicios No Personales quedan cubiertos al <b>${pctTxt(oper,operR)}</b>: queda pendiente el pedido a la S.T. (${MM(t.pedidoST)}) y ${MM(t.sobre)} de sobre techos.`],
+    ['risk',`Bienes de Consumo y Servicios No Personales quedan cubiertos al <b>${pctTxt(oper,operR)}</b>: el sobre techo corriente pedido (${MM(t.pedidoST)}) <b>no fue otorgado</b> y quedan sin cubrir ${MM(t.sobre)} de sobre techos de las áreas.`],
     ['risk',`Material Rodante tiene <b>${MM(D.mr.oc)}</b> en OC comprometidas para 2027 contra un techo de ${MM(D.mr.techo)} (Inc. II y III): déficit de <b>${MM(-D.mr.disp)}</b>.`],
     ['',`Por lineamiento, el gasto discrecional va en un <b>${pctTxt(D.sd.L2.t,D.tDisc)}</b> a Seguridad y mantenimiento, ${pctTxt(D.sd.L1.t,D.tDisc)} a Experiencia del pasajero, ${pctTxt(D.sd.L3.t,D.tDisc)} a Gestión y control y ${pctTxt(D.sd.L4.t,D.tDisc)} a Personas y eficiencia.`],
     ['',`<b>${D.trans.length}</b> proyectos profundizan dos o más premisas a la vez (${MM(D.transT)}, ${pctTxt(D.transT,D.tDisc)} del discrecional), en línea con la síntesis de Presidencia.`],
@@ -1936,9 +1950,26 @@ function renderFindings(){
   document.getElementById('an-find').innerHTML=items.map(([c,x])=>`<li class="${c}">${x}</li>`).join('');
 }
 
+function renderNotas(){
+  const t=TOT,a=NOTAS.sstf,b=NOTAS.dpep;
+  const row=(l,x,y,cls)=>`<tr${cls?` class="${cls}"`:''}><td class="l">${l}</td><td class="mono">${MM(x)}</td><td class="mono">${MM(y)}</td><td class="mono ${y-x>0?'delta up':''}">${y-x?MM(y-x):'—'}</td></tr>`;
+  document.getElementById('an-notas').innerHTML=`<thead><tr><th class="l">Transferencias del Tesoro (fuente 11)</th><th>Techo SSTF<br><span style="font-weight:400;font-size:10px">${a.nro}</span></th><th>Proyecto de Ley<br><span style="font-weight:400;font-size:10px">${b.nro}</span></th><th>Sobre techo otorgado</th></tr></thead><tbody>
+    ${row('552 · Transferencias corrientes',a.corr,b.corr)}${row('557 · Transferencias de capital',a.cap,b.cap)}
+    <tr class="total"><td class="l">TOTAL</td><td class="mono">${MM(a.corr+a.cap)}</td><td class="mono gold"><b>${MM(b.corr+b.cap)}</b></td><td class="mono">${MM(b.corr+b.cap-a.corr-a.cap)}</td></tr>
+    <tr><td class="l" colspan="4" style="white-space:normal;color:var(--muted);font-size:11.5px">El sobre techo se otorgó <b>sólo para gastos de capital</b>. El sobre techo corriente pedido a la Secretaría de Transporte (${MM(t.pedidoST)}) no fue otorgado.</td></tr></tbody>`;
+  const tes=b.corr+b.cap, chk=t.techo-t.ingresos-t.sifer;
+  const fr=(l,v,sub)=>`<tr><td class="l">${l}${sub?`<div style="font-size:10.5px;color:var(--muted)">${sub}</div>`:''}</td><td class="mono"><b>${MM(v)}</b></td><td class="mono" style="color:var(--muted)">${pctTxt(v,t.techo)}</td></tr>`;
+  document.getElementById('an-fin').innerHTML=`<thead><tr><th class="l">Fuente de financiamiento 2027</th><th>Monto</th><th>%</th></tr></thead><tbody>
+    ${fr('Tesoro · transferencias corrientes',b.corr,'gastos operativos netos de ingresos')}${fr('Tesoro · transferencias de capital',b.cap,'techo $ 157.912 M + sobre techo $ 42.088 M')}
+    ${fr('Ingresos propios',t.ingresos,'venta de pasajes y otros ingresos de operación')}${fr('SIFER',t.sifer,'Material Rodante DMU (inciso IV)')}
+    <tr class="total"><td class="l">PRESUPUESTO 2027</td><td class="mono gold"><b>${MM(tes+t.ingresos+t.sifer)}</b></td><td class="mono">100%</td></tr>
+    <tr><td class="l" colspan="3" style="color:${Math.abs(tes-chk)<1e6?'var(--down)':'var(--up)'};font-size:11.5px">${Math.abs(tes-chk)<1e6?'✓ Conciliado: el presupuesto presentado coincide con las transferencias del Proyecto de Ley + ingresos + SIFER':'⚠ Diferencia con el Proyecto de Ley: '+MM(chk-tes)}</td></tr></tbody>`;
+  const m=NOTAS.macro;
+  document.getElementById('an-macro').innerHTML=`<b>Supuestos macro del Proyecto de Ley (Ministerio de Economía):</b> IPC dic/dic 2027 ${nf1.format(m.ipc27)}% · 2028 ${nf1.format(m.ipc28)}% · 2029 ${nf1.format(m.ipc29)}% · tipo de cambio dic-2027 $ ${nf1.format(m.tcn27)}/US$ (2028 $ ${nf1.format(m.tcn28)} · 2029 $ ${nf1.format(m.tcn29)}) · PIB 2027 +${nf1.format(m.pib27)}%.`;
+}
 function renderAnualIncisos(){
   let h=`<thead><tr><th class="l">Inciso</th><th>Plurianual 2027</th><th>Requerido formulación</th><th>Techo informado</th>
-    <th>Δ techo vs plurianual</th><th>Cobertura del requerido</th><th>Sobre techo solicitado</th><th>Peso en 2027</th></tr></thead><tbody>`;
+    <th>Δ techo vs plurianual</th><th>Cobertura del requerido</th><th>Sobre techo pedido (no otorgado)</th><th>Peso en 2027</th></tr></thead><tbody>`;
   let tp=0,tr=0,tt=0,ts=0;
   INC_ORDER.forEach(inc=>{
     const rows=AL.filter(r=>r.inc===inc); const d=DI[DIST_KEY[inc]];
@@ -1965,13 +1996,13 @@ function drawCascada(cid='ch-an-casc',key='an-casc'){
   const steps=[
     {l:'Plurianual 2027 relevado',v:t.pluri,type:'tot'},
     {l:'Ajuste a techo ME',v:ajuste,type:'neg'},
-    {l:'Techo Min. Economía',v:t.techoME,type:'tot'},
+    {l:'Techo ME (Nota SSTF)',v:t.techoME,type:'tot'},
     {l:'+ Ingresos propios',v:t.ingresos,type:'pos'},
-    {l:'+ Sobre techo Bs. de Uso',v:t.buSobre,type:'pos'},
+    {l:'+ Sobre techo capital (Nota DPEP)',v:t.buSobre,type:'pos'},
     {l:'+ SIFER (DMU)',v:t.sifer,type:'pos'},
     {l:'Presupuesto 2027',v:t.techo,type:'fin'},
-    {l:'Pedido a S.T.',v:t.pedidoST,type:'ask'},
-    {l:'Sobre techos áreas',v:t.sobre,type:'ask'},
+    {l:'Sobre techo corriente (no otorgado)',v:t.pedidoST,type:'ask'},
+    {l:'Sobre techos áreas (no incluidos)',v:t.sobre,type:'ask'},
     {l:'Requerido áreas',v:t.req,type:'ref'},
   ];
   let run=0; const data=[],cols=[];
@@ -2275,15 +2306,15 @@ function slideHTML(){
     <div class="s-meta mono">${esc(META.expediente)} · versión ${esc(ANUAL.version)}</div></div>`);
   S.push(`<h3>Resumen ejecutivo</h3><div class="s-kpis">${big(MM(t.techo),'Presupuesto 2027 presentado','conciliado con la versión final · Δ $ 0')}${big(pctTxt(t.techo,t.req),'Cobertura del requerido','brecha '+MM(t.req-t.techo))}${big(fmtPct(deltaPct(t.techo,t.pluri)),'vs plurianual 2027','plurianual '+MM(t.pluri))}</div>
     <ul class="s-list">
-      <li>El Ministerio de Economía fijó un techo de <b>${MM(t.techoME)}</b>; con <b>${MM(t.ingresos)}</b> de ingresos propios, <b>${MM(t.sifer)}</b> de SIFER (Material Rodante DMU) y <b>${MM(t.buSobre)}</b> de sobre techo de Bienes de Uso, el presupuesto presentado asciende a <b>${MM(t.techo)}</b>.</li>
+      <li>La Secretaría de Transporte comunicó un techo de <b>${MM(t.techoME)}</b>; el Proyecto de Ley sumó <b>${MM(t.buSobre)}</b> de sobre techo sólo para capital. Con <b>${MM(t.ingresos)}</b> de ingresos propios y <b>${MM(t.sifer)}</b> de SIFER (Material Rodante DMU), el presupuesto presentado asciende a <b>${MM(t.techo)}</b>.</li>
       <li>Personal absorbe el <b>${pctTxt(D.incs[0].t,t.techo)}</b> del total con una cobertura del ${pctTxt(D.incs[0].t,D.incs[0].r)}; los incisos operativos (Bienes de Consumo y Servicios) quedan cubiertos sólo al <b>${pctTxt(D.incs[1].t+D.incs[2].t,D.incs[1].r+D.incs[2].r)}</b>.</li>
-      <li>Quedan por encima del techo <b>${MM(t.pedidoST)}</b> pedidos a la Secretaría de Transporte y <b>${MM(t.sobre)}</b> de sobre techos de las áreas.</li>
+      <li>El sobre techo para gastos corrientes pedido a la Secretaría de Transporte (<b>${MM(t.pedidoST)}</b>) <b>no fue otorgado</b>; tampoco se cubren <b>${MM(t.sobre)}</b> de sobre techos de las áreas.</li>
       <li>El gasto discrecional (sin Personal e Impuestos) se concentra en la premisa 2 · Seguridad y mantenimiento (<b>${pctTxt(D.sd.L2.t,D.tDisc)}</b>).</li></ul>`);
   S.push(`<h3>Del plurianual al presupuesto anual</h3><div class="s-chart"><canvas id="sl-casc"></canvas></div>`);
   S.push(`<h3>Techos por inciso</h3><table class="s-table"><thead><tr><th class="l">Inciso</th><th>Plurianual 27</th><th>Requerido</th><th>Techo 2027</th><th>Δ vs pluri</th><th>Cobertura</th></tr></thead><tbody>
     ${D.incs.map(i=>`<tr><td class="l">${i.inc}</td><td>${MM(i.p)}</td><td>${MM(i.r)}</td><td><b>${MM(i.t)}</b></td><td class="delta ${dCls(deltaPct(i.t,i.p))}">${fmtPct(deltaPct(i.t,i.p))}</td><td>${pctTxt(i.t,i.r)}</td></tr>`).join('')}
     <tr class="s-tot"><td class="l">Total</td><td>${MM(t.pluri)}</td><td>${MM(t.req)}</td><td>${MM(t.techo)}</td><td>${fmtPct(deltaPct(t.techo,t.pluri))}</td><td>${pctTxt(t.techo,t.req)}</td></tr></tbody></table>
-    <p class="s-note">Impuestos se financia íntegramente con ingresos propios (${MM(t.ingresos)}). Bienes de Uso: techo ME ${MM(DI['Bienes de Uso - Inversiones'].techo_pluri)} + sobre techo ${MM(t.buSobre)} + SIFER ${MM(t.sifer)} (Material Rodante DMU).</p>`);
+    <p class="s-note">Impuestos se financia íntegramente con ingresos propios (${MM(t.ingresos)}). Bienes de Uso: techo ME ${MM(DI['Bienes de Uso - Inversiones'].techo_pluri)} + sobre techo de capital otorgado ${MM(t.buSobre)} + SIFER ${MM(t.sifer)} (Material Rodante DMU).</p>`);
   S.push(`<h3>Cuota mensual del techo 2027</h3><div class="s-chart"><canvas id="sl-mes"></canvas></div><p class="s-note">Picos en junio y diciembre por SAC. Promedio mensual ${MM(t.techo/12)}.</p>`);
   S.push(`<h3>Lineamientos de Presidencia · asignación del techo</h3><div class="s-lin">${LKEYS.map(k=>`<div class="s-lc" style="--c:${L_COLOR[k]}"><div class="s-ln">${k.replace('L','')}</div><div class="s-lt">${esc(LIN[k].nombre)}</div><div class="s-lv">${MM(D.st[k].t)}</div><div class="s-ls">${pctTxt(D.st[k].t,t.techo)} del total · ${pctTxt(D.sd[k].t,D.tDisc)} del discrecional</div><div class="s-ls">cobertura ${pctTxt(D.st[k].t,D.st[k].req)}</div></div>`).join('')}</div>
     <p class="s-note">Cada proyecto/producto de la formulación se asignó a una premisa principal y, cuando corresponde, a premisas secundarias. Personal → premisa 4; Impuestos → premisa 3.</p>`);
@@ -2297,9 +2328,9 @@ function slideHTML(){
     <li><b>Material Rodante:</b> tiene ${MM(D.mr.oc)} en órdenes de compra ya comprometidas para 2027 frente a un techo de ${MM(D.mr.techo)} en Incisos II y III → <b>déficit de ${MM(-D.mr.disp)}</b>.</li>
     <li>${D.negC.length} centro(s) gestor(es) con compromisos 2027 superiores al techo: ${D.negC.map(c=>esc(c.nombre)+' ('+MM(c.disp)+')').join('; ')}.</li>
     <li><b>Revisiones decanuales</b> (premisa 2 exige el 100%): reparación de material rodante con techo ${MM(aSum(D.dec,'t'))} vs requerido ${MM(aSum(D.dec,'req'))} (${pctTxt(aSum(D.dec,'t'),aSum(D.dec,'req'))}).</li>
-    <li>Bienes de Consumo y Servicios quedan con cobertura cercana al ${pctTxt(D.incs[1].t+D.incs[2].t,D.incs[1].r+D.incs[2].r)}: la ejecución dependerá del pedido adicional a la S.T. (${MM(t.pedidoST)}).</li></ul>`);
+    <li>Bienes de Consumo y Servicios quedan con cobertura cercana al ${pctTxt(D.incs[1].t+D.incs[2].t,D.incs[1].r+D.incs[2].r)}: con el sobre techo corriente no otorgado (${MM(t.pedidoST)}), habrá que priorizar dentro del techo o gestionar refuerzos durante el ejercicio.</li></ul>`);
   S.push(`<h3>Recomendaciones</h3><ol class="s-list">
-    <li>Gestionar ante la S.T. el pedido adicional priorizando repuestos y reparación de material rodante (decanuales) y limpieza, que tocan las premisas 1 y 2 a la vez.</li>
+    <li>Gestionar refuerzos de gasto corriente durante el ejercicio (el sobre techo corriente no fue otorgado), priorizando repuestos y reparación de material rodante (decanuales) y limpieza, que tocan las premisas 1 y 2 a la vez.</li>
     <li>Reasignar dentro del techo hacia proyectos multi-premisa de prioridad Alta, según la síntesis de Presidencia.</li>
     <li>Abrir partidas específicas —aunque sean de baja cuantía— para los compromisos sin financiamiento: estudio de demanda, piloto de servicios diferenciales, armonización de KPIs y desarrollo de carrera.</li>
     <li>Regularizar el sobre-compromiso de Material Rodante (OC 2027 vs techo) antes del inicio del ejercicio.</li>
@@ -2345,7 +2376,7 @@ function renderInc4(){
   document.getElementById('i4-kpis').innerHTML=`
    <div class="kpi navy"><div class="k-lab">Inciso IV · techo 2027</div><div class="k-val" style="font-size:22px">${MM(t.buTecho)}</div><div class="k-sub">${pctTxt(t.buTecho,t.techo)} del presupuesto · cobertura ${pctTxt(t.buTecho,req)}</div></div>
    <div class="kpi"><div class="k-lab">Financiado por SIFER</div><div class="k-val" style="font-size:22px">${MM(t.sifer)}</div><div class="k-sub">Material Rodante DMU · ${pctTxt(t.sifer,t.buTecho)} del inciso · cobertura ${pctTxt(t.sifer,sifReq)}</div></div>
-   <div class="kpi"><div class="k-lab">Financiado por Tesoro</div><div class="k-val" style="font-size:22px">${MM(t.buTecho-t.sifer)}</div><div class="k-sub">techo ME ${MM(d.techo_pluri)} + sobre techo ${MM(t.buSobre)}</div></div>
+   <div class="kpi"><div class="k-lab">Financiado por Tesoro</div><div class="k-val" style="font-size:22px">${MM(t.buTecho-t.sifer)}</div><div class="k-sub">techo ME ${MM(d.techo_pluri)} + sobre techo de capital ${MM(t.buSobre)} (Nota DPEP)</div></div>
    <div class="kpi"><div class="k-lab">Emergencia Ferroviaria</div><div class="k-val" style="font-size:22px">${MM(ef)}</div><div class="k-sub">${pctTxt(ef,t.buTecho)} del inciso · Gasto Habitual ${MM(t.buTecho-ef)}</div></div>
    <div class="kpi"><div class="k-lab">vs plurianual 2027</div><div class="k-val"><span class="delta ${dCls(deltaPct(t.buTecho,d.pluri))}">${fmtPct(deltaPct(t.buTecho,d.pluri))}</span></div><div class="k-sub">plurianual ${MM(d.pluri)} · requerido ${MM(req)}</div></div>`;
   // financiamiento fuente × pospre

@@ -173,6 +173,34 @@ table.compact td{font-size:12px;padding:6px 7px}
 tr.leaf td{background:#FBFCFE;font-size:12px}
 .lfilters{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin-bottom:12px}
 .toggle{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--navy);cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px}
+/* mapa proyectos/productos */
+.lmap{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:16px}
+.lmap-card{padding:15px 18px;border-top:4px solid var(--c)}
+.lmap-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.lmap-cnt{font-size:11px;color:var(--muted)}
+.lmap-p{padding:8px 0;border-bottom:1px solid var(--line)}
+.lmap-p:last-of-type{border-bottom:none}
+.lmap-pt{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.lmap-pn{font-weight:600;color:var(--ink);font-size:12.5px;line-height:1.3}
+.lmap-pv{font-family:'IBM Plex Mono',monospace;font-size:12px;white-space:nowrap}
+.lmap-ps{font-size:10.5px;color:var(--muted);margin-top:2px}
+.lmap-prods{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.lmap-prods span{font-size:10.5px;background:color-mix(in srgb,var(--c) 9%,#fff);color:var(--navy-700);border-radius:5px;padding:2px 7px}
+.lmap-more{margin-top:8px;font-size:12px;font-weight:600;color:var(--blue);cursor:pointer;background:none;border:none;padding:0}
+.minicov{display:inline-block;width:46px;height:5px;border-radius:3px;background:#EEF1F8;vertical-align:middle;margin-left:6px;overflow:hidden}.minicov i{display:block;height:100%;background:var(--c)}
+/* maximizar cuadros */
+.panel{position:relative}
+.maxbtn{margin-left:auto;flex:none;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all .15s}
+.maxbtn:hover{border-color:var(--blue);color:var(--blue);background:#F4F8FD}
+.maxbtn.abs{position:absolute;top:12px;right:12px;z-index:2}
+.maxbtn svg{width:15px;height:15px}
+body.has-max{overflow:hidden}
+body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,.55);z-index:490;backdrop-filter:blur(2px)}
+.panel.maxed{position:fixed!important;inset:14px;z-index:500;overflow:auto;margin:0!important;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.panel.maxed .ch{height:calc(100vh - 150px)!important}
+.panel.maxed .tablewrap{max-height:none!important}
+.panel.maxed .maxbtn{background:var(--navy);color:#fff;border-color:var(--navy)}
+.s-table td.l{white-space:normal}
 /* presentación */
 #pres-wrap{background:var(--navy-900);border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}
 #pres-wrap:fullscreen{justify-content:center;border-radius:0}
@@ -199,7 +227,7 @@ tr.leaf td{background:#FBFCFE;font-size:12px}
 .pres-ctrl{display:flex;align-items:center;gap:10px}
 .pres-ctrl .btn{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
 #pres-dots{display:flex;gap:6px}#pres-dots button{width:9px;height:9px;padding:0;border-radius:50%;border:none;background:rgba(255,255,255,.3);cursor:pointer}#pres-dots button.on{background:var(--gold)}
-@media(max-width:1000px){.lcards,.litems,.s-lin{grid-template-columns:1fr 1fr}.findings{grid-template-columns:1fr}.slide{padding:18px 20px 34px}}
+@media(max-width:1000px){.lmap{grid-template-columns:1fr}.lcards,.litems,.s-lin{grid-template-columns:1fr 1fr}.findings{grid-template-columns:1fr}.slide{padding:18px 20px 34px}}
 @media(max-width:640px){.lcards,.litems{grid-template-columns:1fr}}
 </style>
 </head>
@@ -397,6 +425,8 @@ tr.leaf td{background:#FBFCFE;font-size:12px}
       <span style="font-size:12px;color:var(--muted)" id="lin-struct-note"></span>
     </div>
     <div class="lcards" id="lin-cards"></div>
+    <div class="sectitle"><div class="bar"></div><h2>Proyectos y productos de cada lineamiento</h2><span class="note">principales proyectos por techo 2027, con sus productos · millones de $</span></div>
+    <div class="lmap" id="lin-map"></div>
     <div class="charts">
       <div class="panel chartbox tall">
         <div class="sectitle"><div class="bar"></div><h2>Requerido vs techo por lineamiento</h2><span class="note">millones de $ · % = cobertura</span></div>
@@ -430,8 +460,9 @@ tr.leaf td{background:#FBFCFE;font-size:12px}
       <div class="tablewrap"><table id="lin-trans"></table></div>
     </div>
     <div class="panel" style="padding:18px 22px">
-      <div class="sectitle"><div class="bar"></div><h2>Proyectos y productos por lineamiento</h2><span class="note" id="lin-tree-note"></span></div>
+      <div class="sectitle" id="lin-tree-anchor"><div class="bar"></div><h2>Detalle de proyectos y productos por lineamiento</h2><span class="note" id="lin-tree-note"></span></div>
       <div class="lfilters">
+        <div class="fgroup"><label>Vista</label><div class="seg" id="lf-view"><button data-v="tree" class="on">Árbol</button><button data-v="prod">Tabla de productos</button></div></div>
         <div class="fgroup"><label>Lineamiento</label><select id="lf-L"></select></div>
         <div class="fgroup"><label>Inciso</label><select id="lf-inc"></select></div>
         <div class="fgroup"><label>Centro gestor</label><select id="lf-cege"></select></div>
@@ -1897,7 +1928,7 @@ const TOT = (()=>{
 })();
 
 // ---------- estado local de las pestañas nuevas ----------
-const AS = {inc:'',L:'',cege:'',prio:'',efgh:'',q:'',struct:true,ppSort:{k:'t',d:-1},cgSort:{k:'techo',d:-1},open:new Set(),linTree:'L'};
+const AS = {view:'tree',pSort:{k:'t',d:-1},inc:'',L:'',cege:'',prio:'',efgh:'',q:'',struct:true,ppSort:{k:'t',d:-1},cgSort:{k:'techo',d:-1},open:new Set(['L:L1','L:L2','L:L3','L:L4']),linTree:'L'};
 
 function aFiltered(){
   const q=AS.q.toLowerCase();
@@ -2171,7 +2202,7 @@ function renderLin(){
   document.getElementById('lin-struct-note').innerHTML = AS.struct
     ? `Incluye gasto estructural: Personal (${MM(aSum(AL.filter(r=>r.inc==='1. Gastos en Personal'),'t'))}) → premisa 4 e Impuestos (${MM(aSum(AL.filter(r=>r.inc==='5. Impuestos'),'t'))}) → premisa 3.`
     : `Vista de gasto <b>discrecional</b>: se excluyen Personal e Impuestos (${MM(aSum(AL.filter(isStruct),'t'))}). Total analizado ${MM(tot)}.`;
-  drawLinBars(st); drawLinDonut(st,tot); renderLinMatrix(base); renderLinCross(base); renderLinItems(); renderLinPrio(base); renderLinTransversal(base); renderLinTree();
+  drawLinBars(st); drawLinDonut(st,tot); renderLinMatrix(base); renderLinCross(base); renderLinItems(); renderLinPrio(base); renderLinTransversal(base); renderLinMap(base); renderLinTree();
 }
 
 function drawLinBars(st){
@@ -2240,10 +2271,47 @@ function renderLinTransversal(base){
   document.getElementById('lin-trans').innerHTML=h+'</tbody>';
 }
 
+
+function renderLinMap(base){
+  const el=document.getElementById('lin-map');
+  el.innerHTML=LKEYS.map(k=>{
+    const g=base.filter(r=>r.L===k);
+    const pa=projAgg(g).sort((a,b)=>b.t-a.t||b.req-a.req);
+    const withT=pa.filter(p=>p.t>0);
+    const top=withT.slice(0,6);
+    const nProd=new Set(g.map(r=>r.cege+'|'+r.proy+'|'+r.prod)).size;
+    const items=top.map(p=>{
+      const prods=[...groupBy(g.filter(r=>r.cege===p.cege&&r.proy===p.proy),'prod').entries()].map(([n,gg])=>({n,t:aSum(gg,'t')})).sort((a,b)=>b.t-a.t);
+      const cov=p.req?Math.min(1,p.t/p.req):0;
+      return `<div class="lmap-p"><div class="lmap-pt"><div class="lmap-pn">${esc(p.proy)}</div><div class="lmap-pv"><b>${M(p.t)}</b><span class="minicov" title="cobertura ${pctTxt(p.t,p.req)}"><i style="width:${cov*100}%"></i></span></div></div>
+        <div class="lmap-ps">${esc(p.cege)} · requerido ${M(p.req)} · cobertura ${pctTxt(p.t,p.req)} · ${prods.length} producto${prods.length===1?'':'s'}</div>
+        <div class="lmap-prods">${prods.slice(0,4).map(x=>`<span title="${esc(x.n)}">${esc(x.n.length>48?x.n.slice(0,46)+'…':x.n)} · ${M(x.t)}</span>`).join('')}${prods.length>4?`<span>+${prods.length-4} más</span>`:''}</div></div>`;}).join('');
+    return `<div class="panel lmap-card" style="--c:${L_COLOR[k]}"><div class="lmap-h">${chipL(k)}<span class="lmap-cnt">${withT.length} proyectos con techo · ${nProd} productos · ${MM(aSum(g,'t'))}</span></div>
+      ${items||'<div class="lmap-ps">Sin proyectos con techo en esta selección.</div>'}
+      ${withT.length>6?`<button class="lmap-more" data-l="${k}">Ver los ${withT.length} proyectos en el detalle →</button>`:''}</div>`;}).join('');
+  el.querySelectorAll('.lmap-more').forEach(b=>b.onclick=()=>{AS.L=b.dataset.l;document.getElementById('lf-L').value=AS.L;AS.open.add('L:'+AS.L);renderLinTree();document.getElementById('lin-tree-anchor').scrollIntoView({behavior:'smooth'});});
+}
+function renderLinProdTable(rows){
+  const m=new Map();
+  rows.forEach(r=>{const k=r.L+'|'+r.cege+'|'+r.proy+'|'+r.prod;if(!m.has(k))m.set(k,{L:r.L,cege:r.cege,proy:r.proy,prod:r.prod,prio:new Set(),Ls:new Set(),pp:new Set(),req:0,t:0,s:0});
+    const x=m.get(k);x.req+=r.req;x.t+=r.t;x.s+=r.s;x.prio.add(r.prio);r.Ls.forEach(l=>x.Ls.add(l));x.pp.add(r.pp);});
+  const k=AS.pSort.k,d=AS.pSort.d;
+  const arr=[...m.values()].map(x=>({...x,cov:x.req?x.t/x.req:null})).sort((a,b)=>{const va=a[k],vb=b[k];return (typeof va==='string'?va.localeCompare(vb):(va??-1)-(vb??-1))*d;});
+  const th=(key,lab,l)=>`<th class="${l?'l':''}" data-k="${key}" style="cursor:pointer">${lab}${AS.pSort.k===key?`<span class="ar">${d<0?'▼':'▲'}</span>`:''}</th>`;
+  let h=`<thead><tr>${th('L','Lineamiento',1)}${th('proy','Proyecto',1)}${th('prod','Producto',1)}${th('cege','Centro gestor',1)}<th class="l">Prioridad</th><th class="l">Otras premisas</th><th class="l">PosPres</th>${th('req','Requerido')}${th('t','Techo 2027')}${th('cov','Cobertura')}${th('s','Sobre techo')}</tr></thead><tbody>`;
+  arr.forEach(x=>{h+=`<tr><td class="l">${chipL(x.L,true)}</td><td class="l desc" style="max-width:260px;white-space:normal">${esc(x.proy)}</td><td class="l" style="max-width:300px;white-space:normal">${esc(x.prod)}</td><td class="l" style="color:var(--muted)">${esc(x.cege)}</td>
+    <td class="l">${[...x.prio].join(', ')}</td><td class="l">${[...x.Ls].map(l=>`<span class="dotL" style="background:${L_COLOR[l]}">${l.replace('L','')}</span>`).join('')}</td><td class="l pp" style="font-size:10.5px;white-space:normal;max-width:150px">${[...x.pp].slice(0,4).join(' · ')}${x.pp.size>4?' …':''}</td>
+    <td class="mono">${M(x.req)}</td><td class="mono"><b>${M(x.t)}</b></td><td class="mono">${x.cov===null?'—':nf1.format(x.cov*100)+'%'}</td><td class="mono">${x.s?M(x.s):'—'}</td></tr>`;});
+  h+=`<tr class="total"><td class="l" colspan="7">TOTAL (${arr.length} productos)</td><td class="mono">${M(aSum(arr,'req'))}</td><td class="mono gold"><b>${M(aSum(arr,'t'))}</b></td><td class="mono">${pctTxt(aSum(arr,'t'),aSum(arr,'req'))}</td><td class="mono">${M(aSum(arr,'s'))}</td></tr></tbody>`;
+  const el=document.getElementById('lin-tree');el.innerHTML=h;
+  el.querySelectorAll('th[data-k]').forEach(t=>t.onclick=()=>{const kk=t.dataset.k;AS.pSort={k:kk,d:AS.pSort.k===kk?-AS.pSort.d:-1};renderLinTree();});
+}
 function renderLinTree(){
   const rows=aFiltered();
   const note=document.getElementById('lin-tree-note');
-  note.textContent=`${rows.length} registros · techo ${MM(aSum(rows,'t'))} · requerido ${MM(aSum(rows,'req'))}`;
+  note.textContent=`${new Set(rows.map(r=>r.cege+'|'+r.proy)).size} proyectos · ${new Set(rows.map(r=>r.cege+'|'+r.proy+'|'+r.prod)).size} productos · techo ${MM(aSum(rows,'t'))} · requerido ${MM(aSum(rows,'req'))}`;
+  document.getElementById('lf-expand').style.display=document.getElementById('lf-collapse').style.display=AS.view==='prod'?'none':'';
+  if(AS.view==='prod'){renderLinProdTable(rows);return;}
   let h=`<thead><tr><th class="l">Lineamiento › Proyecto › Producto</th><th class="l">Centro gestor</th><th class="l">Prioridad</th><th class="l">Otras premisas</th><th>Requerido</th><th>Techo 2027</th><th>Cobertura</th><th>Sobre techo</th></tr></thead><tbody>`;
   const byL=groupBy(rows,'L');
   LKEYS.filter(k=>byL.has(k)).forEach(k=>{
@@ -2318,6 +2386,15 @@ function slideHTML(){
   S.push(`<h3>Cuota mensual del techo 2027</h3><div class="s-chart"><canvas id="sl-mes"></canvas></div><p class="s-note">Picos en junio y diciembre por SAC. Promedio mensual ${MM(t.techo/12)}.</p>`);
   S.push(`<h3>Lineamientos de Presidencia · asignación del techo</h3><div class="s-lin">${LKEYS.map(k=>`<div class="s-lc" style="--c:${L_COLOR[k]}"><div class="s-ln">${k.replace('L','')}</div><div class="s-lt">${esc(LIN[k].nombre)}</div><div class="s-lv">${MM(D.st[k].t)}</div><div class="s-ls">${pctTxt(D.st[k].t,t.techo)} del total · ${pctTxt(D.sd[k].t,D.tDisc)} del discrecional</div><div class="s-ls">cobertura ${pctTxt(D.st[k].t,D.st[k].req)}</div></div>`).join('')}</div>
     <p class="s-note">Cada proyecto/producto de la formulación se asignó a una premisa principal y, cuando corresponde, a premisas secundarias. Personal → premisa 4; Impuestos → premisa 3.</p>`);
+  LKEYS.forEach(k=>{
+    const g=AL.filter(r=>r.L===k&&!isStruct(r)); const pa=projAgg(g).filter(p=>p.t>0).sort((a,b)=>b.t-a.t);
+    const top=pa.slice(0,7);
+    S.push(`<h3 style="display:flex;align-items:center;gap:12px"><span class="s-ln" style="--c:${L_COLOR[k]};color:${L_COLOR[k]};font-size:1.4em">${k.replace('L','')}</span>${esc(LIN[k].nombre)} · proyectos y productos</h3>
+      <div class="s-note" style="margin:-8px 0 10px">${pa.length} proyectos con techo · ${new Set(g.map(r=>r.cege+'|'+r.proy+'|'+r.prod)).size} productos · techo ${MM(aSum(g,'t'))} · cobertura ${pctTxt(aSum(g,'t'),aSum(g,'req'))}${k==='L4'||k==='L3'?' · sin '+(k==='L4'?'Personal':'Impuestos'):''}</div>
+      <table class="s-table"><thead><tr><th class="l">Proyecto</th><th class="l">Productos principales</th><th>Techo</th><th>Cobertura</th></tr></thead><tbody>
+      ${top.map(p=>{const pr=[...groupBy(g.filter(r=>r.cege===p.cege&&r.proy===p.proy),'prod').entries()].map(([n,gg])=>({n,t:aSum(gg,'t')})).sort((a,b)=>b.t-a.t);
+        return `<tr><td class="l" style="max-width:340px">${esc(p.proy.length>64?p.proy.slice(0,62)+'…':p.proy)}<div style="font-size:.8em;color:var(--muted)">${esc(p.cege)}</div></td><td class="l" style="font-size:.85em;max-width:380px">${pr.slice(0,3).map(x=>esc(x.n.length>42?x.n.slice(0,40)+'…':x.n)).join(' · ')}${pr.length>3?` <span style="color:var(--muted)">+${pr.length-3}</span>`:''}</td><td>${MM(p.t)}</td><td>${pctTxt(p.t,p.req)}</td></tr>`;}).join('')}</tbody></table>`);
+  });
   S.push(`<h3>Gasto discrecional por lineamiento</h3><div class="s-chart"><canvas id="sl-lin"></canvas></div><p class="s-note">Excluye Personal e Impuestos (${MM(aSum(AL.filter(isStruct),'t'))}). Barras: requerido vs techo; % = cobertura.</p>`);
   S.push(`<h3>Interdependencia de las premisas</h3><div class="s-kpis">${big(MM(D.transT),'Techo en proyectos multi-premisa',pctTxt(D.transT,D.tDisc)+' del discrecional')}${big(String(D.trans.length),'Proyectos que profundizan ≥ 2 premisas','según la síntesis de Presidencia, son los prioritarios')}</div>
     <table class="s-table"><thead><tr><th class="l">Proyectos transversales de mayor peso</th><th class="l">Premisas</th><th>Techo</th><th>Cobertura</th></tr></thead><tbody>
@@ -2538,6 +2615,32 @@ function initSub(fs){
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ingresos_pasajeros_subsidio_2027.csv';a.click();};
 }
 
+
+// ---------- maximizar cualquier cuadro ----------
+const ICON_MAX='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M10 2.5h3.5V6M6 13.5H2.5V10M13.5 2.5 9 7M2.5 13.5 7 9"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M13.5 6H10V2.5M2.5 10H6v3.5M10 6l4-4M6 10l-4 4"/></svg>';
+function resizeCharts(){ setTimeout(()=>Object.values(charts).forEach(c=>{try{c.resize()}catch(e){}}),60); }
+function toggleMax(panel,force){
+  const on = force===undefined ? !panel.classList.contains('maxed') : force;
+  document.querySelectorAll('.panel.maxed').forEach(p=>{if(p!==panel){p.classList.remove('maxed');const b=p.querySelector(':scope > .maxbtn, :scope > .sectitle > .maxbtn');if(b)b.innerHTML=ICON_MAX;}});
+  panel.classList.toggle('maxed',on); document.body.classList.toggle('has-max',on);
+  const b=panel.querySelector(':scope > .maxbtn, :scope > .sectitle > .maxbtn'); if(b){b.innerHTML=on?ICON_MIN:ICON_MAX;b.title=on?'Restaurar (Esc)':'Ampliar a pantalla completa';}
+  resizeCharts();
+}
+function addMaxButtons(){
+  document.querySelectorAll('.wrap .panel').forEach(p=>{
+    if(p.dataset.maxable||p.parentElement.closest('.panel'))return;
+    p.dataset.maxable='1';
+    const b=document.createElement('button');b.type='button';b.className='maxbtn';b.innerHTML=ICON_MAX;b.title='Ampliar a pantalla completa';
+    b.onclick=e=>{e.stopPropagation();toggleMax(p);};
+    const st=p.querySelector(':scope > .sectitle');
+    if(st){st.style.display='flex';st.appendChild(b);} else {b.classList.add('abs');p.appendChild(b);}
+  });
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const p=document.querySelector('.panel.maxed');if(p)toggleMax(p,false);}});
+new MutationObserver(()=>{clearTimeout(window.__mxT);window.__mxT=setTimeout(addMaxButtons,50);}).observe(document.querySelector('.wrap'),{childList:true,subtree:true});
+document.addEventListener('DOMContentLoaded',addMaxButtons);
+
 // ---------- wiring ----------
 (function initAnual(){
   const fs=(id,vals,lab)=>{const s=document.getElementById(id);s.innerHTML=`<option value="">${lab} (todos)</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');};
@@ -2548,6 +2651,7 @@ function initSub(fs){
   const on=(id,k,ev='onchange')=>document.getElementById(id)[ev]=e=>{AS[k]=e.target.value;renderLinTree();};
   on('lf-inc','inc');on('lf-L','L');on('lf-cege','cege');on('lf-prio','prio');on('lf-efgh','efgh');on('lf-q','q','oninput');
   document.getElementById('lf-struct').onchange=e=>{AS.struct=e.target.checked;renderLin();};
+  document.querySelectorAll('#lf-view button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#lf-view button').forEach(x=>x.classList.remove('on'));b.classList.add('on');AS.view=b.dataset.v;renderLinTree();});
   document.getElementById('lf-expand').onclick=()=>{LKEYS.forEach(k=>AS.open.add('L:'+k));renderLinTree();};
   document.getElementById('lf-collapse').onclick=()=>{AS.open.clear();renderLinTree();};
   document.getElementById('lf-csv').onclick=exportLinCSV;

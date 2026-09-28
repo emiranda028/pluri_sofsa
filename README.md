@@ -1,0 +1,22 @@
+# Presupuesto SOFSA 2027 · Plurianual 2027–2029
+
+Tablero en un único archivo (`index.html`, se abre directo en el navegador o por GitHub Pages).
+
+## Pestañas
+- **Presupuesto 2027** — presupuesto anual con los techos informados por el Ministerio de Economía: cascada plurianual → techo → presupuesto presentado, techos por inciso, cuota mensual, Gasto Habitual vs Emergencia Ferroviaria, ingresos propios, distribución por centro gestor (con compromisos 2027 ya asignados) y detalle por PosPre.
+- **Lineamientos Presidencia** — cada proyecto/producto de la formulación clasificado en las 4 premisas de Presidencia (principal + secundarias), con cobertura por premisa, estado de cada compromiso de "Relación con el presupuesto 2027", interdependencia entre premisas, proyectos transversales y un árbol lineamiento › proyecto › producto que se puede exportar a CSV.
+- **Presentación** — slides generadas en vivo con los mismos datos (flechas ← → y pantalla completa).
+- Resto de las pestañas: análisis del plurianual 2027–2029 (sin cambios).
+
+## Datos
+- `data/anual_2027.json` — extraído de "Ppto 2027 - V3" (versión final presentada). Va embebido en `index.html`.
+- `data/meta_pluri.json` — datos del plurianual ya existentes en el tablero (se usan para rubro/criticidad por PosPre).
+
+Para regenerar a partir de una nueva versión del Excel:
+
+```
+pip install openpyxl
+python3 tools/build_anual_2027.py ruta/al/Ppto_2027_V3.xlsx
+```
+
+Las reglas de clasificación en lineamientos están en `classify()` dentro de `tools/build_anual_2027.py`.

@@ -223,6 +223,80 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 .net-head text{font-size:10px;font-weight:700;letter-spacing:.08em;fill:#71748A;text-transform:uppercase}
 #net-tip{position:fixed;pointer-events:none;background:var(--navy-900);color:#fff;border-radius:9px;padding:9px 12px;font-size:12px;line-height:1.45;max-width:380px;z-index:600;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none}
 #net-tip b{color:var(--gold)}
+/* red: vista lista + selección */
+#net-sel{font-size:12px;color:var(--ink);background:#F4F6FB;border-radius:9px;padding:8px 12px;margin-bottom:10px;display:none;line-height:1.45}
+#net-sel .path{color:var(--muted);font-size:11px}
+#net-list{display:none}
+.nl-row{display:flex;align-items:center;gap:8px;padding:9px 10px 9px 0;border-bottom:1px solid var(--line);cursor:pointer;background:#fff}
+.nl-row:active{background:#F4F8FD}
+.nl-row.hit{background:#FBF1EC}
+.nl-tog{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--c);color:var(--c);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.nl-tog.leaf{border-color:transparent}
+.nl-main{flex:1;min-width:0;border-left:4px solid var(--c);padding-left:8px}
+.nl-name{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.3;word-break:break-word}
+.nl-lvl{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.nl-val{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
+.nl-bar{height:3px;border-radius:2px;background:var(--c);opacity:.55;margin-top:4px}
+.charts>*,.lmap>*,.litems>*,.lcards>*,.kpis>*,.s-lin>*{min-width:0}
+.lmap-pn,.nl-name{overflow-wrap:anywhere}
+/* ===== MOBILE ===== */
+@media(max-width:760px){
+  body{font-size:13.5px}
+  .top{position:static}
+  .top-in{padding:12px 16px;gap:10px;flex-wrap:wrap}
+  .brandbar{height:30px}
+  .brand .ta{font-size:13px}.brand .sub{font-size:9px;letter-spacing:.12em}
+  .top-title{flex:1 1 100%!important;text-align:left!important}
+  .top h1{font-size:16px!important;text-align:left!important;line-height:1.3}
+  .top-sub{display:none}
+  .top-exp{font-size:10px!important}
+  .filters{position:static}
+  .filters-in{padding:10px 16px}
+  .fgroup{min-width:0;flex:1 1 140px}
+  select,input.search{min-width:0!important;width:100%}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 16px;margin-top:12px;gap:2px;position:sticky;top:0;z-index:45;background:var(--bg);box-shadow:0 1px 0 var(--line)}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{white-space:nowrap;padding:9px 12px;font-size:12.5px;flex:none}
+  .tab.new::after{display:none}
+  .wrap{padding:12px 16px 40px}
+  .panel{border-radius:12px}
+  .panel[style*="padding:18px 22px"],.panel[style*="padding:18px 20px"]{padding:14px 14px!important}
+  .chartbox{padding:14px}
+  .chartbox .ch,.chartbox.tall .ch{height:260px!important}
+  .kpis{grid-template-columns:1fr 1fr;gap:9px}
+  .kpi{padding:11px 12px}.kpi .k-val{font-size:18px!important}.kpi .k-sub{font-size:10.5px}
+  .kpis .kpi:first-child{grid-column:1/-1}
+  .charts{gap:12px}
+  .sectitle{flex-wrap:wrap;gap:6px 10px}
+  .sectitle h2{font-size:15.5px}
+  .sectitle .note{flex-basis:100%;order:3;font-size:11px}
+  .lfilters,.net-ctrl{gap:8px}
+  .lfilters .spacer{display:none}
+  .toggle{font-size:12px;padding:7px 10px}
+  .seg{display:flex;width:100%}
+  .seg button{flex:1;padding:8px 6px;font-size:12.5px}
+  .lcards,.litems,.lmap{grid-template-columns:1fr}
+  .lchip{white-space:normal}
+  .lmap-h,.li-h{flex-wrap:wrap}
+  .findings{grid-template-columns:1fr}
+  table{font-size:12px}
+  tbody td{padding:7px 6px}
+  thead th{font-size:10.5px;padding:8px 6px}
+  .net-levels label{font-size:11px;padding:4px 7px}
+  #net-box{max-height:none;border:none;background:none}
+  #pres-wrap{padding:8px}
+  #pres-stage{aspect-ratio:auto}
+  .slide{height:auto;min-height:70vh;padding:18px 16px 40px}
+  .s-cover{margin:-18px -16px -40px;padding:32px 20px}
+  .s-kpis{flex-direction:column}
+  .s-lin{grid-template-columns:1fr 1fr}
+  .s-chart{min-height:280px}
+  .s-foot{left:16px;right:16px}
+  .pres-ctrl{flex-wrap:wrap;justify-content:center}
+  .foot{padding:18px 16px 30px}
+  .maxbtn{width:28px;height:28px}
+  .panel.maxed{inset:0;border-radius:0}
+}
 /* presentación */
 #pres-wrap{background:var(--navy-900);border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}
 #pres-wrap:fullscreen{justify-content:center;border-radius:0}
@@ -258,10 +332,10 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 <div class="top"><div class="top-in">
   <div class="brandbar"></div>
   <div class="brand"><div class="ta">TRENES ARGENTINOS</div><div class="sub">Operadora Ferroviaria · SOFSA</div></div>
-  <div style="flex:1;text-align:right">
+  <div class="top-title" style="flex:1;text-align:right">
     <h1 style="text-align:right;margin:0">Presupuesto <b>2027</b> · Plurianual 2027–2029 y lineamientos de Presidencia</h1>
-    <div style="font-size:11px;color:var(--ice);margin-top:5px;letter-spacing:.02em">Gerencia General Administrativa · Gerencia de Planificación y Control de Gestión</div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ice);margin-top:3px;letter-spacing:.04em">Expediente <b style="color:var(--gold)">EX-2026-39744235-APN-SG#SOFSE</b></div>
+    <div class="top-sub" style="font-size:11px;color:var(--ice);margin-top:5px;letter-spacing:.02em">Gerencia General Administrativa · Gerencia de Planificación y Control de Gestión</div>
+    <div class="top-exp" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ice);margin-top:3px;letter-spacing:.04em">Expediente <b style="color:var(--gold)">EX-2026-39744235-APN-SG#SOFSE</b></div>
   </div>
 </div></div>
 
@@ -283,11 +357,11 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 </div></div>
 
 <div class="tabs">
-  <div class="tab on new" data-tab="anual">Presupuesto 2027</div>
+  <div class="tab on new" data-tab="red">Red del presupuesto</div>
+  <div class="tab new" data-tab="anual">Presupuesto 2027</div>
   <div class="tab new" data-tab="inc4">Inciso IV · SIFER</div>
   <div class="tab new" data-tab="sub">Ingresos y subsidio</div>
   <div class="tab new" data-tab="lin">Lineamientos Presidencia</div>
-  <div class="tab new" data-tab="red">Red del presupuesto</div>
   <div class="tab new" data-tab="pres">Presentación</div>
   <div class="tab" data-tab="pano">Panorama plurianual</div>
   <div class="tab" data-tab="dim">Resumen por dimensión</div>
@@ -301,7 +375,7 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 <div class="wrap">
   <!-- PANORAMA -->
   <!-- PRESUPUESTO 2027 -->
-  <section id="tab-anual">
+  <section id="tab-anual" class="hidden">
     <div class="kpis" id="an-kpis"></div>
     <div class="concil" id="an-conc"></div>
     <div class="panel" style="padding:18px 22px;margin-bottom:16px">
@@ -450,13 +524,14 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
   </section>
 
   <!-- RED CONCEPTUAL -->
-  <section id="tab-red" class="hidden">
+  <section id="tab-red">
     <div class="panel" style="padding:18px 22px">
       <div class="sectitle"><div class="bar"></div><h2>Red deductiva del presupuesto 2027</h2><span class="note">de lo general a lo particular · clic en un nodo para abrir o cerrar · el grosor de cada conector es proporcional al monto</span></div>
       <div class="net-ctrl">
         <div class="fgroup"><label>Niveles de la cascada (desmarcá para saltear)</label><div class="net-levels" id="net-levels"></div></div>
       </div>
       <div class="net-ctrl">
+        <div class="fgroup"><label>Vista</label><div class="seg" id="net-view"><button data-v="red">Red</button><button data-v="lista">Lista</button></div></div>
         <div class="fgroup"><label>Monto</label><div class="seg" id="net-met"><button data-m="t" class="on">Techo 2027</button><button data-m="req">Requerido</button></div></div>
         <div class="fgroup"><label>Abrir hasta</label><select id="net-depth"></select></div>
         <div class="fgroup"><label>Buscar nodo</label><input class="search" id="net-q" placeholder="área, proyecto, producto… (Enter)" style="min-width:260px"/></div>
@@ -465,7 +540,8 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
         <div class="spacer"></div>
         <span style="font-size:11.5px;color:var(--muted)" id="net-info"></span>
       </div>
-      <div id="net-box"><svg id="net-svg"></svg></div>
+      <div id="net-sel"></div>
+      <div id="net-box"><svg id="net-svg"></svg><div id="net-list"></div></div>
     </div>
     <div id="net-tip"></div>
   </section>
@@ -737,7 +813,7 @@ const CRIT_COLOR = {'Gastos en Personal':'#222C4F','Crítico':'#2E6FA8','Importa
 const FALLBACK = ['#222C4F','#2E6FA8','#E7B860','#AEC6E4','#8A8FA6','#C9974A','#5B7DB1','#D9B98A','#7E91B8','#B0B4C4','#3F5488','#C2603F'];
 
 let state = {inciso:'',rubro:'',crit:'',imp:'',q:'',year:'27',comp:'all',pvdim:'inciso',
-  sort:{key:'v27',dir:-1}, tab:'anual'};
+  sort:{key:'v27',dir:-1}, tab:'red'};
 let charts={};
 
 const uniq=(k)=>[...new Set(DATA.map(d=>d[k]))].sort();
@@ -2731,7 +2807,7 @@ const NET_LEVELS=[
   {k:'proy',lab:'Proyecto',f:r=>r.proy,col:(v,r)=>L_COLOR[r.L]},
   {k:'prod',lab:'Producto',f:r=>r.prod,col:()=>'#8A8FA6'},
 ];
-const NS={on:new Set(NET_LEVELS.map(l=>l.k)),met:'t',open:new Set(['·']),more:{},struct:true,hits:[],hitI:0,hit:null};
+const NS={view:(window.innerWidth<760?'lista':'red'),on:new Set(NET_LEVELS.map(l=>l.k)),met:'t',open:new Set(['·']),more:{},struct:true,hits:[],hitI:0,hit:null};
 let NET_ROOT=null;
 function netBuild(){
   const lv=NET_LEVELS.filter(l=>NS.on.has(l.k));
@@ -2756,9 +2832,41 @@ function netKids(n){
   const rest=arr.slice(lim);
   return [...arr.slice(0,lim),{id:n.id+'›…',more:true,name:`+ ${rest.length} más (${MM(rest.reduce((a,k)=>a+netVal(k),0))})`,depth:n.depth+1,t:rest.reduce((a,k)=>a+k.t,0),req:rest.reduce((a,k)=>a+k.req,0),kids:new Map(),col:'#B0B4C4',parent:n}];
 }
+function netSelInfo(n){
+  const el=document.getElementById('net-sel'); if(!n){el.style.display='none';return;}
+  const path=[];let p=n.parent;while(p){path.unshift(p.name);p=p.parent;}
+  const tot=netVal(NET_ROOT)||1;
+  el.style.display='block';
+  el.innerHTML=`<div class="path">${path.map(esc).join(' › ')}</div><b>${esc(n.name)}</b> · techo ${MM(n.t)} · requerido ${MM(n.req)}${n.req?' · cobertura '+pctTxt(n.t,n.req):''} · ${pctTxt(netVal(n),tot)} del total${n.proy?` · ${n.proy.size} proyectos · ${n.prod.size} productos`:''}`;
+}
+function renderRedList(){
+  const lv=NET_LEVELS.filter(l=>NS.on.has(l.k));
+  const tot=netVal(NET_ROOT)||1; let h=''; const idx=new Map();
+  (function walk(n){
+    idx.set(n.id,n);
+    const v=netVal(n), par=n.parent?netVal(n.parent):v, hasK=!n.more&&n.kids.size>0, open=NS.open.has(n.id);
+    const lvl=n.depth===0?'Presupuesto':(lv[n.depth-1]||{}).lab||'';
+    h+=`<div class="nl-row${NS.hit===n.id?' hit':''}" data-id="${esc(n.id)}" style="--c:${n.col};padding-left:${Math.min(n.depth,7)*12}px">
+      <span class="nl-tog${hasK?'':' leaf'}">${hasK?(open?'−':'+'):''}</span>
+      <div class="nl-main"><div class="nl-lvl">${n.more?'':esc(lvl)}</div><div class="nl-name">${esc(n.name)}</div>
+      ${n.more?'<div class="nl-val">tocá para ver más</div>':`<div class="nl-val">$ ${M(v)} M · ${n.parent?nf1.format((par?v/par:0)*100)+'% del nivel':'100%'}${n.req&&NS.met==='t'?' · cob. '+nf0.format(n.t/n.req*100)+'%':''}</div><div class="nl-bar" style="width:${Math.max(2,Math.min(100,v/tot*100))}%"></div>`}</div></div>`;
+    if(open&&!n.more) netKids(n).forEach(walk);
+  })(NET_ROOT);
+  const box=document.getElementById('net-list'); box.innerHTML=h;
+  box.querySelectorAll('.nl-row').forEach(r=>r.onclick=()=>{const n=idx.get(r.dataset.id);
+    if(n.more){NS.more[n.parent.id]=(NS.more[n.parent.id]||12)+20;}
+    else { if(n.kids.size){NS.open.has(n.id)?netClose(n.id):NS.open.add(n.id);} NS.sel=n.id; }
+    renderRed();});
+}
 function renderRed(){
   const lv=netBuild();
-  const COLW=260, NW=226, NH=40, GAP=10, PADX=16, PADY=34;
+  document.querySelectorAll('#net-view button').forEach(b=>b.classList.toggle('on',b.dataset.v===NS.view));
+  document.getElementById('net-svg').style.display=NS.view==='red'?'':'none';
+  document.getElementById('net-list').style.display=NS.view==='lista'?'block':'none';
+  const findSel=id=>{let res=null;(function w(n){if(n.id===id)res=n;else n.kids.forEach(w);})(NET_ROOT);return res;};
+  netSelInfo(NS.sel?findSel(NS.sel):null);
+  if(NS.view==='lista'){renderRedList();const vc=document.querySelectorAll('#net-list .nl-row').length;document.getElementById('net-info').textContent=`${vc} nodos visibles · ${NS.met==='t'?'techo':'requerido'} total ${MM(netVal(NET_ROOT))}`;return;}
+  const small=window.innerWidth<760; const COLW=small?210:260, NW=small?184:226, NH=40, GAP=10, PADX=small?8:16, PADY=34;
   // layout
   let slot=0; const vis=[];
   (function lay(n){
@@ -2801,7 +2909,7 @@ function renderRed(){
   const tip=document.getElementById('net-tip'), idx=new Map(vis.map(n=>[n.id,n]));
   svg.querySelectorAll('.nnode').forEach(el=>{
     const n=idx.get(el.dataset.id);
-    el.onclick=()=>{ if(n.more){NS.more[n.parent.id]=(NS.more[n.parent.id]||12)+20;} else if(n.kids.size){NS.open.has(n.id)?netClose(n.id):NS.open.add(n.id);} renderRed(); };
+    el.onclick=()=>{ if(n.more){NS.more[n.parent.id]=(NS.more[n.parent.id]||12)+20;} else { if(n.kids.size){NS.open.has(n.id)?netClose(n.id):NS.open.add(n.id);} NS.sel=n.id; } renderRed(); };
     el.onmousemove=e=>{
       const path=[];let p=n;while(p){path.unshift(p.name);p=p.parent;}
       tip.innerHTML=`<div style="color:var(--ice);font-size:10.5px;margin-bottom:4px">${path.map(esc).join(' › ')}</div><b>${esc(n.name)}</b><br>Techo 2027: ${MM(n.t)} · Requerido: ${MM(n.req)}${n.req?' · Cobertura '+pctTxt(n.t,n.req):''}<br>${pctTxt(netVal(n),tot)} del total${n.proy?` · ${n.proy.size} proyectos · ${n.prod.size} productos`:''}`;
@@ -2831,7 +2939,9 @@ function netGo(){
     p=p.parent; }
   renderRed();
   document.getElementById('net-info').textContent=`coincidencia ${NS.hitI%NS.hits.length+1} de ${NS.hits.length}`;
-  const el=document.querySelector(`#net-svg .nnode.hit`), box=document.getElementById('net-box');
+  NS.sel=n.id; renderRed();
+  const el=document.querySelector(NS.view==='red'?'#net-svg .nnode.hit':'#net-list .nl-row.hit'), box=document.getElementById('net-box');
+  if(el&&NS.view==='lista'){el.scrollIntoView({block:'center',behavior:'smooth'});return;}
   if(el){const r=el.getBoundingClientRect(),b=box.getBoundingClientRect();box.scrollTop+=r.top-b.top-b.height/2;box.scrollLeft+=r.left-b.left-b.width/2;}
 }
 function initRed(){
@@ -2846,6 +2956,7 @@ function initRed(){
   fillDepth(); document.getElementById('net-depth').value=2;
   document.getElementById('net-depth').onchange=e=>{netOpenDepth(+e.target.value);renderRed();};
   document.querySelectorAll('#net-met button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#net-met button').forEach(x=>x.classList.remove('on'));b.classList.add('on');NS.met=b.dataset.m;renderRed();});
+  document.querySelectorAll('#net-view button').forEach(b=>b.onclick=()=>{NS.view=b.dataset.v;renderRed();});
   document.getElementById('net-struct').onchange=e=>{NS.struct=e.target.checked;netBuild();renderRed();};
   document.getElementById('net-q').onkeydown=e=>{if(e.key==='Enter'){const q=e.target.value.trim();if(q)netSearch(q);else{NS.hit=null;renderRed();}}};
   document.getElementById('net-next').onclick=()=>{if(NS.hits.length){NS.hitI++;netGo();}else{const q=document.getElementById('net-q').value.trim();if(q)netSearch(q);}};

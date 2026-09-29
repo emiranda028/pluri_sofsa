@@ -7,6 +7,7 @@ Tablero en un único archivo (`index.html`, se abre directo en el navegador o po
 - **Inciso IV · SIFER** — Bienes de Uso por fuente de financiamiento (SIFER = Material Rodante DMU, PosPre 4.3.3.0.1; resto Tesoro), detalle de las DMU y proyectos con filtros, apertura mensual y CSV.
 - **Ingresos y subsidio** — gasto operativo (gastos corrientes − ingresos), subsidio por mes (ingresos / gastos corrientes), subsidio por pasajero pago, ingresos y pasajeros pagos por línea y mes.
 - **Lineamientos Presidencia** — cada proyecto/producto de la formulación clasificado en las 4 premisas de Presidencia (principal + secundarias), con cobertura por premisa, estado de cada compromiso de "Relación con el presupuesto 2027", interdependencia entre premisas, proyectos transversales y un árbol lineamiento › proyecto › producto que se puede exportar a CSV.
+- **Red del presupuesto** — árbol deductivo interactivo: presupuesto → corriente/capital → inciso → emergencia/habitual → área → premisa → proyecto → producto, con niveles configurables, búsqueda y montos por techo o requerido.
 - **Presentación** — slides generadas en vivo con los mismos datos (flechas ← → y pantalla completa).
 - Resto de las pestañas: análisis del plurianual 2027–2029 (sin cambios).
 

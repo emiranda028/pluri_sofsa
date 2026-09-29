@@ -201,6 +201,28 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 .panel.maxed .tablewrap{max-height:none!important}
 .panel.maxed .maxbtn{background:var(--navy);color:#fff;border-color:var(--navy)}
 .s-table td.l{white-space:normal}
+/* red conceptual */
+.net-ctrl{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin-bottom:10px}
+.net-levels{display:flex;flex-wrap:wrap;gap:6px}
+.net-levels label{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--navy-700);background:#F0F2F8;border-radius:7px;padding:5px 9px;cursor:pointer;user-select:none}
+.net-levels label.off{opacity:.45;text-decoration:line-through}
+.net-levels input{margin:0}
+.fgroup .net-levels label{text-transform:none;letter-spacing:0;font-size:12px}
+.net-levels .arrow{color:var(--muted);font-size:11px;align-self:center}
+#net-box{overflow:auto;max-height:78vh;border:1px solid var(--line);border-radius:12px;background:linear-gradient(90deg,#FAFBFD 0,#fff 100%)}
+.panel.maxed #net-box{max-height:calc(100vh - 190px)}
+#net-svg text{font-family:'IBM Plex Sans',sans-serif}
+.nnode{cursor:pointer}
+.nnode rect.bg{fill:#fff;stroke:#DCE1EC;stroke-width:1}
+.nnode:hover rect.bg{stroke:var(--blue);stroke-width:1.5}
+.nnode.hit rect.bg{stroke:#C25A3C;stroke-width:2.5}
+.nnode .nm{font-size:11.5px;font-weight:600;fill:#23252E}
+.nnode .vl{font-size:10.5px;fill:#71748A;font-family:'IBM Plex Mono',monospace}
+.nnode .tg{font-size:10px;font-weight:700}
+.nlink{fill:none;stroke-opacity:.28}
+.net-head text{font-size:10px;font-weight:700;letter-spacing:.08em;fill:#71748A;text-transform:uppercase}
+#net-tip{position:fixed;pointer-events:none;background:var(--navy-900);color:#fff;border-radius:9px;padding:9px 12px;font-size:12px;line-height:1.45;max-width:380px;z-index:600;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none}
+#net-tip b{color:var(--gold)}
 /* presentación */
 #pres-wrap{background:var(--navy-900);border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}
 #pres-wrap:fullscreen{justify-content:center;border-radius:0}
@@ -265,6 +287,7 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
   <div class="tab new" data-tab="inc4">Inciso IV · SIFER</div>
   <div class="tab new" data-tab="sub">Ingresos y subsidio</div>
   <div class="tab new" data-tab="lin">Lineamientos Presidencia</div>
+  <div class="tab new" data-tab="red">Red del presupuesto</div>
   <div class="tab new" data-tab="pres">Presentación</div>
   <div class="tab" data-tab="pano">Panorama plurianual</div>
   <div class="tab" data-tab="dim">Resumen por dimensión</div>
@@ -424,6 +447,27 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
       <div class="sectitle"><div class="bar"></div><h2>Pasajeros pagos por línea y mes</h2><span class="note">millones de pasajeros · AMBA + resto agrupado</span></div>
       <div class="ch" style="height:340px"><canvas id="ch-sb-ppt"></canvas></div>
     </div>
+  </section>
+
+  <!-- RED CONCEPTUAL -->
+  <section id="tab-red" class="hidden">
+    <div class="panel" style="padding:18px 22px">
+      <div class="sectitle"><div class="bar"></div><h2>Red deductiva del presupuesto 2027</h2><span class="note">de lo general a lo particular · clic en un nodo para abrir o cerrar · el grosor de cada conector es proporcional al monto</span></div>
+      <div class="net-ctrl">
+        <div class="fgroup"><label>Niveles de la cascada (desmarcá para saltear)</label><div class="net-levels" id="net-levels"></div></div>
+      </div>
+      <div class="net-ctrl">
+        <div class="fgroup"><label>Monto</label><div class="seg" id="net-met"><button data-m="t" class="on">Techo 2027</button><button data-m="req">Requerido</button></div></div>
+        <div class="fgroup"><label>Abrir hasta</label><select id="net-depth"></select></div>
+        <div class="fgroup"><label>Buscar nodo</label><input class="search" id="net-q" placeholder="área, proyecto, producto… (Enter)" style="min-width:260px"/></div>
+        <button class="btn" id="net-next" style="padding:8px 12px">Siguiente ›</button>
+        <label class="toggle"><input type="checkbox" id="net-struct" checked/> Incluir Personal e Impuestos</label>
+        <div class="spacer"></div>
+        <span style="font-size:11.5px;color:var(--muted)" id="net-info"></span>
+      </div>
+      <div id="net-box"><svg id="net-svg"></svg></div>
+    </div>
+    <div id="net-tip"></div>
   </section>
 
   <!-- LINEAMIENTOS -->
@@ -1088,6 +1132,7 @@ function refresh(){
   if(state.tab==='esc')renderEscenario(rows);
   if(state.tab==='anual')renderAnual();
   if(state.tab==='lin')renderLin();
+  if(state.tab==='red')renderRed();
   if(state.tab==='inc4')renderInc4();
   if(state.tab==='sub')renderSub();
   if(state.tab==='pres')renderPres();
@@ -1859,8 +1904,8 @@ document.getElementById('btn-reset').onclick=()=>{
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
   state.tab=t.dataset.tab;
-  ['anual','inc4','sub','lin','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
-  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','inc4','sub','lin','pres'].includes(state.tab));
+  ['anual','inc4','sub','lin','red','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
+  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','inc4','sub','lin','red','pres'].includes(state.tab));
   refresh();});
 
 document.getElementById('btn-csv').onclick=()=>{
@@ -2672,6 +2717,141 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){const p=document.qu
 new MutationObserver(()=>{clearTimeout(window.__mxT);window.__mxT=setTimeout(addMaxButtons,50);}).observe(document.querySelector('.wrap'),{childList:true,subtree:true});
 document.addEventListener('DOMContentLoaded',addMaxButtons);
 
+
+// =====================================================================
+//  PESTAÑA: RED DEDUCTIVA DEL PRESUPUESTO
+// =====================================================================
+const CEGE_NAME = Object.fromEntries(ANUAL.ceges.map(c=>[c.cod,c.nombre]));
+const NET_LEVELS=[
+  {k:'tipo',lab:'Tipo de gasto',f:r=>r.inc==='4. Bienes de Uso'?'Gastos de capital':'Gastos corrientes',col:v=>v==='Gastos de capital'?'#C9974A':'#2E6FA8'},
+  {k:'inc',lab:'Inciso',f:r=>r.inc,col:v=>({'2. Bienes de Consumo':'#7FA3D0'}[v]||INC_COLOR[v]||'#8A8FA6')},
+  {k:'efgh',lab:'Emergencia / Habitual',f:r=>r.efgh==='EF'?'Emergencia Ferroviaria':'Gasto Habitual',col:v=>v==='Emergencia Ferroviaria'?'#C25A3C':'#2E8B72'},
+  {k:'area',lab:'Área (centro gestor)',f:r=>CEGE_NAME[r.cod]||r.cege||'(sin área)',col:()=>'#5B6B8C'},
+  {k:'L',lab:'Premisa',f:r=>r.L,name:v=>v.replace('L','Premisa ')+' · '+LIN[v].corto,col:v=>L_COLOR[v]},
+  {k:'proy',lab:'Proyecto',f:r=>r.proy,col:(v,r)=>L_COLOR[r.L]},
+  {k:'prod',lab:'Producto',f:r=>r.prod,col:()=>'#8A8FA6'},
+];
+const NS={on:new Set(NET_LEVELS.map(l=>l.k)),met:'t',open:new Set(['·']),more:{},struct:true,hits:[],hitI:0,hit:null};
+let NET_ROOT=null;
+function netBuild(){
+  const lv=NET_LEVELS.filter(l=>NS.on.has(l.k));
+  const rows=AL.filter(r=>NS.struct||!isStruct(r));
+  const root={id:'·',name:'Presupuesto 2027',depth:0,t:0,req:0,kids:new Map(),col:'#222C4F',lines:[]};
+  rows.forEach(r=>{
+    root.t+=r.t;root.req+=r.req;
+    let node=root;
+    lv.forEach((l,i)=>{
+      const key=l.f(r); const id=node.id+'›'+key;
+      if(!node.kids.has(key))node.kids.set(key,{id,key,name:l.name?l.name(key):key,depth:i+1,level:l,t:0,req:0,kids:new Map(),col:l.col(key,r),parent:node,proy:new Set(),prod:new Set()});
+      node=node.kids.get(key); node.t+=r.t; node.req+=r.req; node.proy.add(r.cege+'|'+r.proy); node.prod.add(r.cege+'|'+r.proy+'|'+r.prod);
+    });
+  });
+  NET_ROOT=root; return lv;
+}
+function netVal(n){return NS.met==='t'?n.t:n.req;}
+function netKids(n){
+  const arr=[...n.kids.values()].filter(k=>netVal(k)>0||k.t>0||k.req>0).sort((a,b)=>netVal(b)-netVal(a));
+  const lim=NS.more[n.id]||12;
+  if(arr.length<=lim)return arr;
+  const rest=arr.slice(lim);
+  return [...arr.slice(0,lim),{id:n.id+'›…',more:true,name:`+ ${rest.length} más (${MM(rest.reduce((a,k)=>a+netVal(k),0))})`,depth:n.depth+1,t:rest.reduce((a,k)=>a+k.t,0),req:rest.reduce((a,k)=>a+k.req,0),kids:new Map(),col:'#B0B4C4',parent:n}];
+}
+function renderRed(){
+  const lv=netBuild();
+  const COLW=260, NW=226, NH=40, GAP=10, PADX=16, PADY=34;
+  // layout
+  let slot=0; const vis=[];
+  (function lay(n){
+    n._kids = NS.open.has(n.id)&&!n.more ? netKids(n) : [];
+    vis.push(n);
+    if(n._kids.length){ n._kids.forEach(lay); n._y=(n._kids[0]._y+n._kids[n._kids.length-1]._y)/2; }
+    else { n._y=slot*(NH+GAP); slot++; }
+  })(NET_ROOT);
+  const depthMax=Math.max(...vis.map(n=>n.depth));
+  const W=PADX*2+(depthMax)*COLW+NW, H=PADY+slot*(NH+GAP)+10;
+  const tot=netVal(NET_ROOT)||1;
+  const x=n=>PADX+n.depth*COLW, y=n=>PADY+n._y;
+  let g='';
+  // encabezados de nivel
+  g+='<g class="net-head">'+['Presupuesto',...lv.map(l=>l.lab)].slice(0,depthMax+1).map((t,i)=>`<text x="${PADX+i*COLW+4}" y="18">${esc(t)}</text>`).join('')+'</g>';
+  // conectores
+  vis.forEach(n=>n._kids.forEach(k=>{
+    const w=Math.max(1.5,Math.min(30,netVal(k)/tot*60));
+    const x1=x(n)+NW, y1=y(n)+NH/2, x2=x(k), y2=y(k)+NH/2, mx=(x1+x2)/2;
+    g+=`<path class="nlink" d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="${k.col}" stroke-width="${w}"/>`;
+  }));
+  // nodos
+  vis.forEach(n=>{
+    const v=netVal(n), par=n.parent?netVal(n.parent):v, pct=par?v/par:1, cov=n.req?n.t/n.req:null;
+    const hasK=!n.more&&n.kids.size>0, open=NS.open.has(n.id);
+    const lim=n.name===n.name.toUpperCase()?27:34; const nm=n.name.length>lim?n.name.slice(0,lim-1)+'…':n.name;
+    const bw=Math.max(2,(NW-12)*Math.min(1,v/tot));
+    g+=`<g class="nnode${NS.hit===n.id?' hit':''}" data-id="${esc(n.id)}" transform="translate(${x(n)},${y(n)})">
+      <rect class="bg" width="${NW}" height="${NH}" rx="8"/>
+      <rect x="0" y="0" width="5" height="${NH}" rx="2" fill="${n.col}"/>
+      <rect x="10" y="${NH-5}" width="${bw}" height="3" rx="1.5" fill="${n.col}" opacity=".55"/>
+      <text class="nm" x="12" y="16">${esc(nm)}</text>
+      <text class="vl" x="12" y="30">${n.more?'clic para ver más':(M(v)+' M · '+(n.parent?nf1.format(pct*100)+'% del nivel':'100%')+(cov!==null&&NS.met==='t'?' · cob. '+nf0.format(cov*100)+'%':''))}</text>
+      ${hasK?`<circle cx="${NW}" cy="${NH/2}" r="8" fill="#fff" stroke="${n.col}"/><text class="tg" x="${NW}" y="${NH/2+3.5}" text-anchor="middle" fill="${n.col}">${open?'−':'+'}</text>`:''}
+    </g>`;
+  });
+  const svg=document.getElementById('net-svg');
+  svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=g;
+  document.getElementById('net-info').textContent=`${vis.length} nodos visibles · ${NS.met==='t'?'techo':'requerido'} total ${MM(tot)}`;
+  const tip=document.getElementById('net-tip'), idx=new Map(vis.map(n=>[n.id,n]));
+  svg.querySelectorAll('.nnode').forEach(el=>{
+    const n=idx.get(el.dataset.id);
+    el.onclick=()=>{ if(n.more){NS.more[n.parent.id]=(NS.more[n.parent.id]||12)+20;} else if(n.kids.size){NS.open.has(n.id)?netClose(n.id):NS.open.add(n.id);} renderRed(); };
+    el.onmousemove=e=>{
+      const path=[];let p=n;while(p){path.unshift(p.name);p=p.parent;}
+      tip.innerHTML=`<div style="color:var(--ice);font-size:10.5px;margin-bottom:4px">${path.map(esc).join(' › ')}</div><b>${esc(n.name)}</b><br>Techo 2027: ${MM(n.t)} · Requerido: ${MM(n.req)}${n.req?' · Cobertura '+pctTxt(n.t,n.req):''}<br>${pctTxt(netVal(n),tot)} del total${n.proy?` · ${n.proy.size} proyectos · ${n.prod.size} productos`:''}`;
+      tip.style.display='block'; const tx=Math.min(e.clientX+14,window.innerWidth-400); tip.style.left=tx+'px'; tip.style.top=(e.clientY+14)+'px';};
+    el.onmouseleave=()=>tip.style.display='none';
+  });
+}
+function netClose(id){ [...NS.open].forEach(o=>{ if(o===id||o.startsWith(id+'›'))NS.open.delete(o); }); }
+function netOpenDepth(d){
+  NS.open=new Set(); NS.more={};
+  (function walk(n){ if(n.depth<d){ NS.open.add(n.id); n.kids.forEach(walk);} })(NET_ROOT);
+}
+function netSearch(q){
+  q=q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const hits=[];
+  (function walk(n){ n.kids.forEach(k=>{ if(k.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q))hits.push(k); walk(k); }); })(NET_ROOT);
+  hits.sort((a,b)=>a.depth-b.depth||netVal(b)-netVal(a));
+  NS.hits=hits; NS.hitI=0; netGo();
+}
+function netGo(){
+  if(!NS.hits.length){NS.hit=null;document.getElementById('net-info').textContent='Sin coincidencias';renderRed();return;}
+  const n=NS.hits[NS.hitI%NS.hits.length]; NS.hit=n.id;
+  let p=n.parent; while(p){ NS.open.add(p.id);
+    // asegurar que el hijo buscado entre en el límite visible
+    const arr=[...p.kids.values()].sort((a,b)=>netVal(b)-netVal(a)); const c=n.id.startsWith(p.id+'›')?arr.findIndex(k=>n.id===k.id||n.id.startsWith(k.id+'›')):-1;
+    if(c>=(NS.more[p.id]||12))NS.more[p.id]=c+1;
+    p=p.parent; }
+  renderRed();
+  document.getElementById('net-info').textContent=`coincidencia ${NS.hitI%NS.hits.length+1} de ${NS.hits.length}`;
+  const el=document.querySelector(`#net-svg .nnode.hit`), box=document.getElementById('net-box');
+  if(el){const r=el.getBoundingClientRect(),b=box.getBoundingClientRect();box.scrollTop+=r.top-b.top-b.height/2;box.scrollLeft+=r.left-b.left-b.width/2;}
+}
+function initRed(){
+  const box=document.getElementById('net-levels');
+  box.innerHTML='<label style="background:#222C4F;color:#fff">Presupuesto</label>'+NET_LEVELS.map(l=>`<span class="arrow">›</span><label data-k="${l.k}"><input type="checkbox" checked/> ${l.lab}</label>`).join('');
+  box.querySelectorAll('label[data-k] input').forEach(inp=>inp.onchange=()=>{const k=inp.parentElement.dataset.k;
+    if(!inp.checked&&NS.on.size<=1){inp.checked=true;return;}
+    inp.checked?NS.on.add(k):NS.on.delete(k); inp.parentElement.classList.toggle('off',!inp.checked);
+    netBuild(); const d=+document.getElementById('net-depth').value||2; fillDepth(); netOpenDepth(Math.min(d,NS.on.size)); renderRed();});
+  function fillDepth(){const sel=document.getElementById('net-depth');const cur=+sel.value||2;const lv=NET_LEVELS.filter(l=>NS.on.has(l.k));
+    sel.innerHTML=lv.map((l,i)=>`<option value="${i+1}">${i+1} · ${l.lab}</option>`).join('');sel.value=Math.min(cur,lv.length);}
+  fillDepth(); document.getElementById('net-depth').value=2;
+  document.getElementById('net-depth').onchange=e=>{netOpenDepth(+e.target.value);renderRed();};
+  document.querySelectorAll('#net-met button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#net-met button').forEach(x=>x.classList.remove('on'));b.classList.add('on');NS.met=b.dataset.m;renderRed();});
+  document.getElementById('net-struct').onchange=e=>{NS.struct=e.target.checked;netBuild();renderRed();};
+  document.getElementById('net-q').onkeydown=e=>{if(e.key==='Enter'){const q=e.target.value.trim();if(q)netSearch(q);else{NS.hit=null;renderRed();}}};
+  document.getElementById('net-next').onclick=()=>{if(NS.hits.length){NS.hitI++;netGo();}else{const q=document.getElementById('net-q').value.trim();if(q)netSearch(q);}};
+  netBuild(); netOpenDepth(2);
+}
+
 // ---------- wiring ----------
 (function initAnual(){
   const fs=(id,vals,lab)=>{const s=document.getElementById(id);s.innerHTML=`<option value="">${lab} (todos)</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');};
@@ -2694,6 +2874,7 @@ document.addEventListener('DOMContentLoaded',addMaxButtons);
   document.getElementById('ppf-clear').onclick=()=>{Object.assign(PPF,{inc:'',rub:'',cri:'',L:'',efgh:'',fin:'',cero:false});['ppf-inc','ppf-rub','ppf-cri','ppf-L','ppf-efgh','ppf-fin','an-pp-q'].forEach(i=>document.getElementById(i).value='');document.getElementById('ppf-cero').checked=false;renderPosPres();};
   document.getElementById('ppf-csv').onclick=exportPPCSV;
   initInc4(fs);
+  initRed();
   document.getElementById('cgf-q').oninput=e=>{CGF.q=e.target.value;renderCeges();};
   document.getElementById('cgf-tipo').onchange=e=>{CGF.tipo=e.target.value;renderCeges();};
   document.getElementById('cgf-neg').onchange=e=>{CGF.neg=e.target.checked;renderCeges();};

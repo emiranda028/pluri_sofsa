@@ -256,6 +256,21 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 .nl-bar{height:3px;border-radius:2px;background:var(--c);opacity:.55;margin-top:4px}
 .charts>*,.lmap>*,.litems>*,.lcards>*,.kpis>*,.s-lin>*{min-width:0}
 .lmap-pn,.nl-name{overflow-wrap:anywhere}
+/* mensualizado */
+.mtab td,.mtab th{font-size:12.5px;padding:7px 8px}
+.mtab td.l:first-child,.mtab th.l:first-child{position:sticky;left:0;background:inherit;z-index:1}
+.mtab thead th.l:first-child{background:var(--navy);z-index:3}
+.mtab tbody tr{background:#fff}
+.mtab tr.m-comp td{background:#222C4F;color:#fff;font-weight:700}
+.mtab tr.m-inc td{background:#EEF1F8;font-weight:700;color:var(--navy)}
+.mtab td.l .pp{margin-right:8px}
+.mtab tr.m-sub td{color:var(--muted)}
+.mtab td.tot{font-weight:700;background:#FAFBFD}
+.mtab tr.total td.tot{background:var(--navy)}
+.mtab tbody td.l:first-child{background:#fff}
+.mtab tbody tr.m-comp td.l:first-child{background:#222C4F;color:#fff}
+.mtab tbody tr.m-inc td.l:first-child{background:#EEF1F8}
+.mtab tbody tr.total td.l:first-child{background:var(--navy);color:#fff}
 /* ===== nitidez y legibilidad ===== */
 .sectitle h2{font-size:19px}
 .sectitle .note{font-size:12.5px;color:#5C6073}
@@ -399,6 +414,7 @@ table.compact td{font-size:13px}
 <div class="tabs">
   <div class="tab on new" data-tab="red">Red del presupuesto</div>
   <div class="tab new" data-tab="anual">Presupuesto 2027</div>
+  <div class="tab new" data-tab="mens">Mensualizado</div>
   <div class="tab new" data-tab="hist">Histórico y ejecución</div>
   <div class="tab new" data-tab="inc4">Inciso IV · SIFER</div>
   <div class="tab new" data-tab="sub">Ingresos y subsidio</div>
@@ -486,6 +502,25 @@ table.compact td{font-size:13px}
       </div>
       <div style="font-size:11px;color:var(--muted);margin:-4px 0 8px" id="ppf-note"></div>
       <div class="tablewrap" style="max-height:75vh"><table id="an-pp"></table></div>
+    </div>
+  </section>
+
+  <!-- MENSUALIZADO -->
+  <section id="tab-mens" class="hidden">
+    <div class="kpis" id="me-kpis"></div>
+    <div class="panel" style="padding:18px 22px">
+      <div class="sectitle"><div class="bar"></div><h2>Presupuesto 2027 mensualizado por inciso y PosPre</h2><span class="note">techo 2027 · Gasto Habitual y Emergencia Ferroviaria</span></div>
+      <div class="lfilters">
+        <div class="fgroup"><label>Agrupar por</label><div class="seg" id="mef-grp"><button data-g="comp" class="on">Componente › Inciso › PosPre</button><button data-g="inc">Inciso › PosPre › Componente</button></div></div>
+        <div class="fgroup"><label>Componente</label><select id="mef-comp"><option value="">Ambos</option><option value="GH">Gasto Habitual</option><option value="EF">Emergencia Ferroviaria</option></select></div>
+        <div class="fgroup"><label>Inciso</label><select id="mef-inc"></select></div>
+        <div class="fgroup"><label>Unidad</label><div class="seg" id="mef-unit"><button data-u="M" class="on">Millones de $</button><button data-u="P">Pesos</button></div></div>
+        <div class="fgroup"><label>Buscar PosPre</label><input class="search" id="mef-q" placeholder="código o descripción"/></div>
+        <div class="spacer"></div>
+        <button class="btn gold" id="mef-xlsx" style="padding:9px 16px">⬇ Exportar Excel (.xlsx)</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin:-2px 0 10px">El Excel incluye: hoja <b>Resumen</b> (inciso × componente por mes), hojas <b>Gasto Habitual</b>, <b>Emergencia Ferroviaria</b> y <b>Total</b> (PosPre por mes con subtotales por inciso) y hoja <b>Base</b> (formato tabla, lista para tablas dinámicas). Montos en pesos. Respeta los filtros de inciso y búsqueda.</div>
+      <div class="tablewrap" style="max-height:78vh"><table id="me-table" class="mtab"></table></div>
     </div>
   </section>
 
@@ -1307,6 +1342,7 @@ function refresh(){
   if(state.tab==='red')renderRed();
   if(state.tab==='inc4')renderInc4();
   if(state.tab==='hist')renderHist();
+  if(state.tab==='mens')renderMens();
   if(state.tab==='sub')renderSub();
   if(state.tab==='pres')renderPres();
 }
@@ -2077,8 +2113,8 @@ document.getElementById('btn-reset').onclick=()=>{
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
   state.tab=t.dataset.tab;
-  ['anual','hist','inc4','sub','lin','red','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
-  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','hist','inc4','sub','lin','red','pres'].includes(state.tab));
+  ['anual','mens','hist','inc4','sub','lin','red','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
+  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','mens','hist','inc4','sub','lin','red','pres'].includes(state.tab));
   refresh();});
 
 document.getElementById('btn-csv').onclick=()=>{
@@ -3222,6 +3258,188 @@ function drawHist(){
     options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}},tooltip:{mode:'index',callbacks:{label:c=>' '+c.dataset.label+': $ '+nf0.format(c.raw)+' M'}}},scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:v=>nf0.format(v)}}}}});
 }
 
+
+// =====================================================================
+//  PESTAÑA: MENSUALIZADO (inciso · PosPre · GH/EF) + EXPORTACIÓN XLSX
+// =====================================================================
+const MEF={grp:'comp',comp:'',inc:'',unit:'M',q:''};
+const COMP_LAB={GH:'Gasto Habitual',EF:'Emergencia Ferroviaria'};
+function meRows(){
+  const q=MEF.q.toLowerCase();
+  return AL.filter(r=>(!MEF.comp||r.efgh===MEF.comp)&&(!MEF.inc||r.inc===MEF.inc)&&(!q||(r.pp+' '+r.ppd).toLowerCase().includes(q)));
+}
+function meAgg(rows){ // Map comp -> inc -> pp -> {desc,m[12]}
+  const out={};
+  rows.forEach(r=>{const c=out[r.efgh]??={}; const i=c[r.inc]??={}; const p=i[r.pp]??={pp:r.pp,desc:r.ppd,m:Array(12).fill(0)}; r.m.forEach((v,k)=>p.m[k]+=v);});
+  return out;
+}
+const mSum=(arrs)=>{const t=Array(12).fill(0);arrs.forEach(a=>a.forEach((v,i)=>t[i]+=v));return t;};
+const ppSort=(a,b)=>a.pp.localeCompare(b.pp,undefined,{numeric:true});
+function meTree(rows){ // estructura común para pantalla y Excel
+  const A=meAgg(rows), comps=['GH','EF'].filter(c=>A[c]);
+  const incs=INC_ORDER.filter(i=>comps.some(c=>A[c][i]));
+  const blocks=[];
+  if(MEF.grp==='comp'){
+    comps.forEach(c=>{const ib=incs.filter(i=>A[c][i]).map(i=>{const pps=Object.values(A[c][i]).sort(ppSort);return {inc:i,pps:pps.map(p=>({pp:p.pp,desc:p.desc,comp:c,m:p.m})),m:mSum(pps.map(p=>p.m))};});
+      blocks.push({label:COMP_LAB[c],comp:c,incs:ib,m:mSum(ib.map(x=>x.m))});});
+  } else {
+    incs.forEach(i=>{const ppm=new Map();comps.forEach(c=>Object.values(A[c][i]||{}).forEach(p=>{if(!ppm.has(p.pp))ppm.set(p.pp,{pp:p.pp,desc:p.desc,parts:[]});ppm.get(p.pp).parts.push({comp:c,m:p.m});}));
+      const pps=[...ppm.values()].sort(ppSort).map(p=>({pp:p.pp,desc:p.desc,parts:p.parts,m:mSum(p.parts.map(x=>x.m))}));
+      blocks.push({label:i,inc:i,pps,m:mSum(pps.map(p=>p.m))});});
+  }
+  return {blocks,m:mSum(blocks.map(b=>b.m))};
+}
+function renderMens(){
+  const rows=meRows(), T=meTree(rows);
+  const f=v=>MEF.unit==='M'?nf1.format(v/1e6):nf0.format(Math.round(v));
+  const tdm=(m,cls='')=>m.map(v=>`<td class="mono ${cls}">${v?f(v):'—'}</td>`).join('')+`<td class="mono tot">${f(m.reduce((a,b)=>a+b,0))}</td>`;
+  let h=`<thead><tr><th class="l">${MEF.grp==='comp'?'Componente › Inciso › PosPre':'Inciso › PosPre › Componente'}</th>${MES.map(m=>`<th>${m}</th>`).join('')}<th>Total 2027</th></tr></thead><tbody>`;
+  if(MEF.grp==='comp'){
+    T.blocks.forEach(b=>{h+=`<tr class="m-comp"><td class="l">${b.label}</td>${tdm(b.m)}</tr>`;
+      b.incs.forEach(x=>{h+=`<tr class="m-inc"><td class="l" style="padding-left:18px">${x.inc}</td>${tdm(x.m)}</tr>`;
+        x.pps.forEach(p=>{h+=`<tr class="m-pp"><td class="l" style="padding-left:34px"><span class="pp">${esc(p.pp)}</span>${esc(p.desc)}</td>${tdm(p.m)}</tr>`;});});});
+  } else {
+    T.blocks.forEach(b=>{h+=`<tr class="m-comp"><td class="l">${b.label}</td>${tdm(b.m)}</tr>`;
+      b.pps.forEach(p=>{const one=p.parts.length===1?`<span class="tag ${p.parts[0].comp==='EF'?'baja':'alta'}" style="margin-left:8px">${p.parts[0].comp==='EF'?'EF':'GH'}</span>`:'';
+        h+=`<tr class="m-inc"><td class="l" style="padding-left:18px"><span class="pp">${esc(p.pp)}</span>${esc(p.desc)}${one}</td>${tdm(p.m)}</tr>`;
+        if(p.parts.length>1) p.parts.forEach(x=>{h+=`<tr class="m-sub"><td class="l" style="padding-left:40px">${COMP_LAB[x.comp]}</td>${tdm(x.m)}</tr>`;});});});
+  }
+  h+=`<tr class="total"><td class="l">TOTAL${MEF.comp?' · '+COMP_LAB[MEF.comp]:''}</td>${tdm(T.m).replace(/class="mono tot"/,'class="mono tot gold"')}</tr></tbody>`;
+  document.getElementById('me-table').innerHTML=h;
+  // KPIs
+  const gh=AL.filter(r=>r.efgh==='GH'), ef=AL.filter(r=>r.efgh==='EF'), all=AL;
+  const mt=mSum(all.map(r=>r.m)), mx=Math.max(...mt), imx=mt.indexOf(mx);
+  document.getElementById('me-kpis').innerHTML=`
+   <div class="kpi navy"><div class="k-lab">Total 2027</div><div class="k-val" style="font-size:22px">${MM(aSum(all,'t'))}</div><div class="k-sub">promedio mensual ${MM(aSum(all,'t')/12)}</div></div>
+   <div class="kpi"><div class="k-lab">Gasto Habitual</div><div class="k-val" style="font-size:22px">${MM(aSum(gh,'t'))}</div><div class="k-sub">${pctTxt(aSum(gh,'t'),aSum(all,'t'))} del total · ${new Set(gh.map(r=>r.pp)).size} PosPres</div></div>
+   <div class="kpi"><div class="k-lab">Emergencia Ferroviaria</div><div class="k-val" style="font-size:22px">${MM(aSum(ef,'t'))}</div><div class="k-sub">${pctTxt(aSum(ef,'t'),aSum(all,'t'))} del total · ${new Set(ef.map(r=>r.pp)).size} PosPres</div></div>
+   <div class="kpi"><div class="k-lab">Mes de mayor cuota</div><div class="k-val" style="font-size:22px">${MES[imx]} · ${MM(mx)}</div><div class="k-sub">${pctTxt(mx,aSum(all,'t')/12)} del promedio mensual (SAC)</div></div>
+   <div class="kpi"><div class="k-lab">Selección actual</div><div class="k-val" style="font-size:22px">${MM(T.m.reduce((a,b)=>a+b,0))}</div><div class="k-sub">${rows.length} registros · ${new Set(rows.map(r=>r.pp)).size} PosPres</div></div>`;
+}
+
+// ---------- generador XLSX mínimo (OOXML + ZIP sin compresión) ----------
+const XLSX_MINI=(()=>{
+  const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+  const crc32=b=>{let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC[(c^b[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;};
+  const enc=new TextEncoder();
+  function zip(files){ // files: [{name, data(string)}]
+    const parts=[],central=[];let off=0;
+    const u16=v=>[v&255,(v>>>8)&255], u32=v=>[v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255];
+    files.forEach(f=>{const nm=enc.encode(f.name),d=enc.encode(f.data),c=crc32(d);
+      const lh=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(d.length),...u32(d.length),...u16(nm.length),...u16(0)]);
+      parts.push(lh,nm,d);
+      central.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(d.length),...u32(d.length),...u16(nm.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nm);
+      off+=lh.length+nm.length+d.length;});
+    const csz=central.reduce((a,b)=>a+b.length,0);
+    const end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(csz),...u32(off),...u16(0)]);
+    return new Blob([...parts,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  }
+  const x=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const col=n=>{let s='';n++;while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26);}return s;};
+  // estilos: 0 normal · 1 encabezado · 2 número · 3 texto grupo1 · 4 número grupo1 · 5 texto grupo2 · 6 número grupo2 · 7 título · 8 texto total · 9 número total · 10 nota
+  const STY=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<numFmts count="1"><numFmt numFmtId="164" formatCode="#,##0"/></numFmts>
+<fonts count="5"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FF222C4F"/><name val="Arial"/></font><font><b/><sz val="14"/><color rgb="FF222C4F"/><name val="Arial"/></font><font><i/><sz val="9"/><color rgb="FF5C6073"/><name val="Arial"/></font></fonts>
+<fills count="6"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF222C4F"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFDCE3F0"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF0F2F8"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE7B860"/></patternFill></fill></fills>
+<borders count="2"><border/><border><bottom style="thin"><color rgb="FFE5E8F0"/></bottom></border></borders>
+<cellStyleXfs count="1"><xf/></cellStyleXfs>
+<cellXfs count="11"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+<xf fontId="1" fillId="2" applyFont="1" applyFill="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+<xf numFmtId="164" borderId="1" applyNumberFormat="1" applyBorder="1"/>
+<xf fontId="2" fillId="3" applyFont="1" applyFill="1"/>
+<xf numFmtId="164" fontId="2" fillId="3" applyNumberFormat="1" applyFont="1" applyFill="1"/>
+<xf fontId="2" fillId="4" applyFont="1" applyFill="1"/>
+<xf numFmtId="164" fontId="2" fillId="4" applyNumberFormat="1" applyFont="1" applyFill="1"/>
+<xf fontId="3" applyFont="1"/>
+<xf fontId="2" fillId="5" applyFont="1" applyFill="1"/>
+<xf numFmtId="164" fontId="2" fillId="5" applyNumberFormat="1" applyFont="1" applyFill="1"/>
+<xf fontId="4" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles><dxfs count="0"/><tableStyles count="0"/></styleSheet>`;
+  function sheet(rows,opts={}){ // rows: [[{v,s}|value,...]]
+    let d=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">`;
+    if(opts.freezeRow){const fc=opts.freezeCol||0;d+=`<sheetViews><sheetView workbookViewId="0"><pane ${fc?`xSplit="${fc}" `:''}ySplit="${opts.freezeRow}" topLeftCell="${col(fc)}${opts.freezeRow+1}" activePane="bottomRight" state="frozen"/></sheetView></sheetViews>`;}
+    if(opts.widths)d+='<cols>'+opts.widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols>';
+    d+='<sheetData>';
+    rows.forEach((r,ri)=>{d+=`<row r="${ri+1}"${opts.hdrRow===ri+1?' ht="30" customHeight="1"':''}>`;
+      r.forEach((c,ci)=>{if(c==null)return;const o=typeof c==='object'?c:{v:c};const ref=col(ci)+(ri+1);const st=o.s?` s="${o.s}"`:'';
+        if(typeof o.v==='number'&&isFinite(o.v))d+=`<c r="${ref}"${st}><v>${Math.round(o.v*100)/100}</v></c>`;
+        else if(o.v!==''&&o.v!=null)d+=`<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${x(o.v)}</t></is></c>`;
+        else if(o.s)d+=`<c r="${ref}"${st}/>`;});
+      d+='</row>';});
+    d+='</sheetData>';
+    if(opts.autoFilter)d+=`<autoFilter ref="${opts.autoFilter}"/>`;
+    return d+'</worksheet>';
+  }
+  function book(sheets){ // [{name, xml}]
+    const files=[
+      {name:'[Content_Types].xml',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`},
+      {name:'_rels/.rels',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`},
+      {name:'xl/workbook.xml',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((sh,i)=>`<sheet name="${x(sh.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets>${sheets.some(s=>s.filterRef)?'<definedNames>'+sheets.map((s,i)=>s.filterRef?`<definedName name="_xlnm._FilterDatabase" localSheetId="${i}" hidden="1">'${x(s.name)}'!${s.filterRef.replace(/([A-Z]+)(\d+)/g,'$$$1$$$2')}</definedName>`:'').join('')+'</definedNames>':''}</workbook>`},
+      {name:'xl/_rels/workbook.xml.rels',data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`},
+      {name:'xl/styles.xml',data:STY},
+      ...sheets.map((sh,i)=>({name:`xl/worksheets/sheet${i+1}.xml`,data:sh.xml}))];
+    return zip(files);
+  }
+  return {sheet,book,col};
+})();
+
+function exportMensXLSX(){
+  const base=AL.filter(r=>(!MEF.inc||r.inc===MEF.inc)&&(!MEF.q||(r.pp+' '+r.ppd).toLowerCase().includes(MEF.q.toLowerCase())));
+  const A=meAgg(base);
+  const incs=INC_ORDER.filter(i=>['GH','EF'].some(c=>A[c]&&A[c][i]));
+  const hdr=(first)=>[...first.map(v=>({v,s:1})),...MES.map(v=>({v,s:1})),{v:'Total 2027',s:1}];
+  const nums=(m,s)=>[...m.map(v=>({v,s})),{v:m.reduce((a,b)=>a+b,0),s}];
+  const title=(t,sub)=>[[{v:t,s:7}],[{v:sub,s:10}],[]];
+  const W=[14,44,...Array(12).fill(15),17];
+  const sub=`SOFSA · Presupuesto 2027 (techo) · pesos corrientes · ${ANUAL.version}${MEF.inc?' · inciso '+MEF.inc:''}${MEF.q?' · filtro "'+MEF.q+'"':''} · generado ${new Date().toLocaleDateString('es-AR')}`;
+  const sheets=[];
+  // Resumen
+  { const R=[...title('Presupuesto 2027 mensualizado · Resumen por inciso y componente',sub)];
+    R.push(hdr(['Componente','Inciso']));
+    let gt=Array(12).fill(0);
+    ['GH','EF'].filter(c=>A[c]).forEach(c=>{const ct=Array(12).fill(0);
+      incs.filter(i=>A[c][i]).forEach(i=>{const m=mSum(Object.values(A[c][i]).map(p=>p.m));m.forEach((v,k)=>ct[k]+=v);R.push([{v:COMP_LAB[c]},{v:i},...nums(m,2)]);});
+      R.push([{v:'Total '+COMP_LAB[c],s:3},{v:'',s:3},...nums(ct,4)]); ct.forEach((v,k)=>gt[k]+=v);});
+    R.push([{v:'TOTAL PRESUPUESTO 2027',s:8},{v:'',s:8},...nums(gt,9)]);
+    R.push([]);R.push(hdr(['Inciso','(ambos componentes)']));
+    incs.forEach(i=>{const m=mSum(['GH','EF'].filter(c=>A[c]&&A[c][i]).flatMap(c=>Object.values(A[c][i]).map(p=>p.m)));R.push([{v:i},{v:''},...nums(m,2)]);});
+    R.push([{v:'TOTAL',s:8},{v:'',s:8},...nums(gt,9)]);
+    sheets.push({name:'Resumen',xml:XLSX_MINI.sheet(R,{widths:[26,30,...Array(12).fill(15),17],freezeRow:4,freezeCol:2,hdrRow:4})});
+  }
+  // Hojas por componente
+  const compSheet=(name,comps)=>{
+    const R=[...title(`Presupuesto 2027 mensualizado · ${name}`,sub)]; R.push(hdr(['PosPre','Descripción']));
+    const gt=Array(12).fill(0);
+    incs.forEach(i=>{const ppm=new Map();comps.forEach(c=>Object.values((A[c]||{})[i]||{}).forEach(p=>{if(!ppm.has(p.pp))ppm.set(p.pp,{pp:p.pp,desc:p.desc,m:Array(12).fill(0)});p.m.forEach((v,k)=>ppm.get(p.pp).m[k]+=v);}));
+      if(!ppm.size)return; const pps=[...ppm.values()].sort(ppSort); const it=mSum(pps.map(p=>p.m));
+      R.push([{v:i,s:5},{v:'',s:5},...nums(it,6)]);
+      pps.forEach(p=>R.push([{v:p.pp},{v:p.desc},...nums(p.m,2)]));
+      it.forEach((v,k)=>gt[k]+=v);});
+    R.push([{v:'TOTAL '+name.toUpperCase(),s:8},{v:'',s:8},...nums(gt,9)]);
+    sheets.push({name,xml:XLSX_MINI.sheet(R,{widths:W,freezeRow:4,freezeCol:2,hdrRow:4})});
+  };
+  if(A.GH)compSheet('Gasto Habitual',['GH']);
+  if(A.EF)compSheet('Emergencia Ferroviaria',['EF']);
+  compSheet('Total',['GH','EF']);
+  // Base plana
+  { const R=[hdr(['Componente','Inciso','PosPre','Descripción']).map(c=>c)];
+    ['GH','EF'].filter(c=>A[c]).forEach(c=>incs.forEach(i=>Object.values(A[c][i]||{}).sort(ppSort).forEach(p=>R.push([{v:COMP_LAB[c]},{v:i},{v:p.pp},{v:p.desc},...nums(p.m,2)]))));
+    const lastCol=XLSX_MINI.col(4+12), ref=`A1:${lastCol}${R.length}`;
+    sheets.push({name:'Base',filterRef:ref,xml:XLSX_MINI.sheet(R,{widths:[22,26,12,40,...Array(12).fill(15),17],freezeRow:1,autoFilter:ref,hdrRow:1})});
+  }
+  const blob=XLSX_MINI.book(sheets);
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Presupuesto_2027_mensualizado_GH_EF${MEF.inc?'_'+MEF.inc.split('.')[0]:''}.xlsx`;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+function initMens(fs){
+  fs('mef-inc',INC_ORDER,'Inciso');
+  document.getElementById('mef-comp').onchange=e=>{MEF.comp=e.target.value;renderMens();};
+  document.getElementById('mef-inc').onchange=e=>{MEF.inc=e.target.value;renderMens();};
+  document.getElementById('mef-q').oninput=e=>{MEF.q=e.target.value;renderMens();};
+  const seg=(id,key,attr)=>document.querySelectorAll(`#${id} button`).forEach(b=>b.onclick=()=>{document.querySelectorAll(`#${id} button`).forEach(x=>x.classList.remove('on'));b.classList.add('on');MEF[key]=b.dataset[attr];renderMens();});
+  seg('mef-grp','grp','g'); seg('mef-unit','unit','u');
+  document.getElementById('mef-xlsx').onclick=exportMensXLSX;
+}
+
 // ---------- wiring ----------
 (function initAnual(){
   const fs=(id,vals,lab)=>{const s=document.getElementById(id);s.innerHTML=`<option value="">${lab} (todos)</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');};
@@ -3244,6 +3462,7 @@ function drawHist(){
   document.getElementById('ppf-clear').onclick=()=>{Object.assign(PPF,{inc:'',rub:'',cri:'',L:'',efgh:'',fin:'',cero:false});['ppf-inc','ppf-rub','ppf-cri','ppf-L','ppf-efgh','ppf-fin','an-pp-q'].forEach(i=>document.getElementById(i).value='');document.getElementById('ppf-cero').checked=false;renderPosPres();};
   document.getElementById('ppf-csv').onclick=exportPPCSV;
   initInc4(fs);
+  initMens(fs);
   document.querySelectorAll('#hi-mode button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#hi-mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');HS.real=b.dataset.r==='1';renderHist();});
   initRed();
   document.getElementById('cgf-q').oninput=e=>{CGF.q=e.target.value;renderCeges();};

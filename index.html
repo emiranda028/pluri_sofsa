@@ -34,12 +34,12 @@
 :root{
   --navy:#222C4F; --navy-700:#2E3A60; --navy-900:#161C30; --ice:#AEC6E4;
   --gold:#E7B860; --gold-700:#C9974A; --blue:#2E6FA8;
-  --ink:#23252E; --muted:#71748A; --line:#E5E8F0; --bg:#EEF0F6; --card:#FFFFFF;
+  --ink:#1C1E27; --muted:#5C6073; --line:#E5E8F0; --bg:#EEF0F6; --card:#FFFFFF;
   --up:#C25A3C; --down:#2E8B72; --shadow:0 1px 2px rgba(22,28,48,.06),0 8px 24px rgba(22,28,48,.06);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-feature-settings:'tnum' 1}
 .mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
 h1,h2,h3,.serif{font-family:'Lora',Georgia,serif}
 a{color:inherit}
@@ -113,7 +113,7 @@ table{border-collapse:collapse;width:100%;font-size:13px}
 thead th{position:sticky;top:0;background:var(--navy);color:#fff;font-weight:600;text-align:right;padding:10px 8px;white-space:nowrap;font-size:11px;letter-spacing:.02em;cursor:pointer;user-select:none}
 thead th:first-child,thead th.l{text-align:left}
 thead th .ar{color:var(--gold);font-size:9px;margin-left:3px}
-tbody td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;font-size:12.5px}
+tbody td{padding:9px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;font-size:13.5px}
 tbody td.l{text-align:left}
 tbody td.desc{max-width:210px;overflow:hidden;text-overflow:ellipsis}
 tbody tr:hover{background:#F6F8FC}
@@ -256,6 +256,29 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 .nl-bar{height:3px;border-radius:2px;background:var(--c);opacity:.55;margin-top:4px}
 .charts>*,.lmap>*,.litems>*,.lcards>*,.kpis>*,.s-lin>*{min-width:0}
 .lmap-pn,.nl-name{overflow-wrap:anywhere}
+/* ===== nitidez y legibilidad ===== */
+.sectitle h2{font-size:19px}
+.sectitle .note{font-size:12.5px;color:#5C6073}
+thead th{font-size:12px;padding:11px 9px;letter-spacing:.01em}
+.kpi .k-lab{font-size:11.5px;color:#4E5266}
+.kpi .k-sub{font-size:12.5px;line-height:1.45}
+.kpi.navy .k-sub,.kpi.navy .k-lab{color:#CFDDEF}
+.kpi .k-val{font-size:28px}
+.chip{font-size:12px}.pp{font-size:12.5px}.tag{font-size:11px}
+.fgroup label{font-size:11px;color:#4E5266}
+select,input,button{font-size:14px}
+.tab{font-size:14px}
+.lchip{font-size:12px}
+.findings li{font-size:14px}
+.lmap-ps,.lmap-prods span{font-size:11.5px}.lmap-pn{font-size:13.5px}.lmap-pv{font-size:13px}
+.lc-sub{font-size:12.5px}.lc-meta span{font-size:11.5px}
+.li-premisa{font-size:13px}.li-ind{font-size:12.5px}
+table.compact td{font-size:13px}
+.st{font-size:11.5px}
+.nnode .nm{font-size:12.5px}.nnode .vl{font-size:11.5px}
+.nl-name{font-size:14px}.nl-val{font-size:12px}.nl-lvl{font-size:10.5px}
+.foot{font-size:12.5px;color:#5C6073}
+.s-note{font-size:13px}
 /* ===== MOBILE ===== */
 @media(max-width:760px){
   body{font-size:13.5px}
@@ -376,6 +399,7 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 <div class="tabs">
   <div class="tab on new" data-tab="red">Red del presupuesto</div>
   <div class="tab new" data-tab="anual">Presupuesto 2027</div>
+  <div class="tab new" data-tab="hist">Histórico y ejecución</div>
   <div class="tab new" data-tab="inc4">Inciso IV · SIFER</div>
   <div class="tab new" data-tab="sub">Ingresos y subsidio</div>
   <div class="tab new" data-tab="lin">Lineamientos Presidencia</div>
@@ -462,6 +486,41 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
       </div>
       <div style="font-size:11px;color:var(--muted);margin:-4px 0 8px" id="ppf-note"></div>
       <div class="tablewrap" style="max-height:75vh"><table id="an-pp"></table></div>
+    </div>
+  </section>
+
+  <!-- HISTÓRICO -->
+  <section id="tab-hist" class="hidden">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <div class="seg" id="hi-mode" style="width:auto"><button data-r="0" class="on">Pesos corrientes</button><button data-r="1">Pesos constantes 2027</button></div>
+      <span style="font-size:12px;color:var(--muted)">Fuente: "Presupuesto y Techos" (formulación, otorgado y ejecución 2022–2026; techos 2020–2027). Pesos constantes: aproximación con IPC dic/dic (INDEC; 2025–2027 según el Proyecto de Ley).</span>
+    </div>
+    <div class="kpis" id="hi-kpis"></div>
+    <div class="panel" style="padding:18px 22px;margin-bottom:16px">
+      <div class="sectitle"><div class="bar"></div><h2>Hallazgos</h2><span class="note">formulación, techos y ejecución en perspectiva</span></div>
+      <ul class="findings" id="hi-find"></ul>
+    </div>
+    <div class="charts">
+      <div class="panel chartbox tall">
+        <div class="sectitle"><div class="bar"></div><h2>Formulación, otorgado y ejecución</h2><span class="note">millones de $ · 2026 ejecutado a agosto (barra clara)</span></div>
+        <div class="ch" style="height:360px"><canvas id="ch-hi-ej"></canvas></div>
+      </div>
+      <div class="panel chartbox tall">
+        <div class="sectitle"><div class="bar"></div><h2>Techos, sobre techos y SIFER</h2><span class="note">millones de $ · barra roja: sobre techo solicitado</span></div>
+        <div class="ch" style="height:360px"><canvas id="ch-hi-tec"></canvas></div>
+      </div>
+    </div>
+    <div class="panel" style="padding:18px 22px;margin-bottom:16px">
+      <div class="sectitle"><div class="bar"></div><h2>Ejecución vs presupuesto otorgado</h2><span class="note" id="hi-unit"></span></div>
+      <div class="tablewrap"><table id="hi-ejec"></table></div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:8px">* 2026: ejecución a agosto (8 de 12 meses); el ratio no es comparable con años cerrados. En rojo, años con ejecución superior a lo otorgado.</div>
+    </div>
+    <div class="panel" style="padding:18px 22px">
+      <div class="sectitle"><div class="bar"></div><h2>Techos y sobre techos 2020–2027</h2><span class="note" id="hi-unit2"></span></div>
+      <div class="tablewrap"><table id="hi-techos"></table></div>
+      <div style="font-size:12.5px;font-weight:600;color:var(--navy);margin:14px 0 4px">Documentación de respaldo</div>
+      <ul id="hi-docs" style="margin:0;padding-left:18px;font-size:12px;color:var(--muted);line-height:1.6"></ul>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:8px">Sobre techos de 2023 y 2024: pedidos de SOFSA (notas GPYCG). 2025: modificaciones presupuestarias otorgadas por Decisión Administrativa. En el Excel fuente el total 2027 no suma sobre techo ni SIFER; aquí se muestra completo ($ 1.705.442 M = techo + sobre techo de capital + SIFER).</div>
     </div>
   </section>
 
@@ -840,6 +899,11 @@ const DATA = META.data;
 const F21  = META.f21;
 const PL   = META.plurianual;
 if(window.ChartDataLabels){Chart.register(ChartDataLabels); Chart.defaults.set('plugins.datalabels',{display:false});}
+// nitidez: renderizado a alta densidad y tipografía más grande y oscura en todos los gráficos
+Chart.defaults.devicePixelRatio=Math.max(2,Math.ceil(window.devicePixelRatio||1));
+Chart.defaults.font.family="'IBM Plex Sans',system-ui,sans-serif"; Chart.defaults.font.size=13; Chart.defaults.color='#2A2D3A';
+Chart.defaults.plugins.tooltip.titleFont={size:13,weight:'600'}; Chart.defaults.plugins.tooltip.bodyFont={size:13}; Chart.defaults.plugins.tooltip.padding=10;
+Chart.defaults.plugins.legend.labels.font={size:12.5};
 const INC_COLOR = {'1. Gastos en Personal':'#222C4F','2. Bienes de Consumo':'#AEC6E4','3. Servicios No Personales':'#2E6FA8','4. Bienes de Uso':'#E7B860','5. Impuestos':'#8A8FA6'};
 const CRIT_COLOR = {'Gastos en Personal':'#222C4F','Crítico':'#2E6FA8','Importante':'#E7B860','Complementario':'#AEC6E4','Impuestos':'#8A8FA6','Sin clasificar':'#C9CCD8'};
 const FALLBACK = ['#222C4F','#2E6FA8','#E7B860','#AEC6E4','#8A8FA6','#C9974A','#5B7DB1','#D9B98A','#7E91B8','#B0B4C4','#3F5488','#C2603F'];
@@ -1242,6 +1306,7 @@ function refresh(){
   if(state.tab==='lin')renderLin();
   if(state.tab==='red')renderRed();
   if(state.tab==='inc4')renderInc4();
+  if(state.tab==='hist')renderHist();
   if(state.tab==='sub')renderSub();
   if(state.tab==='pres')renderPres();
 }
@@ -2012,8 +2077,8 @@ document.getElementById('btn-reset').onclick=()=>{
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
   state.tab=t.dataset.tab;
-  ['anual','inc4','sub','lin','red','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
-  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','inc4','sub','lin','red','pres'].includes(state.tab));
+  ['anual','hist','inc4','sub','lin','red','pres','pano','dim','det','y27','pluri','ing','esc'].forEach(s=>document.getElementById('tab-'+s).classList.toggle('hidden',s!==state.tab));
+  document.getElementById('pluri-filters').classList.toggle('hidden',['anual','hist','inc4','sub','lin','red','pres'].includes(state.tab));
   refresh();});
 
 document.getElementById('btn-csv').onclick=()=>{
@@ -2061,8 +2126,9 @@ const MM = x => (x<0?'−':'')+'$ '+nf0.format(Math.abs(Math.round(x/1e6)))+' M'
 const dCls = p => p===null?'':(p>=0?'up':'down');
 // Techos comunicados oficialmente (en pesos)
 const NOTAS = {
-  sstf:{nro:'NO-2026-72445519-APN-SSTFMEC',org:'Subsecretaría de Transporte Ferroviario',tit:'Techos presupuestarios 2027 comunicados por la Secretaría de Transporte',corr:1379892e6,cap:157912e6},
-  dpep:{nro:'NO-2026-92457562-APN-DPEPMEC',org:'Dirección de Presupuesto de Empresas Públicas (ONP)',tit:'Transferencias directas del Proyecto de Ley de Presupuesto 2027 (Anexo SOF)',corr:1379892e6,cap:200000e6},
+  pedido:{nro:'NO-2026-72466251-APN-GPYCG#SOFSE',org:'Gerencia de Planificación y Control de Gestión (SOFSA)',tit:'Pedido de sobretechos presupuestarios 2027',corr:427203414610,cap:507319451989,pluriCorr:2047095414610,pluriCap:665231451989,ingresos:120423682259},
+  sstf:{nro:'NO-2026-72445519-APN-SSTF#MEC',org:'Subsecretaría de Transporte Ferroviario',tit:'Techos presupuestarios 2027 comunicados por la Secretaría de Transporte',corr:1379892e6,cap:157912e6},
+  dpep:{nro:'NO-2026-92457562-APN-DPEP#MEC',org:'Dirección de Presupuesto de Empresas Públicas (ONP)',tit:'Transferencias directas del Proyecto de Ley de Presupuesto 2027 (Anexo SOF)',corr:1379892e6,cap:200000e6},
   macro:{ipc27:18.0,ipc28:10.0,ipc29:6.0,tcn27:1847.6,tcn28:1989.4,tcn29:2063.4,pib27:4.0}
 };
 const isSIFER = r => r.pp==='4.3.3.0.1';
@@ -2119,8 +2185,8 @@ function renderAnual(){
      <div class="k-sub">cobertura del techo <b>${pctTxt(t.techo,t.req)}</b> · brecha ${MM(t.req-t.techo)}</div></div>
    <div class="kpi"><div class="k-lab">vs Plurianual 2027 relevado</div><div class="k-val"><span class="delta down">▼ ${fmtPct(deltaPct(t.techo,t.pluri))}</span></div>
      <div class="k-sub">plurianual ${MM(t.pluri)} · Δ ${MM(t.techo-t.pluri)}</div></div>
-   <div class="kpi"><div class="k-lab">Sobre techo corriente pedido · no otorgado</div><div class="k-val" style="font-size:22px">${MM(t.pedidoST)}</div>
-     <div class="k-sub">el sobre techo sólo se otorgó para capital (${MM(t.buSobre)}) · además ${MM(t.sobre)} de sobre techos de áreas sin cubrir</div></div>`;
+   <div class="kpi"><div class="k-lab">Sobre techo pedido vs otorgado</div><div class="k-val" style="font-size:22px">${pctTxt(t.buSobre,NOTAS.pedido.corr+NOTAS.pedido.cap)}</div>
+     <div class="k-sub">pedido ${MM(NOTAS.pedido.corr+NOTAS.pedido.cap)} (corrientes ${MM(NOTAS.pedido.corr)} · capital ${MM(NOTAS.pedido.cap)}) · otorgado ${MM(t.buSobre)} sólo capital</div></div>`;
   document.getElementById('an-conc').innerHTML=`<b>Conciliación con la versión final presentada:</b> el archivo final (Ppto 2027 - V3) es idéntico al de trabajo · total ${fmtFull(t.techo)} · diferencia <b>$ 0</b> ✓`;
   renderFindings(); renderNotas(); renderAnualIncisos(); drawCascada(); drawMensual(); renderEFGH(); renderCeges(); renderPosPres(); renderAnualIngresos();
 }
@@ -2145,10 +2211,12 @@ function renderFindings(){
 function renderNotas(){
   const t=TOT,a=NOTAS.sstf,b=NOTAS.dpep;
   const row=(l,x,y,cls)=>`<tr${cls?` class="${cls}"`:''}><td class="l">${l}</td><td class="mono">${MM(x)}</td><td class="mono">${MM(y)}</td><td class="mono ${y-x>0?'delta up':''}">${y-x?MM(y-x):'—'}</td></tr>`;
-  document.getElementById('an-notas').innerHTML=`<thead><tr><th class="l">Transferencias del Tesoro (fuente 11)</th><th>Techo SSTF<br><span style="font-weight:400;font-size:10px">${a.nro}</span></th><th>Proyecto de Ley<br><span style="font-weight:400;font-size:10px">${b.nro}</span></th><th>Sobre techo otorgado</th></tr></thead><tbody>
-    ${row('552 · Transferencias corrientes',a.corr,b.corr)}${row('557 · Transferencias de capital',a.cap,b.cap)}
-    <tr class="total"><td class="l">TOTAL</td><td class="mono">${MM(a.corr+a.cap)}</td><td class="mono gold"><b>${MM(b.corr+b.cap)}</b></td><td class="mono">${MM(b.corr+b.cap-a.corr-a.cap)}</td></tr>
-    <tr><td class="l" colspan="4" style="white-space:normal;color:var(--muted);font-size:11.5px">El sobre techo se otorgó <b>sólo para gastos de capital</b>. El sobre techo corriente pedido a la Secretaría de Transporte (${MM(t.pedidoST)}) no fue otorgado.</td></tr></tbody>`;
+  const pd=NOTAS.pedido;
+  const row2=(l,te,pe,ot,cls)=>`<tr><td class="l">${l}</td><td class="mono">${MM(te)}</td><td class="mono">${MM(pe)}</td><td class="mono ${ot?'':'delta up'}">${ot?MM(ot):'$ 0'}</td><td class="mono">${pctTxt(ot,pe)}</td><td class="mono"><b>${MM(te+ot)}</b></td></tr>`;
+  document.getElementById('an-notas').innerHTML=`<thead><tr><th class="l">Transferencias del Tesoro (fuente 11)</th><th>Techo SSTF<br><span style="font-weight:400;font-size:10px">${a.nro}</span></th><th>Sobre techo solicitado<br><span style="font-weight:400;font-size:10px">${pd.nro}</span></th><th>Sobre techo otorgado</th><th>% del pedido</th><th>Proyecto de Ley<br><span style="font-weight:400;font-size:10px">${b.nro}</span></th></tr></thead><tbody>
+    ${row2('552 · Transferencias corrientes',a.corr,pd.corr,b.corr-a.corr)}${row2('557 · Transferencias de capital',a.cap,pd.cap,b.cap-a.cap)}
+    <tr class="total"><td class="l">TOTAL</td><td class="mono">${MM(a.corr+a.cap)}</td><td class="mono">${MM(pd.corr+pd.cap)}</td><td class="mono">${MM(b.corr+b.cap-a.corr-a.cap)}</td><td class="mono">${pctTxt(b.corr+b.cap-a.corr-a.cap,pd.corr+pd.cap)}</td><td class="mono gold"><b>${MM(b.corr+b.cap)}</b></td></tr>
+    <tr><td class="l" colspan="6" style="white-space:normal;color:var(--muted);font-size:12px">SOFSA pidió ${MM(pd.corr+pd.cap)} de sobre techo (nota ${pd.nro}) sobre un plurianual de ${MM(pd.pluriCorr+pd.pluriCap)} sin ingresos propios. Se otorgó <b>sólo ${MM(b.cap-a.cap)} para gastos de capital</b> (${pctTxt(b.cap-a.cap,pd.cap)} del pedido de capital); el pedido de gastos corrientes (${MM(pd.corr)}) no fue otorgado. Material Rodante DMU se financia aparte con SIFER (${MM(t.sifer)}).</td></tr></tbody>`;
   const tes=b.corr+b.cap, chk=t.techo-t.ingresos-t.sifer;
   const fr=(l,v,sub)=>`<tr><td class="l">${l}${sub?`<div style="font-size:10.5px;color:var(--muted)">${sub}</div>`:''}</td><td class="mono"><b>${MM(v)}</b></td><td class="mono" style="color:var(--muted)">${pctTxt(v,t.techo)}</td></tr>`;
   document.getElementById('an-fin').innerHTML=`<thead><tr><th class="l">Fuente de financiamiento 2027</th><th>Monto</th><th>%</th></tr></thead><tbody>
@@ -2585,6 +2653,13 @@ function slideHTML(){
     ${D.trans.sort((a,b)=>b.t-a.t).slice(0,7).map(p=>`<tr><td class="l">${esc(p.proy.length>70?p.proy.slice(0,68)+'…':p.proy)}</td><td class="l">${LKEYS.filter(k=>p.prem.has(k)).map(k=>`<span class="dotL" style="background:${L_COLOR[k]}">${k.replace('L','')}</span>`).join('')}</td><td>${MM(p.t)}</td><td>${pctTxt(p.t,p.req)}</td></tr>`).join('')}</tbody></table>`);
   S.push(`<h3>Brechas frente a los lineamientos</h3><table class="s-table"><thead><tr><th class="l">Compromiso de Presidencia sin financiamiento suficiente</th><th class="l">Premisa</th><th>Requerido</th><th>Techo</th></tr></thead><tbody>
     ${D.gaps.map(g=>`<tr><td class="l">${esc(g.txt)}</td><td class="l">${chipL(g.k,true)}</td><td>${g.rq?MM(g.rq):'—'}</td><td>${g.t?MM(g.t):'<span class="st st-gap">sin partida</span>'}</td></tr>`).join('')}</tbody></table>`);
+  { const E=HIST.ejec; const T27=HIST.techos.find(x=>x.a===2027);
+    S.push(`<h3>Histórico: formulación, otorgado y ejecución</h3><div class="s-chart"><canvas id="sl-hist"></canvas></div><p class="s-note">La ejecución superó lo otorgado en 2022, 2023 y 2025; la cobertura de la formulación cayó de ${pctTxt(E[0].o,E[0].f)} (2022) a ${pctTxt(E[5].o,E[5].f)} (2027). 2026 ejecutado a agosto.</p>`);
+    S.push(`<h3>Pedido de sobre techo 2027</h3><table class="s-table"><thead><tr><th class="l">Tipo de gasto</th><th>Plurianual (sin ingresos)</th><th>Techo SSTF</th><th>Sobre techo pedido</th><th>Otorgado</th><th>% del pedido</th></tr></thead><tbody>
+      <tr><td class="l">Gastos corrientes</td><td>${MM(NOTAS.pedido.pluriCorr)}</td><td>${MM(T27.tc)}</td><td>${MM(T27.pc)}</td><td>$ 0</td><td>0,0%</td></tr>
+      <tr><td class="l">Gastos de capital</td><td>${MM(NOTAS.pedido.pluriCap)}</td><td>${MM(T27.tk)}</td><td>${MM(T27.pk)}</td><td>${MM(T27.sk)}</td><td>${pctTxt(T27.sk,T27.pk)}</td></tr>
+      <tr class="s-tot"><td class="l">Total</td><td>${MM(NOTAS.pedido.pluriCorr+NOTAS.pedido.pluriCap)}</td><td>${MM(T27.tc+T27.tk)}</td><td>${MM(T27.pc+T27.pk)}</td><td>${MM(T27.sk)}</td><td>${pctTxt(T27.sk,T27.pc+T27.pk)}</td></tr></tbody></table>
+      <p class="s-note">Pedido: ${NOTAS.pedido.nro}. Otorgado según Proyecto de Ley (${NOTAS.dpep.nro}). Además, SIFER financia ${MM(T27.fk)} de Material Rodante DMU.</p>`); }
   S.push(`<h3>Riesgos de ejecución</h3><ul class="s-list">
     <li><b>Material Rodante:</b> tiene ${MM(D.mr.oc)} en órdenes de compra ya comprometidas para 2027 frente a un techo de ${MM(D.mr.techo)} en Incisos II y III → <b>déficit de ${MM(-D.mr.disp)}</b>.</li>
     <li>${D.negC.length} centro(s) gestor(es) con compromisos 2027 superiores al techo: ${D.negC.map(c=>esc(c.nombre)+' ('+MM(c.disp)+')').join('; ')}.</li>
@@ -2603,9 +2678,17 @@ function renderPres(){
   document.getElementById('pres-stage').innerHTML=`<div class="slide">${S[SLIDE]}<div class="s-foot"><span>SOFSA · Presupuesto 2027</span><span>${SLIDE+1} / ${S.length}</span></div></div>`;
   document.getElementById('pres-dots').innerHTML=S.map((_,i)=>`<button class="${i===SLIDE?'on':''}" data-i="${i}"></button>`).join('');
   document.querySelectorAll('#pres-dots button').forEach(b=>b.onclick=()=>{SLIDE=+b.dataset.i;renderPres();});
-  ['sl-casc','sl-mes','sl-lin'].forEach(killChart);
+  ['sl-casc','sl-mes','sl-lin','sl-hist'].forEach(killChart);
   if(document.getElementById('sl-casc')) drawCascada('sl-casc','sl-casc');
   if(document.getElementById('sl-mes')) drawMensual('sl-mes','sl-mes');
+  if(document.getElementById('sl-hist')){ killChart('sl-hist'); const E=HIST.ejec;
+    charts['sl-hist']=new Chart(document.getElementById('sl-hist'),{data:{labels:E.map(x=>x.a),datasets:[
+      {type:'bar',label:'Formulación',data:E.map(x=>x.f/1e6),backgroundColor:'#C9CFDD',borderRadius:3,order:2},
+      {type:'bar',label:'Otorgado',data:E.map(x=>x.o/1e6),backgroundColor:'#222C4F',borderRadius:3,order:2},
+      {type:'bar',label:'Ejecución',data:E.map(x=>x.e==null?null:x.e/1e6),backgroundColor:E.map(x=>x.parcial?'rgba(231,184,96,.55)':'#E7B860'),borderRadius:3,order:2},
+      {type:'line',label:'Ejecución / otorgado',data:E.map(x=>x.e==null||x.parcial?null:x.e/x.o*100),borderColor:'#C25A3C',backgroundColor:'#C25A3C',yAxisID:'y2',borderWidth:2.5,pointRadius:4,order:1,
+        datalabels:{display:true,align:'top',color:'#C25A3C',font:{weight:'700'},formatter:v=>v==null?'':nf0.format(v)+'%'}}]},
+      options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>nf0.format(v)},title:{display:true,text:'millones de $'}},y2:{position:'right',grid:{display:false},min:0,max:140,ticks:{callback:v=>v+'%'}}}}}); }
   if(document.getElementById('sl-lin')) drawLinDiscOn('sl-lin');
 }
 function drawLinDiscOn(id){ const sd=linStats(AL.filter(r=>!isStruct(r)));
@@ -2898,7 +2981,7 @@ function renderRed(){
   const findSel=id=>{let res=null;(function w(n){if(n.id===id)res=n;else n.kids.forEach(w);})(NET_ROOT);return res;};
   netSelInfo(NS.sel?findSel(NS.sel):null);
   if(NS.view==='lista'){renderRedList();const vc=document.querySelectorAll('#net-list .nl-row').length;document.getElementById('net-info').textContent=`${vc} nodos visibles · ${NS.met==='t'?'techo':'requerido'} total ${MM(netVal(NET_ROOT))}`;return;}
-  const small=window.innerWidth<760; const COLW=small?210:260, NW=small?184:226, NH=40, GAP=10, PADX=small?8:16, PADY=34;
+  const small=window.innerWidth<760; const COLW=small?220:280, NW=small?194:246, NH=40, GAP=10, PADX=small?8:16, PADY=34;
   // layout
   let slot=0; const vis=[];
   (function lay(n){
@@ -2924,7 +3007,7 @@ function renderRed(){
   vis.forEach(n=>{
     const v=netVal(n), par=n.parent?netVal(n.parent):v, pct=par?v/par:1, cov=n.req?n.t/n.req:null;
     const hasK=!n.more&&n.kids.size>0, open=NS.open.has(n.id);
-    const lim=n.name===n.name.toUpperCase()?27:34; const nm=n.name.length>lim?n.name.slice(0,lim-1)+'…':n.name;
+    const lim=n.name===n.name.toUpperCase()?(small?22:27):(small?28:34); const nm=n.name.length>lim?n.name.slice(0,lim-1)+'…':n.name;
     const bw=Math.max(2,(NW-12)*Math.min(1,v/tot));
     g+=`<g class="nnode${NS.hit===n.id?' hit':''}" data-id="${esc(n.id)}" transform="translate(${x(n)},${y(n)})">
       <rect class="bg" width="${NW}" height="${NH}" rx="8"/>
@@ -3036,6 +3119,109 @@ function initRed(){
   netBuild(); netOpenDepth(2);
 }
 
+
+// =====================================================================
+//  PESTAÑA: HISTÓRICO DE TECHOS Y EJECUCIÓN  (fuente: "Presupuesto y Techos.xlsx")
+// =====================================================================
+const HIST = {
+  // techos y sobre techos por año (pesos corrientes)
+  techos:[
+    {a:2020,tc:50573306000,tk:5023940000,doc:'NO-2019-84699966-APN-SSP#MHA'},
+    {a:2021,tc:67648000000,tk:3300000000,doc:''},
+    {a:2022,tc:90080773222,tk:5541414876,doc:'NO-2021-68839546-APN-DGA#MTR'},
+    {a:2023,tc:226091681051,tk:5003138266,doc:'NO-2022-83767499-APN-DGA#MTR',pc:67606880958,pk:15888730560,pdoc:'NO-2022-84663005-APN-GPYCG#SOFSE'},
+    {a:2024,tc:526000000000,tk:7100000000,doc:'NO-2023-110726197-APN-ONP#MEC',pc:342714708304,pk:58490067578,pdoc:'NO-2023-96965112-APN-GPYCG#SOFSE',nota:'se prorrogó el presupuesto 2023'},
+    {a:2025,tc:829721256980+7012701436,tk:16100000000,doc:'PV-2025-07144536-APN-ST#MEC (techo 3; los techos 1 y 2 no aplicaron)',sc:136667241807+24308327219,sk:34166810452,sdoc:'DA-2025-10-APN-JGM y DA-2025-23-APN-JGM',nota:'incluye Emergencia SOFSE $ 7.013 M en corrientes'},
+    {a:2026,tc:1075165000000,tk:103862000000,doc:'NO-2025-85700524-APN-ST#MEC',sc:24835000000,sk:100000000000,sdoc:'NO-2025-103672055-APN-SSP#MEC',fc:3307050000,fk:89715830000,ing:100857454269},
+    {a:2027,tc:1379892000000,tk:157912000000,doc:'NO-2026-72445519-APN-SSTF#MEC',sc:0,sk:42088000000,sdoc:'NO-2026-92457562-APN-DPEP#MEC',fk:125549999999.58,ing:131190072540.91,pc:427203414610,pk:507319451989,pdoc:'NO-2026-72466251-APN-GPYCG#SOFSE'},
+  ],
+  // formulación, presupuesto otorgado y ejecución
+  ejec:[
+    {a:2022,f:165166279857,o:177289783624,e:189623051899},
+    {a:2023,f:375994535034,o:336200000000,e:392382783546},
+    {a:2024,f:1029298695134,o:872457457366,e:839415958850},
+    {a:2025,f:2296662500143,o:1232141398119,e:1349744978443},
+    {a:2026,f:2686994156888,o:1497742334269,e:882561931379,parcial:8},
+    {a:2027,f:2832750548858,o:1836632072540,e:null},
+  ],
+  // IPC dic/dic (INDEC; 2025-2027 según supuestos del Proyecto de Ley 2027)
+  ipc:{2021:.509,2022:.948,2023:2.114,2024:1.178,2025:.315,2026:.29,2027:.18},
+};
+const HS={real:false};
+function histReal(v,a){ if(!HS.real)return v; let f=1; for(let y=a+1;y<=2027;y++)f*=1+(HIST.ipc[y]||0); return v*f; }
+function histTot(t){return t.tc+t.tk+(t.sc||0)+(t.sk||0)+(t.fc||0)+(t.fk||0);}
+function renderHist(){
+  const E=HIST.ejec, T=HIST.techos;
+  const done=E.filter(x=>x.e&&!x.parcial);
+  const avgEj=done.reduce((a,x)=>a+x.e/x.o,0)/done.length;
+  const e26=E.find(x=>x.a===2026), e27=E.find(x=>x.a===2027), e25=E.find(x=>x.a===2025);
+  const proy26=e26.e/e26.parcial*12;
+  const t27=T.find(x=>x.a===2027), t26=T.find(x=>x.a===2026);
+  const pedido27=t27.pc+t27.pk, otorg27=(t27.sc||0)+(t27.sk||0);
+  const real27v26=(e27.o/(e26.o*(1+HIST.ipc[2027])))-1;
+  document.getElementById('hi-kpis').innerHTML=`
+   <div class="kpi navy"><div class="k-lab">Presupuesto otorgado 2027</div><div class="k-val" style="font-size:22px">${MM(e27.o)}</div><div class="k-sub">${fmtPct(deltaPct(e27.o,e26.o))} nominal vs 2026 · ${fmtPct(real27v26)} real (IPC 2027 ${nf0.format(HIST.ipc[2027]*100)}%)</div></div>
+   <div class="kpi"><div class="k-lab">Cobertura de la formulación 2027</div><div class="k-val">${pctTxt(e27.o,e27.f)}</div><div class="k-sub">2026: ${pctTxt(e26.o,e26.f)} · 2025: ${pctTxt(e25.o,e25.f)} · 2022: ${pctTxt(E[0].o,E[0].f)}</div></div>
+   <div class="kpi"><div class="k-lab">Ejecución / otorgado 2022–2025</div><div class="k-val">${nf1.format(avgEj*100)}%</div><div class="k-sub">promedio · en 3 de 4 años se ejecutó por encima de lo otorgado</div></div>
+   <div class="kpi"><div class="k-lab">Ejecución 2026 a agosto</div><div class="k-val">${pctTxt(e26.e,e26.o)}</div><div class="k-sub">del otorgado en 8 meses (lineal ${nf1.format(8/12*100)}%) · anualizada ${MM(proy26)} (${pctTxt(proy26,e26.o)})</div></div>
+   <div class="kpi"><div class="k-lab">Sobre techo 2027 pedido vs otorgado</div><div class="k-val">${pctTxt(otorg27,pedido27)}</div><div class="k-sub">pedido ${MM(pedido27)} · otorgado ${MM(otorg27)} (sólo capital)</div></div>`;
+  // tabla ejecución
+  let h=`<thead><tr><th class="l">Año</th><th>Formulación</th><th>Presupuesto otorgado</th><th>Otorgado / formulado</th><th>Ejecución</th><th>Ejecución / otorgado</th><th>Ejecución / formulado</th><th>Var. otorgado i.a.</th><th>Var. ejecución i.a.</th></tr></thead><tbody>`;
+  E.forEach((x,i)=>{const p=E[i-1];const f=histReal(x.f,x.a),o=histReal(x.o,x.a),e=x.e==null?null:histReal(x.e,x.a);
+    const pf=p?histReal(p.o,p.a):null, pe=p&&p.e&&!p.parcial?histReal(p.e,p.a):null;
+    const obs=x.parcial?`ejecutado a agosto · anualizado ${MM(histReal(x.e/x.parcial*12,x.a))}`:x.a===2027?'presupuesto presentado':'';
+    const ratio=x.e==null?null:x.e/x.o;
+    h+=`<tr${x.a===2027?' style="background:#FFF9EC"':''}><td class="l"><b>${x.a}</b>${obs?`<div style="font-size:11.5px;color:var(--muted);font-weight:400">${obs}</div>`:''}</td><td class="mono">${MM(f)}</td><td class="mono"><b>${MM(o)}</b></td><td class="mono">${pctTxt(x.o,x.f)}</td>
+      <td class="mono">${e==null?'—':MM(e)}</td><td class="mono ${ratio!==null&&!x.parcial?(ratio>1?'delta up':'delta down'):''}">${ratio===null?'—':nf1.format(ratio*100)+'%'+(x.parcial?' *':'')}</td><td class="mono">${x.e==null?'—':pctTxt(x.e,x.f)}</td>
+      <td class="mono">${pf?fmtPct(deltaPct(o,pf)):'—'}</td><td class="mono">${pe&&e&&!x.parcial?fmtPct(deltaPct(e,pe)):'—'}</td></tr>`;});
+  h+=`</tbody>`;
+  document.getElementById('hi-ejec').innerHTML=h;
+  // tabla techos
+  let t=`<thead><tr><th class="l">Año</th><th>Techo corrientes</th><th>Techo capital</th><th>Sobre techo solicitado</th><th>Sobre techo otorgado</th><th>% otorgado del pedido</th><th>SIFER</th><th>Total Tesoro + SIFER</th><th>Ingresos propios</th><th>Var. total i.a.</th></tr></thead><tbody>`;
+  T.forEach((x,i)=>{const p=T[i-1];const tot=histTot(x);const ped=(x.pc||0)+(x.pk||0);const ot=(x.sc||0)+(x.sk||0);const sif=(x.fc||0)+(x.fk||0);
+    t+=`<tr${x.a===2027?' style="background:#FFF9EC"':''}><td class="l"><b>${x.a}</b></td><td class="mono">${MM(histReal(x.tc,x.a))}</td><td class="mono">${MM(histReal(x.tk,x.a))}</td>
+      <td class="mono">${ped?MM(histReal(ped,x.a)):'—'}</td><td class="mono">${ot?MM(histReal(ot,x.a)):(ped?'$ 0':'—')}</td><td class="mono">${ped?pctTxt(ot,ped):'—'}</td>
+      <td class="mono">${sif?MM(histReal(sif,x.a)):'—'}</td><td class="mono"><b>${MM(histReal(tot,x.a))}</b></td><td class="mono">${x.ing?MM(histReal(x.ing,x.a)):'—'}</td>
+      <td class="mono">${p?fmtPct(deltaPct(histReal(tot,x.a),histReal(histTot(p),p.a))):'—'}</td>
+</tr>`;});
+  document.getElementById('hi-techos').innerHTML=t+'</tbody>';
+  document.getElementById('hi-docs').innerHTML=T.map(x=>`<li><b>${x.a}</b> · techo: ${esc(x.doc||'s/d')}${x.pdoc?` · pedido de sobre techo: ${esc(x.pdoc)}`:''}${x.sdoc?` · sobre techo otorgado: ${esc(x.sdoc)}`:''}${x.nota?` · <i>${esc(x.nota)}</i>`:''}</li>`).join('');
+  document.getElementById('hi-unit').textContent=HS.real?'en pesos constantes de 2027 (IPC dic/dic, aproximación)':'en pesos corrientes';
+  document.getElementById('hi-unit2').textContent=HS.real?'pesos constantes de 2027':'pesos corrientes';
+  drawHist();
+  // hallazgos
+  const r24=E.find(x=>x.a===2024);
+  document.getElementById('hi-find').innerHTML=[
+    ['',`La cobertura de la formulación cayó de <b>${pctTxt(E[0].o,E[0].f)}</b> (2022) a <b>${pctTxt(e25.o,e25.f)}</b> (2025) y <b>${pctTxt(e26.o,e26.f)}</b> (2026); en 2027 el presupuesto presentado cubre el <b>${pctTxt(e27.o,e27.f)}</b> del plurianual relevado.`],
+    ['risk',`La ejecución superó lo otorgado en 2022 (${pctTxt(E[0].e,E[0].o)}), 2023 (${pctTxt(E[1].e,E[1].o)}) y 2025 (${pctTxt(e25.e,e25.o)}): históricamente el techo inicial resulta insuficiente y se cubre con modificaciones durante el ejercicio.`],
+    ['',`2024 fue el único año con ejecución por debajo de lo otorgado (${pctTxt(r24.e,r24.o)}), en un contexto de presupuesto prorrogado.`],
+    ['',`En 2026 se lleva ejecutado el ${pctTxt(e26.e,e26.o)} del otorgado a agosto; anualizando linealmente la ejecución cerraría en ${MM(proy26)} (${pctTxt(proy26,e26.o)} del otorgado).`],
+    ['',`El presupuesto otorgado 2027 crece ${fmtPct(deltaPct(e27.o,e26.o))} nominal frente a 2026, lo que implica ${fmtPct(real27v26)} en términos reales con la inflación prevista en el Proyecto de Ley (${nf0.format(HIST.ipc[2027]*100)}%).`],
+    ['risk',`De los sobre techos pedidos se otorgó ${pctTxt(otorg27,pedido27)} en 2027. En 2026 se otorgaron ${MM(t26.sc+t26.sk)} de sobre techo más ${MM(t26.fc+t26.fk)} de SIFER.`],
+  ].map(([c,x])=>`<li class="${c}">${x}</li>`).join('');
+}
+function drawHist(){
+  const E=HIST.ejec, T=HIST.techos;
+  killChart('hi-ej');
+  charts['hi-ej']=new Chart(document.getElementById('ch-hi-ej'),{data:{labels:E.map(x=>x.a),datasets:[
+    {type:'bar',label:'Formulación',data:E.map(x=>histReal(x.f,x.a)/1e6),backgroundColor:'#C9CFDD',borderRadius:3,order:2},
+    {type:'bar',label:'Presupuesto otorgado',data:E.map(x=>histReal(x.o,x.a)/1e6),backgroundColor:'#222C4F',borderRadius:3,order:2},
+    {type:'bar',label:'Ejecución',data:E.map(x=>x.e==null?null:histReal(x.e,x.a)/1e6),backgroundColor:E.map(x=>x.parcial?'rgba(231,184,96,.55)':'#E7B860'),borderColor:'#C9974A',borderWidth:E.map(x=>x.parcial?1.5:0),borderDash:[4,3],borderRadius:3,order:2},
+    {type:'line',label:'Ejecución / otorgado',data:E.map(x=>x.e==null||x.parcial?null:x.e/x.o*100),borderColor:'#C25A3C',backgroundColor:'#C25A3C',yAxisID:'y2',borderWidth:2.5,pointRadius:4,tension:.2,order:1},
+    {type:'line',label:'Otorgado / formulado',data:E.map(x=>x.o/x.f*100),borderColor:'#2E6FA8',backgroundColor:'#2E6FA8',yAxisID:'y2',borderWidth:2.5,borderDash:[6,4],pointRadius:4,tension:.2,order:1}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}},tooltip:{mode:'index',callbacks:{label:c=>' '+c.dataset.label+': '+(c.dataset.yAxisID==='y2'?nf1.format(c.raw)+'%':'$ '+nf0.format(c.raw)+' M')}}},
+      scales:{y:{ticks:{callback:v=>nf0.format(v)},title:{display:true,text:'millones de $'}},y2:{position:'right',grid:{display:false},min:0,max:140,ticks:{callback:v=>v+'%'}}}}});
+  killChart('hi-tec');
+  const v=(x,f)=>histReal(f(x),x.a)/1e6;
+  charts['hi-tec']=new Chart(document.getElementById('ch-hi-tec'),{type:'bar',data:{labels:T.map(x=>x.a),datasets:[
+    {label:'Techo corrientes',data:T.map(x=>v(x,y=>y.tc)),backgroundColor:'#2E6FA8',stack:'o'},
+    {label:'Techo capital',data:T.map(x=>v(x,y=>y.tk)),backgroundColor:'#C9974A',stack:'o'},
+    {label:'Sobre techo otorgado',data:T.map(x=>v(x,y=>(y.sc||0)+(y.sk||0))),backgroundColor:'#2E8B72',stack:'o'},
+    {label:'SIFER',data:T.map(x=>v(x,y=>(y.fc||0)+(y.fk||0))),backgroundColor:'#E7B860',stack:'o'},
+    {label:'Sobre techo solicitado',data:T.map(x=>v(x,y=>(y.pc||0)+(y.pk||0))),backgroundColor:'rgba(194,90,60,.18)',borderColor:'#C25A3C',borderWidth:1.5,stack:'p'}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}},tooltip:{mode:'index',callbacks:{label:c=>' '+c.dataset.label+': $ '+nf0.format(c.raw)+' M'}}},scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:v=>nf0.format(v)}}}}});
+}
+
 // ---------- wiring ----------
 (function initAnual(){
   const fs=(id,vals,lab)=>{const s=document.getElementById(id);s.innerHTML=`<option value="">${lab} (todos)</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');};
@@ -3058,6 +3244,7 @@ function initRed(){
   document.getElementById('ppf-clear').onclick=()=>{Object.assign(PPF,{inc:'',rub:'',cri:'',L:'',efgh:'',fin:'',cero:false});['ppf-inc','ppf-rub','ppf-cri','ppf-L','ppf-efgh','ppf-fin','an-pp-q'].forEach(i=>document.getElementById(i).value='');document.getElementById('ppf-cero').checked=false;renderPosPres();};
   document.getElementById('ppf-csv').onclick=exportPPCSV;
   initInc4(fs);
+  document.querySelectorAll('#hi-mode button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#hi-mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');HS.real=b.dataset.r==='1';renderHist();});
   initRed();
   document.getElementById('cgf-q').oninput=e=>{CGF.q=e.target.value;renderCeges();};
   document.getElementById('cgf-tipo').onchange=e=>{CGF.tipo=e.target.value;renderCeges();};

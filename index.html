@@ -211,6 +211,23 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 .net-levels .arrow{color:var(--muted);font-size:11px;align-self:center}
 #net-box{overflow:auto;max-height:78vh;border:1px solid var(--line);border-radius:12px;background:linear-gradient(90deg,#FAFBFD 0,#fff 100%)}
 .panel.maxed #net-box{max-height:calc(100vh - 190px)}
+#net-stage{position:relative}
+.net-zoom{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:4px;flex-wrap:wrap;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:10px;padding:5px 6px;margin-bottom:8px;box-shadow:0 2px 8px rgba(22,28,48,.06);width:max-content;max-width:100%}
+.nz-btn{border:1px solid transparent;background:none;border-radius:7px;padding:5px 9px;font-weight:600;font-size:12.5px;color:var(--navy);cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-width:30px;justify-content:center}
+.nz-btn:hover{background:#EEF3FA;border-color:#D5E0EE}
+.nz-btn svg{width:14px;height:14px}
+.nz-fs{background:var(--navy);color:#fff}.nz-fs:hover{background:var(--navy-700);color:#fff}
+.nz-pct{font-family:'IBM Plex Mono',monospace;font-size:12px;min-width:44px;text-align:center;color:var(--muted)}
+.nz-sep{width:1px;height:20px;background:var(--line);margin:0 3px}
+#net-box.drag{cursor:grabbing}
+#net-box{cursor:grab}
+#net-controls.hide{display:none}
+/* red maximizada / pantalla completa: ocupa todo el alto */
+#net-panel.maxed,#net-panel:fullscreen{display:flex;flex-direction:column;background:#fff;padding:14px 18px!important}
+#net-panel:fullscreen{overflow:auto}
+#net-panel.maxed #net-stage,#net-panel:fullscreen #net-stage{flex:1;min-height:0;display:flex;flex-direction:column}
+#net-panel.maxed #net-box,#net-panel:fullscreen #net-box{flex:1;max-height:none!important;min-height:0}
+#net-panel.maxed .sectitle .note,#net-panel:fullscreen .sectitle .note{display:none}
 #net-svg text{font-family:'IBM Plex Sans',sans-serif}
 .nnode{cursor:pointer}
 .nnode rect.bg{fill:#fff;stroke:#DCE1EC;stroke-width:1}
@@ -525,8 +542,9 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
 
   <!-- RED CONCEPTUAL -->
   <section id="tab-red">
-    <div class="panel" style="padding:18px 22px">
+    <div class="panel" id="net-panel" style="padding:18px 22px">
       <div class="sectitle"><div class="bar"></div><h2>Red deductiva del presupuesto 2027</h2><span class="note">de lo general a lo particular · clic en un nodo para abrir o cerrar · el grosor de cada conector es proporcional al monto</span></div>
+      <div id="net-controls">
       <div class="net-ctrl">
         <div class="fgroup"><label>Niveles de la cascada (desmarcá para saltear)</label><div class="net-levels" id="net-levels"></div></div>
       </div>
@@ -540,8 +558,22 @@ body.has-max::before{content:"";position:fixed;inset:0;background:rgba(22,28,48,
         <div class="spacer"></div>
         <span style="font-size:11.5px;color:var(--muted)" id="net-info"></span>
       </div>
+      </div>
       <div id="net-sel"></div>
-      <div id="net-box"><svg id="net-svg"></svg><div id="net-list"></div></div>
+      <div id="net-stage">
+        <div class="net-zoom" id="net-zoom">
+          <button class="nz-btn" id="nz-ctrl" title="Mostrar u ocultar los controles">☰ Controles</button>
+          <span class="nz-sep"></span>
+          <button class="nz-btn" id="nz-out" title="Alejar (Ctrl + rueda)">−</button>
+          <span class="nz-pct" id="nz-pct">100%</span>
+          <button class="nz-btn" id="nz-in" title="Acercar (Ctrl + rueda)">+</button>
+          <button class="nz-btn" id="nz-fit" title="Ajustar toda la red a la pantalla">Ajustar</button>
+          <button class="nz-btn" id="nz-100" title="Tamaño real">1:1</button>
+          <span class="nz-sep"></span>
+          <button class="nz-btn nz-fs" id="nz-fs" title="Pantalla completa (Esc para salir)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/></svg><span>Pantalla completa</span></button>
+        </div>
+        <div id="net-box"><svg id="net-svg"></svg><div id="net-list"></div></div>
+      </div>
     </div>
     <div id="net-tip"></div>
   </section>
@@ -2807,7 +2839,7 @@ const NET_LEVELS=[
   {k:'proy',lab:'Proyecto',f:r=>r.proy,col:(v,r)=>L_COLOR[r.L]},
   {k:'prod',lab:'Producto',f:r=>r.prod,col:()=>'#8A8FA6'},
 ];
-const NS={view:(window.innerWidth<760?'lista':'red'),on:new Set(NET_LEVELS.map(l=>l.k)),met:'t',open:new Set(['·']),more:{},struct:true,hits:[],hitI:0,hit:null};
+const NS={zoom:1,focus:null,view:(window.innerWidth<760?'lista':'red'),on:new Set(NET_LEVELS.map(l=>l.k)),met:'t',open:new Set(['·']),more:{},struct:true,hits:[],hitI:0,hit:null};
 let NET_ROOT=null;
 function netBuild(){
   const lv=NET_LEVELS.filter(l=>NS.on.has(l.k));
@@ -2904,12 +2936,19 @@ function renderRed(){
     </g>`;
   });
   const svg=document.getElementById('net-svg');
-  svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=g;
+  NS._W=W; NS._H=H;
+  svg.setAttribute('width',Math.round(W*NS.zoom));svg.setAttribute('height',Math.round(H*NS.zoom));svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=g;
+  document.getElementById('nz-pct').textContent=Math.round(NS.zoom*100)+'%';
+  if(NS.focus){ const fn=vis.find(v=>v.id===NS.focus); NS.focus=null;
+    if(fn){ const bx=document.getElementById('net-box'); const z=NS.zoom;
+      const nx=x(fn)*z, ny=(y(fn)+NH/2)*z, kidsRight=(x(fn)+COLW+NW+PADX)*z;
+      if(kidsRight>bx.scrollLeft+bx.clientWidth||nx<bx.scrollLeft) bx.scrollLeft=Math.max(0,nx-bx.clientWidth*0.25);
+      bx.scrollTop=Math.max(0,ny-bx.clientHeight/2); } }
   document.getElementById('net-info').textContent=`${vis.length} nodos visibles · ${NS.met==='t'?'techo':'requerido'} total ${MM(tot)}`;
   const tip=document.getElementById('net-tip'), idx=new Map(vis.map(n=>[n.id,n]));
   svg.querySelectorAll('.nnode').forEach(el=>{
     const n=idx.get(el.dataset.id);
-    el.onclick=()=>{ if(n.more){NS.more[n.parent.id]=(NS.more[n.parent.id]||12)+20;} else { if(n.kids.size){NS.open.has(n.id)?netClose(n.id):NS.open.add(n.id);} NS.sel=n.id; } renderRed(); };
+    el.onclick=()=>{ if(NS._dragged)return; if(n.more){NS.more[n.parent.id]=(NS.more[n.parent.id]||12)+20;} else { if(n.kids.size){NS.open.has(n.id)?netClose(n.id):NS.open.add(n.id);} NS.sel=n.id; NS.focus=n.id; } renderRed(); };
     el.onmousemove=e=>{
       const path=[];let p=n;while(p){path.unshift(p.name);p=p.parent;}
       tip.innerHTML=`<div style="color:var(--ice);font-size:10.5px;margin-bottom:4px">${path.map(esc).join(' › ')}</div><b>${esc(n.name)}</b><br>Techo 2027: ${MM(n.t)} · Requerido: ${MM(n.req)}${n.req?' · Cobertura '+pctTxt(n.t,n.req):''}<br>${pctTxt(netVal(n),tot)} del total${n.proy?` · ${n.proy.size} proyectos · ${n.prod.size} productos`:''}`;
@@ -2957,6 +2996,40 @@ function initRed(){
   document.getElementById('net-depth').onchange=e=>{netOpenDepth(+e.target.value);renderRed();};
   document.querySelectorAll('#net-met button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#net-met button').forEach(x=>x.classList.remove('on'));b.classList.add('on');NS.met=b.dataset.m;renderRed();});
   document.querySelectorAll('#net-view button').forEach(b=>b.onclick=()=>{NS.view=b.dataset.v;renderRed();});
+  const nbox=document.getElementById('net-box'), panel=document.getElementById('net-panel');
+  const setZoom=(z,cx,cy)=>{ // mantiene el punto (cx,cy) del contenedor fijo al hacer zoom
+    z=Math.max(0.2,Math.min(2.5,z)); const old=NS.zoom; if(Math.abs(z-old)<1e-3)return;
+    cx=cx??nbox.clientWidth/2; cy=cy??nbox.clientHeight/2;
+    const px=(nbox.scrollLeft+cx)/old, py=(nbox.scrollTop+cy)/old;
+    NS.zoom=z; renderRed(); nbox.scrollLeft=px*z-cx; nbox.scrollTop=py*z-cy; };
+  const fit=()=>{ if(NS.view!=='red'){NS.view='red';renderRed();}
+    const z=Math.min((nbox.clientWidth-6)/NS._W,(nbox.clientHeight-6)/NS._H,1); NS.zoom=Math.max(0.2,z); renderRed(); nbox.scrollLeft=0; nbox.scrollTop=0; };
+  document.getElementById('nz-in').onclick=()=>setZoom(NS.zoom*1.2);
+  document.getElementById('nz-out').onclick=()=>setZoom(NS.zoom/1.2);
+  document.getElementById('nz-100').onclick=()=>setZoom(1);
+  document.getElementById('nz-fit').onclick=fit;
+  document.getElementById('nz-ctrl').onclick=()=>{document.getElementById('net-controls').classList.toggle('hide');};
+  nbox.addEventListener('wheel',e=>{ if(!(e.ctrlKey||e.metaKey)||NS.view!=='red')return; e.preventDefault();
+    const r=nbox.getBoundingClientRect(); setZoom(NS.zoom*(e.deltaY<0?1.1:1/1.1),e.clientX-r.left,e.clientY-r.top); },{passive:false});
+  // arrastrar para desplazarse
+  let drag=null;
+  nbox.addEventListener('mousedown',e=>{ if(e.button!==0)return; drag={x:e.clientX,y:e.clientY,l:nbox.scrollLeft,t:nbox.scrollTop,m:false}; NS._dragged=false; });
+  window.addEventListener('mousemove',e=>{ if(!drag)return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    if(!drag.m&&Math.abs(dx)+Math.abs(dy)>4){drag.m=true;nbox.classList.add('drag');}
+    if(drag.m){nbox.scrollLeft=drag.l-dx;nbox.scrollTop=drag.t-dy;NS._dragged=true;} });
+  window.addEventListener('mouseup',()=>{ if(drag){nbox.classList.remove('drag');setTimeout(()=>NS._dragged=false,0);} drag=null; });
+  // pantalla completa real (Fullscreen API) con alternativa de maximizar
+  const fsBtn=document.getElementById('nz-fs');
+  const isFS=()=>document.fullscreenElement===panel||document.webkitFullscreenElement===panel||panel.classList.contains('maxed');
+  const syncFS=()=>{ fsBtn.querySelector('span').textContent=isFS()?'Salir':'Pantalla completa'; };
+  new MutationObserver(syncFS).observe(panel,{attributes:true,attributeFilter:['class']});
+  fsBtn.onclick=()=>{
+    if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);return;}
+    if(panel.classList.contains('maxed')){toggleMax(panel,false);syncFS();return;}
+    const req=panel.requestFullscreen||panel.webkitRequestFullscreen;
+    if(req){ Promise.resolve(req.call(panel)).catch(()=>{toggleMax(panel,true);syncFS();}); } else { toggleMax(panel,true); syncFS(); } };
+  document.addEventListener('fullscreenchange',syncFS); document.addEventListener('webkitfullscreenchange',syncFS);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape')setTimeout(syncFS,0); });
   document.getElementById('net-struct').onchange=e=>{NS.struct=e.target.checked;netBuild();renderRed();};
   document.getElementById('net-q').onkeydown=e=>{if(e.key==='Enter'){const q=e.target.value.trim();if(q)netSearch(q);else{NS.hit=null;renderRed();}}};
   document.getElementById('net-next').onclick=()=>{if(NS.hits.length){NS.hitI++;netGo();}else{const q=document.getElementById('net-q').value.trim();if(q)netSearch(q);}};

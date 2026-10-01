@@ -200,7 +200,7 @@ def main(xlsx, xlsx_ing=None):
         lp, ls, crit = classify(inc, s('CEGE'), proy, prod, pp, ppd, det, efgh)
         lines.append(dict(cege=s('CEGE'), cod=s('Administrador'), proy=proy, prod=prod, prio=prio, pp=pp, ppd=ppd,
                           inc=INC_MAP[inc], efgh=efgh, req=num(r[iReq]), hom=num(r[iHom]), t=num(r[iT]), s=num(r[iS]),
-                          m=[num(r[i]) for i in iMes], L=lp, Ls=ls, crit=crit))
+                          m=[num(r[i]) for i in iMes], mr=[num(r[iReq + 1 + k]) for k in range(12)], L=lp, Ls=ls, crit=crit))
 
     # agregamos a nivel proyecto·producto·pospre (clave de análisis) para aliviar el tamaño
     agg = {}
@@ -208,12 +208,13 @@ def main(xlsx, xlsx_ing=None):
         k = (l['cege'], l['proy'], l['prod'], l['pp'], l['efgh'], l['prio'], l['L'])
         a = agg.get(k)
         if a is None:
-            a = agg[k] = dict(l, n=0, req=0.0, hom=0.0, t=0.0, s=0.0, m=[0.0] * 12)
+            a = agg[k] = dict(l, n=0, req=0.0, hom=0.0, t=0.0, s=0.0, m=[0.0] * 12, mr=[0.0] * 12)
             a['Ls'] = list(l['Ls'])
         a['n'] += 1
         for f_ in ('req', 'hom', 't', 's'):
             a[f_] += l[f_]
         a['m'] = [x + y for x, y in zip(a['m'], l['m'])]
+        a['mr'] = [x + y for x, y in zip(a['mr'], l['mr'])]
     L = []
     for a in agg.values():
         pm = pmeta.get(a['pp'], {})
@@ -221,7 +222,7 @@ def main(xlsx, xlsx_ing=None):
         cri = pm.get('criticidad') or ('Gastos en Personal' if a['inc'].startswith('1') else 'Complementario')
         L.append(dict(cege=a['cege'], cod=str(a['cod']).split('.')[0], proy=a['proy'], prod=a['prod'], prio=a['prio'], pp=a['pp'], ppd=a['ppd'],
                       inc=a['inc'], rub=rub, cri=cri, efgh=a['efgh'], req=round(a['req'], 2), t=round(a['t'], 2),
-                      s=round(a['s'], 2), m=[round(x, 2) for x in a['m']], L=a['L'], Ls=a['Ls'], crit=a['crit'], n=a['n']))
+                      s=round(a['s'], 2), m=[round(x, 2) for x in a['m']], mr=[round(x, 2) for x in a['mr']], L=a['L'], Ls=a['Ls'], crit=a['crit'], n=a['n']))
 
     # ---------- Distribución de techos ----------
     D = rows_of(wb['Distribución de techos'])

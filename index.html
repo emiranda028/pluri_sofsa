@@ -526,7 +526,7 @@ table.compact td{font-size:13px}
         <div class="spacer"></div>
         <button class="btn gold" id="mef-xlsx" style="padding:9px 16px">⬇ Exportar Excel (.xlsx)</button>
       </div>
-      <div style="font-size:12px;color:var(--muted);margin:-2px 0 10px">El Excel incluye: <b>Resumen</b> (requerido vs techo por inciso y componente, y ambos por mes), <b>Requerido por área</b> y <b>Techo por área</b> (área › inciso › PosPre por mes), <b>Áreas</b> (requerido, techo, brecha y cobertura anual por área), <b>Comparativo</b> (requerido, techo, brecha y cobertura anual por PosPre), hojas mensuales de <b>Techo</b> y de <b>Requerido</b> para Gasto Habitual, Emergencia Ferroviaria y Total, y <b>Base</b> (formato tabla con columna Monto, lista para tablas dinámicas). Montos en pesos. Respeta los filtros de inciso, área y búsqueda.</div>
+      <div style="font-size:12px;color:var(--muted);margin:-2px 0 10px">El Excel incluye: <b>Resumen</b> (requerido vs techo por inciso y componente, y ambos por mes), <b>Requerido por área</b> y <b>Techo por área</b> (área › inciso › PosPre por mes), <b>Áreas</b> (requerido, techo, brecha y cobertura anual por área, inciso y PosPre), <b>Comparativo</b> (requerido, techo, brecha y cobertura anual por PosPre), hojas mensuales de <b>Techo</b> y de <b>Requerido</b> para Gasto Habitual, Emergencia Ferroviaria y Total, y <b>Base</b> (formato tabla con columna Monto, lista para tablas dinámicas). Montos en pesos. Respeta los filtros de inciso, área y búsqueda.</div>
       <div class="tablewrap" style="max-height:78vh"><table id="me-table" class="mtab"></table></div>
     </div>
   </section>
@@ -3458,13 +3458,15 @@ function exportMensXLSX(){
         b.incs.forEach(x=>{R.push([{v:'   '+x.inc,s:5},{v:'',s:5},...nums(x[k],6)]); x.pps.forEach(p=>R.push([{v:'      '+p.pp},{v:p.desc+(p.comps.size===1?' ('+[...p.comps][0]+')':'')},...nums(p[k],2)]));});});
       R.push([{v:`TOTAL ${lab.toUpperCase()}`,s:8},{v:'',s:8},...nums(AT[k],9)]);
       sheets.push({name:`${lab} por área`,xml:XLSX_MINI.sheet(R,{widths:[42,40,...Array(12).fill(15),17],freezeRow:4,freezeCol:2,hdrRow:4})});});
-    const R=[...title('Presupuesto 2027 · Requerido vs techo por área',sub)];
-    R.push(['Área (centro gestor)','Requerido 2027','Techo 2027','Brecha (req. − techo)','Cobertura','Requerido GH','Requerido EF','Techo GH','Techo EF'].map(v=>({v,s:1})));
-    AT.blocks.forEach(b=>{const g=base.filter(x=>areaOf(x)===b.label); const sm=(c,f)=>g.filter(x=>x.efgh===c).reduce((a,x)=>a+x[f],0);
-      R.push([{v:b.label},...cmp(aTot(b.t),aTot(b.r),2,11),{v:sm('GH','req'),s:2},{v:sm('EF','req'),s:2},{v:sm('GH','t'),s:2},{v:sm('EF','t'),s:2}]);});
-    const sm=(c,f)=>base.filter(x=>x.efgh===c).reduce((a,x)=>a+x[f],0);
-    R.push([{v:'TOTAL',s:8},...cmp(aTot(AT.t),aTot(AT.r),9,13),{v:sm('GH','req'),s:9},{v:sm('EF','req'),s:9},{v:sm('GH','t'),s:9},{v:sm('EF','t'),s:9}]);
-    sheets.push({name:'Áreas',xml:XLSX_MINI.sheet(R,{widths:[46,18,18,20,11,18,18,18,18],freezeRow:4,freezeCol:1,hdrRow:4})});
+    const R=[...title('Presupuesto 2027 · Requerido vs techo por área, inciso y PosPre',sub)];
+    R.push(['Área / Inciso / PosPre','Descripción','Requerido 2027','Techo 2027','Brecha (req. − techo)','Cobertura','Requerido GH','Requerido EF','Techo GH','Techo EF'].map(v=>({v,s:1})));
+    const split=(g,c,f)=>g.filter(x=>x.efgh===c).reduce((a,x)=>a+x[f],0);
+    const row=(lab,desc,g,sT,sN,sP)=>[{v:lab,s:sT},{v:desc,s:sT},...cmp(g.reduce((a,x)=>a+x.t,0),g.reduce((a,x)=>a+x.req,0),sN,sP),{v:split(g,'GH','req'),s:sN},{v:split(g,'EF','req'),s:sN},{v:split(g,'GH','t'),s:sN},{v:split(g,'EF','t'),s:sN}];
+    AT.blocks.forEach(b=>{const ga=base.filter(x=>areaOf(x)===b.label); R.push(row(b.label,'',ga,3,4,12));
+      b.incs.forEach(x=>{const gi=ga.filter(y=>y.inc===x.inc); R.push(row('   '+x.inc,'',gi,5,6,12));
+        x.pps.forEach(p=>{const gp=gi.filter(y=>y.pp===p.pp); R.push(row('      '+p.pp,p.desc,gp,0,2,11));});});});
+    R.push(row('TOTAL','',base,8,9,13));
+    sheets.push({name:'Áreas',xml:XLSX_MINI.sheet(R,{widths:[46,36,18,18,20,11,18,18,18,18],freezeRow:4,freezeCol:2,hdrRow:4})});
   }
   // Comparativo anual por PosPre
   { const R=[...title('Presupuesto 2027 · Comparativo anual por PosPre',sub)];

@@ -8,6 +8,7 @@ La pestaña inicial es **Red del presupuesto**. El tablero se adapta a celulares
 
 - **Presupuesto 2027** — presupuesto anual con los techos informados por el Ministerio de Economía: cascada plurianual → techo → presupuesto presentado, techos por inciso, cuota mensual, Gasto Habitual vs Emergencia Ferroviaria, ingresos propios, distribución por centro gestor (con compromisos 2027 ya asignados) y detalle por PosPre.
 - **Mensualizado** — presupuesto 2027 por mes, inciso y PosPre, abierto en Gasto Habitual y Emergencia Ferroviaria, con techo, requerido y brecha. Exporta a Excel (.xlsx): Resumen, Comparativo, Techo y Requerido mensual (GH, EF, Total) y Base.
+- **Plurianual** (pestaña existente) — suma el plurianual mensualizado: 2027 por mes (AxI) y 2028/2029 anual, por inciso, PosPre y componente, comparado con el techo 2027 y exportable a Excel.
 - **Histórico y ejecución** — techos y sobre techos 2020–2027 (pedidos vs otorgados), formulación vs presupuesto otorgado vs ejecución 2022–2026, en pesos corrientes o constantes de 2027. Datos cargados desde "Presupuesto y Techos.xlsx" en la constante `HIST` de `index.html`.
 - **Inciso IV · SIFER** — Bienes de Uso por fuente de financiamiento (SIFER = Material Rodante DMU, PosPre 4.3.3.0.1; resto Tesoro), detalle de las DMU y proyectos con filtros, apertura mensual y CSV.
 - **Ingresos y subsidio** — gasto operativo (gastos corrientes − ingresos), subsidio por mes (ingresos / gastos corrientes), subsidio por pasajero pago, ingresos y pasajeros pagos por línea y mes.

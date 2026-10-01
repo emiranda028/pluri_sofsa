@@ -262,10 +262,41 @@ def main(xlsx, xlsx_ing=None):
         if str(r[0] or '').startswith('Total Gastos en Personal'):
             pluri_pp['Personal'] = dict(desc='Gastos en Personal', pluri=num(r[3]), req=num(r[4]))
 
+    # ---------- Plurianual 2027-2029 mensualizado (hoja "Pluri 27-28-29", valores AxI) ----------
+    # 2027 viene por mes; 2028 y 2029 son anuales. Emergencia/Habitual: en Bienes de Uso según la marca de
+    # cada fila; en el resto, proporción por PosPre del template SSTF (la misma que usa el tablero plurianual).
+    P = rows_of(wb['Pluri 27-28-29'])
+    imp_pp = {'IVA': '3.8.9.0.2', 'IDCB': '3.8.9.0.3', 'IIBB': '3.8.9.0.1'}
+    pacc = {}
+    for r in P[8:]:
+        r = list(r) + [None] * 60
+        inc = str(r[6] or '').strip()
+        if inc not in INC_MAP:
+            continue
+        pp = str(r[2] or '').strip()
+        pp = 'Personal' if inc == 'Gastos en Personal' else imp_pp.get(pp, pp)
+        m = [num(r[41 + k]) for k in range(12)]
+        y = [num(r[53]), num(r[54]), num(r[55])]
+        pm = pmeta.get(pp, {})
+        if inc == 'Bienes de Uso - Inversiones':
+            parts = [('EF' if 'emergencia' in str(r[9] or '').lower() else 'GH', 1.0)]
+        else:
+            tot = (pm.get('gh27', 0) + pm.get('ef27', 0)) or 1
+            parts = [('GH', pm.get('gh27', tot) / tot), ('EF', pm.get('ef27', 0) / tot)]
+        for c, w in parts:
+            if w <= 0:
+                continue
+            a = pacc.setdefault((c, pp), dict(pp=pp, desc=pm.get('desc') or str(r[3] or '').strip(), inc=INC_MAP[inc],
+                                               rub=pm.get('rubro', ''), cri=pm.get('criticidad', ''), imp=pm.get('imputacion', ''),
+                                               efgh=c, m=[0.0] * 12, y=[0.0, 0.0, 0.0]))
+            a['m'] = [x + v * w for x, v in zip(a['m'], m)]
+            a['y'] = [x + v * w for x, v in zip(a['y'], y)]
+    pluri_m = [dict(v, m=[round(x, 2) for x in v['m']], y=[round(x, 2) for x in v['y']]) for v in pacc.values() if any(v['y'])]
+
     out = dict(
         version='Ppto 2027 - V3 (versión final presentada)',
         lineamientos=LINEAMIENTOS, lines=L, dist=dist_rows, ingresos_op=ingresos_op, ceges=ceges,
-        ingresos=ing, ing_det=ingresos_detalle(xlsx_ing) if xlsx_ing else [], pax=[num(x) for x in pax[2:14]] if pax else [], pluri_pp=pluri_pp,
+        ingresos=ing, pluri_m=pluri_m, ing_det=ingresos_detalle(xlsx_ing) if xlsx_ing else [], pax=[num(x) for x in pax[2:14]] if pax else [], pluri_pp=pluri_pp,
     )
     json.dump(out, open(os.path.join(ROOT, 'data', 'anual_2027.json'), 'w', encoding='utf-8'), ensure_ascii=False)
 

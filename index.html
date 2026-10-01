@@ -516,16 +516,17 @@ table.compact td{font-size:13px}
     <div class="panel" style="padding:18px 22px">
       <div class="sectitle"><div class="bar"></div><h2>Presupuesto 2027 mensualizado por inciso y PosPre</h2><span class="note" id="me-title-note"></span></div>
       <div class="lfilters">
-        <div class="fgroup"><label>Agrupar por</label><div class="seg" id="mef-grp"><button data-g="comp" class="on">Componente › Inciso › PosPre</button><button data-g="inc">Inciso › PosPre › Componente</button></div></div>
+        <div class="fgroup"><label>Agrupar por</label><div class="seg" id="mef-grp"><button data-g="comp" class="on">Componente › Inciso › PosPre</button><button data-g="inc">Inciso › PosPre › Componente</button><button data-g="area">Área › Inciso › PosPre</button></div></div>
         <div class="fgroup"><label>Monto</label><div class="seg" id="mef-met"><button data-m="t" class="on">Techo</button><button data-m="r">Requerido</button><button data-m="b">Brecha</button></div></div>
         <div class="fgroup"><label>Componente</label><select id="mef-comp"><option value="">Ambos</option><option value="GH">Gasto Habitual</option><option value="EF">Emergencia Ferroviaria</option></select></div>
         <div class="fgroup"><label>Inciso</label><select id="mef-inc"></select></div>
+        <div class="fgroup"><label>Área (centro gestor)</label><select id="mef-area"></select></div>
         <div class="fgroup"><label>Unidad</label><div class="seg" id="mef-unit"><button data-u="M" class="on">Millones de $</button><button data-u="P">Pesos</button></div></div>
         <div class="fgroup"><label>Buscar PosPre</label><input class="search" id="mef-q" placeholder="código o descripción"/></div>
         <div class="spacer"></div>
         <button class="btn gold" id="mef-xlsx" style="padding:9px 16px">⬇ Exportar Excel (.xlsx)</button>
       </div>
-      <div style="font-size:12px;color:var(--muted);margin:-2px 0 10px">El Excel incluye: <b>Resumen</b> (requerido vs techo por inciso y componente, y ambos por mes), <b>Comparativo</b> (requerido, techo, brecha y cobertura anual por PosPre), hojas mensuales de <b>Techo</b> y de <b>Requerido</b> para Gasto Habitual, Emergencia Ferroviaria y Total, y <b>Base</b> (formato tabla con columna Monto, lista para tablas dinámicas). Montos en pesos. Respeta los filtros de inciso y búsqueda.</div>
+      <div style="font-size:12px;color:var(--muted);margin:-2px 0 10px">El Excel incluye: <b>Resumen</b> (requerido vs techo por inciso y componente, y ambos por mes), <b>Requerido por área</b> y <b>Techo por área</b> (área › inciso › PosPre por mes), <b>Áreas</b> (requerido, techo, brecha y cobertura anual por área), <b>Comparativo</b> (requerido, techo, brecha y cobertura anual por PosPre), hojas mensuales de <b>Techo</b> y de <b>Requerido</b> para Gasto Habitual, Emergencia Ferroviaria y Total, y <b>Base</b> (formato tabla con columna Monto, lista para tablas dinámicas). Montos en pesos. Respeta los filtros de inciso, área y búsqueda.</div>
       <div class="tablewrap" style="max-height:78vh"><table id="me-table" class="mtab"></table></div>
     </div>
   </section>
@@ -3280,12 +3281,13 @@ function drawHist(){
 // =====================================================================
 //  PESTAÑA: MENSUALIZADO (inciso · PosPre · GH/EF) + EXPORTACIÓN XLSX
 // =====================================================================
-const MEF={grp:'comp',comp:'',inc:'',unit:'M',q:'',met:'t'};
+const MEF={grp:'comp',comp:'',inc:'',area:'',unit:'M',q:'',met:'t'};
+const areaOf=r=>(typeof CEGE_NAME!=='undefined'&&CEGE_NAME[r.cod])||r.cege||'(sin área)';
 const COMP_LAB={GH:'Gasto Habitual',EF:'Emergencia Ferroviaria'};
 const MET_LAB={t:'Techo 2027',r:'Requerido 2027',b:'Brecha (requerido − techo)'};
 function meRows(){
   const q=MEF.q.toLowerCase();
-  return AL.filter(r=>(!MEF.comp||r.efgh===MEF.comp)&&(!MEF.inc||r.inc===MEF.inc)&&(!q||(r.pp+' '+r.ppd).toLowerCase().includes(q)));
+  return AL.filter(r=>(!MEF.comp||r.efgh===MEF.comp)&&(!MEF.inc||r.inc===MEF.inc)&&(!MEF.area||areaOf(r)===MEF.area)&&(!q||(r.pp+' '+r.ppd).toLowerCase().includes(q)));
 }
 function meAgg(rows){ // comp -> inc -> pp -> {desc, t[12] techo, r[12] requerido}
   const out={};
@@ -3298,6 +3300,15 @@ const nSum=list=>({t:mSum(list.map(x=>x.t)),r:mSum(list.map(x=>x.r))});
 const aTot=a=>a.reduce((x,y)=>x+y,0);
 const ppSort=(a,b)=>a.pp.localeCompare(b.pp,undefined,{numeric:true});
 function meArr(n,met=MEF.met){ return met==='t'?n.t:met==='r'?n.r:n.r.map((v,i)=>v-n.t[i]); }
+function meAreaTree(rows){ // área -> inciso -> PosPre (ambos componentes sumados; etiqueta si es uno solo)
+  const byA=new Map();
+  rows.forEach(x=>{const a=areaOf(x); if(!byA.has(a))byA.set(a,new Map()); const bi=byA.get(a); if(!bi.has(x.inc))bi.set(x.inc,new Map()); const bp=bi.get(x.inc);
+    if(!bp.has(x.pp))bp.set(x.pp,{pp:x.pp,desc:x.ppd,t:Array(12).fill(0),r:Array(12).fill(0),comps:new Set()});
+    const p=bp.get(x.pp); x.m.forEach((v,k)=>p.t[k]+=v); (x.mr||[]).forEach((v,k)=>p.r[k]+=v); p.comps.add(x.efgh);});
+  const blocks=[...byA.entries()].map(([a,bi])=>{const incs=INC_ORDER.filter(i=>bi.has(i)).map(i=>{const pps=[...bi.get(i).values()].sort(ppSort);return {inc:i,pps,...nSum(pps)};});return {label:a,incs,...nSum(incs)};})
+    .sort((a,b)=>aTot(b.r)-aTot(a.r));
+  return {blocks,...nSum(blocks)};
+}
 function meTree(rows){ // estructura común para pantalla y Excel
   const A=meAgg(rows), comps=['GH','EF'].filter(c=>A[c]);
   const incs=INC_ORDER.filter(i=>comps.some(c=>A[c][i]));
@@ -3313,25 +3324,26 @@ function meTree(rows){ // estructura común para pantalla y Excel
   return {blocks,...nSum(blocks)};
 }
 function renderMens(){
-  const rows=meRows(), T=meTree(rows);
+  const rows=meRows(), T=MEF.grp==='area'?meAreaTree(rows):meTree(rows);
   const f=v=>MEF.unit==='M'?nf1.format(v/1e6):nf0.format(Math.round(v));
   const isB=MEF.met==='b';
   const cell=(v,cls='')=>`<td class="mono ${cls}${isB&&v>0.5?' delta up':''}">${Math.abs(v)>0.5?f(v):'—'}</td>`;
   const tdm=(n)=>{const a=meArr(n), tt=aTot(n.t), rr=aTot(n.r);
     return a.map(v=>cell(v)).join('')+`<td class="mono tot">${f(aTot(a))}</td>`+
       `<td class="mono xr">${f(rr)}</td><td class="mono xr">${f(tt)}</td><td class="mono xr">${rr?nf1.format(tt/rr*100)+'%':'—'}</td>`;};
-  let h=`<thead><tr><th class="l">${MEF.grp==='comp'?'Componente › Inciso › PosPre':'Inciso › PosPre › Componente'}</th>${MES.map(m=>`<th>${m}</th>`).join('')}<th>Total ${isB?'brecha':MEF.met==='r'?'requerido':'techo'}</th><th class="xr">Requerido anual</th><th class="xr">Techo anual</th><th class="xr">Cobertura</th></tr></thead><tbody>`;
-  if(MEF.grp==='comp'){
-    T.blocks.forEach(b=>{h+=`<tr class="m-comp"><td class="l">${b.label}</td>${tdm(b)}</tr>`;
+  let h=`<thead><tr><th class="l">${{comp:'Componente › Inciso › PosPre',inc:'Inciso › PosPre › Componente',area:'Área › Inciso › PosPre'}[MEF.grp]}</th>${MES.map(m=>`<th>${m}</th>`).join('')}<th>Total ${isB?'brecha':MEF.met==='r'?'requerido':'techo'}</th><th class="xr">Requerido anual</th><th class="xr">Techo anual</th><th class="xr">Cobertura</th></tr></thead><tbody>`;
+  if(MEF.grp==='comp'||MEF.grp==='area'){
+    T.blocks.forEach(b=>{h+=`<tr class="m-comp"><td class="l">${esc(b.label)}</td>${tdm(b)}</tr>`;
       b.incs.forEach(x=>{h+=`<tr class="m-inc"><td class="l" style="padding-left:18px">${x.inc}</td>${tdm(x)}</tr>`;
-        x.pps.forEach(p=>{h+=`<tr class="m-pp"><td class="l" style="padding-left:34px"><span class="pp">${esc(p.pp)}</span>${esc(p.desc)}</td>${tdm(p)}</tr>`;});});});
+        x.pps.forEach(p=>{const tg=p.comps&&p.comps.size===1?`<span class="tag ${p.comps.has('EF')?'baja':'alta'}" style="margin-left:8px">${[...p.comps][0]}</span>`:'';
+          h+=`<tr class="m-pp"><td class="l" style="padding-left:34px"><span class="pp">${esc(p.pp)}</span>${esc(p.desc)}${tg}</td>${tdm(p)}</tr>`;});});});
   } else {
     T.blocks.forEach(b=>{h+=`<tr class="m-comp"><td class="l">${b.label}</td>${tdm(b)}</tr>`;
       b.pps.forEach(p=>{const one=p.parts.length===1?`<span class="tag ${p.parts[0].comp==='EF'?'baja':'alta'}" style="margin-left:8px">${p.parts[0].comp==='EF'?'EF':'GH'}</span>`:'';
         h+=`<tr class="m-inc"><td class="l" style="padding-left:18px"><span class="pp">${esc(p.pp)}</span>${esc(p.desc)}${one}</td>${tdm(p)}</tr>`;
         if(p.parts.length>1) p.parts.forEach(x=>{h+=`<tr class="m-sub"><td class="l" style="padding-left:40px">${COMP_LAB[x.comp]}</td>${tdm(x)}</tr>`;});});});
   }
-  h+=`<tr class="total"><td class="l">TOTAL${MEF.comp?' · '+COMP_LAB[MEF.comp]:''}</td>${tdm(T).replace(/class="mono tot"/,'class="mono tot gold"')}</tr></tbody>`;
+  h+=`<tr class="total"><td class="l">TOTAL${MEF.comp?' · '+COMP_LAB[MEF.comp]:''}${MEF.area?' · '+esc(MEF.area):''}</td>${tdm(T).replace(/class="mono tot"/,'class="mono tot gold"')}</tr></tbody>`;
   document.getElementById('me-table').innerHTML=h;
   document.getElementById('me-title-note').textContent=`${MET_LAB[MEF.met]} · Gasto Habitual y Emergencia Ferroviaria · ${MEF.unit==='M'?'millones de $':'pesos'}`;
   // KPIs
@@ -3412,7 +3424,7 @@ const XLSX_MINI=(()=>{
 })();
 
 function exportMensXLSX(){
-  const base=AL.filter(r=>(!MEF.inc||r.inc===MEF.inc)&&(!MEF.q||(r.pp+' '+r.ppd).toLowerCase().includes(MEF.q.toLowerCase())));
+  const base=AL.filter(r=>(!MEF.inc||r.inc===MEF.inc)&&(!MEF.area||areaOf(r)===MEF.area)&&(!MEF.q||(r.pp+' '+r.ppd).toLowerCase().includes(MEF.q.toLowerCase())));
   const A=meAgg(base);
   const incs=INC_ORDER.filter(i=>['GH','EF'].some(c=>A[c]&&A[c][i]));
   const hdr=(first,tail=['Total 2027'])=>[...first.map(v=>({v,s:1})),...MES.map(v=>({v,s:1})),...tail.map(v=>({v,s:1}))];
@@ -3420,7 +3432,7 @@ function exportMensXLSX(){
   const cmp=(t,r,sN,sP)=>[{v:r,s:sN},{v:t,s:sN},{v:r-t,s:sN},{v:r?t/r:null,s:sP}];
   const title=(t,sub)=>[[{v:t,s:7}],[{v:sub,s:10}],[]];
   const W=[14,44,...Array(12).fill(15),17];
-  const sub=`SOFSA · Presupuesto 2027 · pesos corrientes · ${ANUAL.version}${MEF.inc?' · inciso '+MEF.inc:''}${MEF.q?' · filtro "'+MEF.q+'"':''} · generado ${new Date().toLocaleDateString('es-AR')}`;
+  const sub=`SOFSA · Presupuesto 2027 · pesos corrientes · ${ANUAL.version}${MEF.inc?' · inciso '+MEF.inc:''}${MEF.area?' · área '+MEF.area:''}${MEF.q?' · filtro "'+MEF.q+'"':''} · generado ${new Date().toLocaleDateString('es-AR')}`;
   const sheets=[];
   const ppOf=(comps,i)=>{const ppm=new Map();comps.forEach(c=>Object.values((A[c]||{})[i]||{}).forEach(p=>{if(!ppm.has(p.pp))ppm.set(p.pp,{pp:p.pp,desc:p.desc,t:Array(12).fill(0),r:Array(12).fill(0)});const x=ppm.get(p.pp);p.t.forEach((v,k)=>x.t[k]+=v);p.r.forEach((v,k)=>x.r[k]+=v);}));return [...ppm.values()].sort(ppSort);};
   // Resumen
@@ -3437,6 +3449,22 @@ function exportMensXLSX(){
         const ct=nSum(incs.filter(i=>A[c][i]).map(i=>nSum(Object.values(A[c][i]))));R.push([{v:'Total '+COMP_LAB[c],s:3},{v:'',s:3},...nums(ct[k],4)]);});
       R.push([{v:'TOTAL',s:8},{v:'',s:8},...nums(all[k],9)]);});
     sheets.push({name:'Resumen',xml:XLSX_MINI.sheet(R,{widths:[26,30,...Array(12).fill(15),17],freezeRow:4,freezeCol:2,hdrRow:4})});
+  }
+  // Por área: requerido y techo mensual + comparativo anual
+  { const AT=meAreaTree(base);
+    [['r','Requerido'],['t','Techo']].forEach(([k,lab])=>{
+      const R=[...title(`Presupuesto 2027 · ${lab} mensual por área (centro gestor)`,sub)]; R.push(hdr(['Área / Inciso / PosPre','Descripción']));
+      AT.blocks.forEach(b=>{R.push([{v:b.label,s:3},{v:'',s:3},...nums(b[k],4)]);
+        b.incs.forEach(x=>{R.push([{v:'   '+x.inc,s:5},{v:'',s:5},...nums(x[k],6)]); x.pps.forEach(p=>R.push([{v:'      '+p.pp},{v:p.desc+(p.comps.size===1?' ('+[...p.comps][0]+')':'')},...nums(p[k],2)]));});});
+      R.push([{v:`TOTAL ${lab.toUpperCase()}`,s:8},{v:'',s:8},...nums(AT[k],9)]);
+      sheets.push({name:`${lab} por área`,xml:XLSX_MINI.sheet(R,{widths:[42,40,...Array(12).fill(15),17],freezeRow:4,freezeCol:2,hdrRow:4})});});
+    const R=[...title('Presupuesto 2027 · Requerido vs techo por área',sub)];
+    R.push(['Área (centro gestor)','Requerido 2027','Techo 2027','Brecha (req. − techo)','Cobertura','Requerido GH','Requerido EF','Techo GH','Techo EF'].map(v=>({v,s:1})));
+    AT.blocks.forEach(b=>{const g=base.filter(x=>areaOf(x)===b.label); const sm=(c,f)=>g.filter(x=>x.efgh===c).reduce((a,x)=>a+x[f],0);
+      R.push([{v:b.label},...cmp(aTot(b.t),aTot(b.r),2,11),{v:sm('GH','req'),s:2},{v:sm('EF','req'),s:2},{v:sm('GH','t'),s:2},{v:sm('EF','t'),s:2}]);});
+    const sm=(c,f)=>base.filter(x=>x.efgh===c).reduce((a,x)=>a+x[f],0);
+    R.push([{v:'TOTAL',s:8},...cmp(aTot(AT.t),aTot(AT.r),9,13),{v:sm('GH','req'),s:9},{v:sm('EF','req'),s:9},{v:sm('GH','t'),s:9},{v:sm('EF','t'),s:9}]);
+    sheets.push({name:'Áreas',xml:XLSX_MINI.sheet(R,{widths:[46,18,18,20,11,18,18,18,18],freezeRow:4,freezeCol:1,hdrRow:4})});
   }
   // Comparativo anual por PosPre
   { const R=[...title('Presupuesto 2027 · Comparativo anual por PosPre',sub)];
@@ -3460,10 +3488,12 @@ function exportMensXLSX(){
   };
   ['t','r'].forEach(k=>{ if(A.GH)compSheet('Gasto Habitual',['GH'],k); if(A.EF)compSheet('Emergencia Ferroviaria',['EF'],k); compSheet('Total',['GH','EF'],k); });
   // Base plana
-  { const R=[hdr(['Monto','Componente','Inciso','PosPre','Descripción'])];
-    [['t','Techo 2027'],['r','Requerido 2027']].forEach(([k,lab])=>['GH','EF'].filter(c=>A[c]).forEach(c=>incs.forEach(i=>Object.values(A[c][i]||{}).sort(ppSort).forEach(p=>R.push([{v:lab},{v:COMP_LAB[c]},{v:i},{v:p.pp},{v:p.desc},...nums(p[k],2)])))));
-    const lastCol=XLSX_MINI.col(5+12), ref=`A1:${lastCol}${R.length}`;
-    sheets.push({name:'Base',filterRef:ref,xml:XLSX_MINI.sheet(R,{widths:[16,22,26,12,40,...Array(12).fill(15),17],freezeRow:1,autoFilter:ref,hdrRow:1})});
+  { const R=[hdr(['Monto','Componente','Área (centro gestor)','Inciso','PosPre','Descripción'])];
+    const g=new Map(); base.forEach(x=>{const k=[x.efgh,areaOf(x),x.inc,x.pp].join('|'); if(!g.has(k))g.set(k,{c:x.efgh,a:areaOf(x),i:x.inc,pp:x.pp,desc:x.ppd,t:Array(12).fill(0),r:Array(12).fill(0)}); const o=g.get(k); x.m.forEach((v,j)=>o.t[j]+=v); (x.mr||[]).forEach((v,j)=>o.r[j]+=v);});
+    const arr=[...g.values()].sort((p,q)=>p.c.localeCompare(q.c)||p.a.localeCompare(q.a)||INC_ORDER.indexOf(p.i)-INC_ORDER.indexOf(q.i)||ppSort(p,q));
+    [['t','Techo 2027'],['r','Requerido 2027']].forEach(([k,lab])=>arr.forEach(o=>{ if(!aTot(o[k]))return; R.push([{v:lab},{v:COMP_LAB[o.c]},{v:o.a},{v:o.i},{v:o.pp},{v:o.desc},...nums(o[k],2)]);}));
+    const lastCol=XLSX_MINI.col(6+12), ref=`A1:${lastCol}${R.length}`;
+    sheets.push({name:'Base',filterRef:ref,xml:XLSX_MINI.sheet(R,{widths:[16,22,40,26,12,40,...Array(12).fill(15),17],freezeRow:1,autoFilter:ref,hdrRow:1})});
   }
   const blob=XLSX_MINI.book(sheets);
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Presupuesto_2027_mensualizado_techo_requerido${MEF.inc?'_inc'+MEF.inc.split('.')[0]:''}.xlsx`;document.body.appendChild(a);a.click();a.remove();
@@ -3471,6 +3501,8 @@ function exportMensXLSX(){
 }
 function initMens(fs){
   fs('mef-inc',INC_ORDER,'Inciso');
+  fs('mef-area',[...new Set(AL.map(areaOf))].sort((a,b)=>a.localeCompare(b)),'Área');
+  document.getElementById('mef-area').onchange=e=>{MEF.area=e.target.value;renderMens();};
   document.getElementById('mef-comp').onchange=e=>{MEF.comp=e.target.value;renderMens();};
   document.getElementById('mef-inc').onchange=e=>{MEF.inc=e.target.value;renderMens();};
   document.getElementById('mef-q').oninput=e=>{MEF.q=e.target.value;renderMens();};

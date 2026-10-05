@@ -14,7 +14,7 @@ La pestaña inicial es **Red del presupuesto**. El tablero se adapta a celulares
 - **Ingresos y subsidio** — gasto operativo (gastos corrientes − ingresos), subsidio por mes (ingresos / gastos corrientes), subsidio por pasajero pago, ingresos y pasajeros pagos por línea y mes.
 - **Lineamientos Presidencia** — cada proyecto/producto de la formulación clasificado en las 4 premisas de Presidencia (principal + secundarias), con cobertura por premisa, estado de cada compromiso de "Relación con el presupuesto 2027", interdependencia entre premisas, proyectos transversales y un árbol lineamiento › proyecto › producto que se puede exportar a CSV.
 - **Red del presupuesto** — árbol deductivo interactivo: presupuesto → corriente/capital → inciso → emergencia/habitual → área → premisa → proyecto → producto, con niveles configurables, búsqueda y montos por techo o requerido.
-- **Presentación** — slides generadas en vivo con los mismos datos (flechas ← → y pantalla completa).
+- **Presentación** — slides generadas en vivo con los mismos datos (flechas ← → y pantalla completa). El botón *Descargar PDF* baja `Presupuesto_2027_SOFSA_presentacion.pdf` (A4 apaisado, vectorial, con importes en los gráficos); *Imprimir* usa el diálogo del navegador.
 - Resto de las pestañas: análisis del plurianual 2027–2029 (sin cambios).
 
 ## Datos
@@ -26,6 +26,12 @@ Para regenerar a partir de una nueva versión del Excel:
 ```
 pip install openpyxl
 python3 tools/build_anual_2027.py ruta/al/Ppto_2027_V3.xlsx ruta/a/PPTO_2027_Ingresos_Totales.xlsx
+```
+
+Después de regenerar los datos, actualizar el PDF de la presentación (requiere Playwright + Chromium):
+
+```bash
+node tools/build_pdf.js            # escribe Presupuesto_2027_SOFSA_presentacion.pdf
 ```
 
 Las reglas de clasificación en lineamientos están en `classify()` dentro de `tools/build_anual_2027.py`.

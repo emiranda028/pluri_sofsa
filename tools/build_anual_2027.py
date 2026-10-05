@@ -1,6 +1,6 @@
-"""Genera data/anual_2027.json a partir del Excel "Ppto 2027 - V3" y lo embebe en index.html.
+"""Genera data/anual_2027.json a partir del Excel del presupuesto 2027 y lo embebe en index.html.
 
-Uso:  python3 tools/build_anual_2027.py <ruta/Ppto_2027_V3.xlsx> [ruta/PPTO_2027_Ingresos_Totales.xlsx]
+Uso:  python3 tools/build_anual_2027.py <ruta/Ppto_2027.xlsx> [ruta/PPTO_2027_Ingresos_Totales.xlsx]
 
 Toma:
   - "Formulación 27": líneas de requerimiento (proyecto, producto, prioridad, PosPre,
@@ -294,7 +294,7 @@ def main(xlsx, xlsx_ing=None):
     pluri_m = [dict(v, m=[round(x, 2) for x in v['m']], y=[round(x, 2) for x in v['y']]) for v in pacc.values() if any(v['y'])]
 
     out = dict(
-        version='Ppto 2027 - V3 (versión final presentada)',
+        version='Presupuesto 2027',
         lineamientos=LINEAMIENTOS, lines=L, dist=dist_rows, ingresos_op=ingresos_op, ceges=ceges,
         ingresos=ing, pluri_m=pluri_m, ing_det=ingresos_detalle(xlsx_ing) if xlsx_ing else [], pax=[num(x) for x in pax[2:14]] if pax else [], pluri_pp=pluri_pp,
     )

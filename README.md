@@ -14,24 +14,24 @@ La pestaña inicial es **Red del presupuesto**. El tablero se adapta a celulares
 - **Ingresos y subsidio** — gasto operativo (gastos corrientes − ingresos), subsidio por mes (ingresos / gastos corrientes), subsidio por pasajero pago, ingresos y pasajeros pagos por línea y mes.
 - **Lineamientos Presidencia** — cada proyecto/producto de la formulación clasificado en las 4 premisas de Presidencia (principal + secundarias), con cobertura por premisa, estado de cada compromiso de "Relación con el presupuesto 2027", interdependencia entre premisas, proyectos transversales y un árbol lineamiento › proyecto › producto que se puede exportar a CSV.
 - **Red del presupuesto** — árbol deductivo interactivo: presupuesto → corriente/capital → inciso → emergencia/habitual → área → premisa → proyecto → producto, con niveles configurables, búsqueda y montos por techo o requerido.
-- **Presentación** — slides generadas en vivo con los mismos datos (flechas ← → y pantalla completa). El botón *Descargar PDF* baja `Presupuesto_2027_SOFSA_presentacion.pdf` (A4 apaisado, vectorial, con importes en los gráficos); *Imprimir* usa el diálogo del navegador.
+- **Presentación** — slides generadas en vivo con los mismos datos (flechas ← → y pantalla completa). Se ordena de lo general a lo particular (grandes números → techo por tipo de gasto e inciso → plurianual → ingresos propios → financiamiento y ejecución → lineamientos). *Descargar PDF* baja `Presupuesto_2027_SOFSA_presentacion.pdf` (A4 apaisado, vectorial, con importes en los gráficos); *PowerPoint* baja `Presupuesto_2027_SOFSA_presentacion.pptx`, editable (textos, tablas y gráficos nativos; la cascada va como imagen); *Imprimir* usa el diálogo del navegador.
 - Resto de las pestañas: análisis del plurianual 2027–2029 (sin cambios).
 
 ## Datos
-- `data/anual_2027.json` — extraído de "Ppto 2027 - V3" (versión final presentada). Va embebido en `index.html`.
+- `data/anual_2027.json` — extraído del Excel del presupuesto 2027. Va embebido en `index.html`.
 - `data/meta_pluri.json` — datos del plurianual ya existentes en el tablero (se usan para rubro/criticidad por PosPre).
 
 Para regenerar a partir de una nueva versión del Excel:
 
 ```
 pip install openpyxl
-python3 tools/build_anual_2027.py ruta/al/Ppto_2027_V3.xlsx ruta/a/PPTO_2027_Ingresos_Totales.xlsx
+python3 tools/build_anual_2027.py ruta/al/Ppto_2027.xlsx ruta/a/PPTO_2027_Ingresos_Totales.xlsx
 ```
 
-Después de regenerar los datos, actualizar el PDF de la presentación (requiere Playwright + Chromium):
+Después de regenerar los datos, actualizar el PDF y el PowerPoint de la presentación (requiere Playwright + Chromium y `npm i pptxgenjs`):
 
 ```bash
-node tools/build_pdf.js            # escribe Presupuesto_2027_SOFSA_presentacion.pdf
+node tools/build_presentacion.js   # escribe Presupuesto_2027_SOFSA_presentacion.pdf y .pptx
 ```
 
 Las reglas de clasificación en lineamientos están en `classify()` dentro de `tools/build_anual_2027.py`.

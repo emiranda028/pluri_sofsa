@@ -1,5 +1,6 @@
-// Genera la presentación en PDF (vectorial, A4 apaisado) a partir de index.html.
-// Uso: node tools/build_pdf.js [salida.pdf] [carpeta_fuentes]
+// Genera la presentación en PDF (vectorial, A4 apaisado) y en PowerPoint editable a partir de index.html.
+// Uso: node tools/build_presentacion.js [salida.pdf] [carpeta_fuentes]
+//   El .pptx se escribe junto al PDF con el mismo nombre. Requiere playwright y pptxgenjs (npm).
 //   carpeta_fuentes (opcional): copia local de fonts.css + woff2 de Google Fonts,
 //   útil en entornos sin acceso directo a fonts.googleapis.com.
 const path = require('path'), fs = require('fs');
@@ -25,6 +26,16 @@ const FONTS = process.argv[3];
   await p.evaluate(() => document.fonts.ready);
   const n = await p.$$eval('#pres-print .pslide', x => x.length);
   await p.emulateMedia({ media: 'print' });
+  // (el PPTX se arma antes del PDF: al imprimir se dispara afterprint y se desarman las láminas)
+  // PowerPoint: mismas láminas, como texto, tablas y gráficos nativos editables
+  let lib; try { lib = require.resolve('pptxgenjs/dist/pptxgen.bundle.js'); } catch (e) {
+    lib = path.join(require('child_process').execSync('npm root -g').toString().trim(), 'pptxgenjs/dist/pptxgen.bundle.js'); }
+  if (process.env.PPTXGENJS) lib = process.env.PPTXGENJS;
+  await p.addScriptTag({ path: lib });
+  const b64 = await p.evaluate(() => presPPTXBuild().write({ outputType: 'base64' }));
+  const OUTX = OUT.replace(/\.pdf$/i, '') + '.pptx';
+  fs.writeFileSync(OUTX, Buffer.from(b64, 'base64'));
+  console.log('PPTX', OUTX);
   await p.pdf({ path: OUT, printBackground: true, preferCSSPageSize: true });
   console.log('PDF', OUT, 'páginas', n, errs.length ? 'ERRORES ' + JSON.stringify(errs) : '');
   await b.close(); if (errs.length) process.exit(1);

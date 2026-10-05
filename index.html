@@ -6,7 +6,7 @@
 <title>Presupuesto 2027 · SOFSA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Lato:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 <script>/*!
  * Chart.js v4.5.1
  * https://www.chartjs.org
@@ -310,7 +310,7 @@ table.compact td{font-size:13px}
 .cr-dot{color:var(--gold-700);font-weight:700;margin:0 2px}
 .cr-mail{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#3A3E50;text-decoration:none;background:#F4F6FB;border:1px solid #DCE2EE;border-radius:8px;padding:5px 10px;white-space:nowrap;transition:all .15s}
 .cr-mail svg{width:15px;height:15px;color:var(--blue);flex:none}
-.cr-mail:hover{border-color:var(--blue);background:#EEF4FB;color:var(--blue)}
+.cr-mail a{color:inherit;text-decoration:none}.cr-mail a:hover{color:var(--blue);text-decoration:underline}
 /* bloques analíticos de slides */
 .s-take{margin-top:14px;background:#FFF8EA;border-left:4px solid var(--gold);border-radius:8px;padding:11px 15px;font-size:clamp(11.5px,1.15vw,14px);line-height:1.5;color:#2A2D3A}
 .s-take b{color:var(--navy)}
@@ -340,6 +340,14 @@ table.compact td{font-size:13px}
 @media(max-width:760px){.s-grid6{grid-template-columns:1fr 1fr}.s-two{grid-template-columns:1fr}}
 /* créditos en slides y PDF de la presentación */
 .slide .s-cover{flex:1;height:auto}
+/* Presentación: Lato (texto y cifras) + Montserrat (títulos y cifras destacadas) */
+body .slide,body .slide *,body .slide .s-table td,body .slide .s-table th{font-family:'Lato',system-ui,sans-serif}
+body .slide h3,body .slide .s-cover h1,body .slide .s-kv,body .slide .s-ln,body .slide .s-lv,body .slide .s-msgs-h{font-family:'Montserrat',system-ui,sans-serif;font-feature-settings:normal;letter-spacing:-.01em}
+body .slide .s-table td{font-variant-numeric:tabular-nums}
+.slide .s-kv{font-weight:700}
+.s-close h1{font-size:clamp(36px,6vw,72px)!important}
+.s-close h2{max-width:860px!important}
+
 .s-cred{margin-top:26px;padding-top:14px;border-top:1px solid rgba(174,198,228,.35);font-size:12.5px;color:#D8E3F2;line-height:1.6;max-width:900px}
 .s-cred b{color:var(--gold);font-weight:600}
 .s-foot span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:14px}
@@ -460,7 +468,7 @@ table.compact td{font-size:13px}
 </div></div>
 <div class="credits"><div class="cr-in">
   <span class="cr-who"><b>Elaborado por:</b> Emmanuel Miranda, Fabián R. Álvarez <span class="cr-dot">·</span> Gustavo Maida, Marlene Figueroa, Benjamín Sacido, Hernán Corro, Alejandra Quintana, Verónica Orosco</span>
-  <a class="cr-mail" href="mailto:emmanuel.miranda@trenesargentinos.gob.ar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="1.8" y="3.2" width="12.4" height="9.6" rx="1.6"/><path d="M2.4 4.2 8 8.6l5.6-4.4"/></svg><span><b>Dudas/consultas:</b> emmanuel.miranda@trenesargentinos.gob.ar</span></a>
+  <span class="cr-mail"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="1.8" y="3.2" width="12.4" height="9.6" rx="1.6"/><path d="M2.4 4.2 8 8.6l5.6-4.4"/></svg><span><b>Dudas/consultas:</b> <a href="mailto:emmanuel.miranda@trenesargentinos.gob.ar">emmanuel.miranda@trenesargentinos.gob.ar</a> · <a href="mailto:fabian.alvarez@trenesargentinos.gob.ar">fabian.alvarez@trenesargentinos.gob.ar</a></span></span>
 </div></div>
 
 <div class="filters hidden" id="pluri-filters"><div class="filters-in">
@@ -2880,29 +2888,17 @@ function slideHTML(){
       ${top.map(p=>{const pr=[...groupBy(g.filter(r=>r.cege===p.cege&&r.proy===p.proy),'prod').entries()].map(([n,gg])=>({n,t:aSum(gg,'t')})).sort((a,b)=>b.t-a.t);
         return `<tr><td class="l" style="max-width:340px">${esc(p.proy.length>64?p.proy.slice(0,62)+'…':p.proy)}<div style="font-size:.8em;color:var(--muted)">${esc(p.cege)}</div></td><td class="l" style="font-size:.85em;max-width:380px">${pr.slice(0,3).map(x=>esc(x.n.length>42?x.n.slice(0,40)+'…':x.n)).join(' · ')}${pr.length>3?` <span style="color:var(--muted)">+${pr.length-3}</span>`:''}</td><td>${MM(p.t)}</td><td>${pctTxt(p.t,p.req)}</td></tr>`;}).join('')}</tbody></table>`);
   });
-  S.push(`<h3>Gasto discrecional por lineamiento</h3><div class="s-chart"><canvas id="sl-lin"></canvas></div><p class="s-note">Excluye Gastos en Personal e Impuestos (${MM(aSum(AL.filter(isStruct),'t'))}). Se comparan requerido y techo; el porcentaje indica la cobertura.</p>`);
-  S.push(`<h3>Interdependencia de las premisas</h3><div class="s-kpis">${big(MM(D.transT),'Techo en proyectos multi-premisa',pctTxt(D.transT,D.tDisc)+' del discrecional')}${big(String(D.trans.length),'Proyectos que profundizan ≥ 2 premisas','según la síntesis de Presidencia, son los prioritarios')}</div>
-    <table class="s-table"><thead><tr><th class="l">Proyectos transversales de mayor peso</th><th class="l">Premisas</th><th>Techo</th><th>Cobertura</th></tr></thead><tbody>
-    ${D.trans.sort((a,b)=>b.t-a.t).slice(0,7).map(p=>`<tr><td class="l">${esc(p.proy.length>70?p.proy.slice(0,68)+'…':p.proy)}</td><td class="l">${LKEYS.filter(k=>p.prem.has(k)).map(k=>`<span class="dotL" style="background:${L_COLOR[k]}">${k.replace('L','')}</span>`).join('')}</td><td>${MM(p.t)}</td><td>${pctTxt(p.t,p.req)}</td></tr>`).join('')}</tbody></table>`);
-  S.push(`<h3>Brechas frente a los lineamientos</h3><table class="s-table"><thead><tr><th class="l">Compromiso de Presidencia sin financiamiento suficiente</th><th class="l">Premisa</th><th>Requerido</th><th>Techo</th></tr></thead><tbody>
-    ${D.gaps.map(g=>`<tr><td class="l">${esc(g.txt)}</td><td class="l">${chipL(g.k,true)}</td><td>${g.rq?MM(g.rq):'—'}</td><td>${g.t?MM(g.t):'<span class="st st-gap">sin partida</span>'}</td></tr>`).join('')}</tbody></table>`);
-  S.push(`<h3>Riesgos de ejecución</h3><ul class="s-list">
-    <li><b>Material Rodante:</b> órdenes de compra comprometidas para 2027 por ${MM(D.mr.oc)} frente a un techo de ${MM(D.mr.techo)} en los incisos 2 y 3, con un <b>déficit de ${MM(-D.mr.disp)}</b>.</li>
-    <li>${D.negC.length} centro(s) gestor(es) registran compromisos 2027 superiores al techo asignado: ${D.negC.map(c=>esc(c.nombre)+' ('+MM(c.disp)+')').join('; ')}.</li>
-    <li><b>Revisiones decanuales</b> (la premisa 2 requiere cobertura total): reparación de material rodante con techo de ${MM(aSum(D.dec,'t'))} frente a un requerido de ${MM(aSum(D.dec,'req'))} (${pctTxt(aSum(D.dec,'t'),aSum(D.dec,'req'))}).</li>
-    <li>Bienes de Consumo y Servicios No Personales presentan una cobertura del ${pctTxt(D.incs[1].t+D.incs[2].t,D.incs[1].r+D.incs[2].r)}. Ante la no asignación del sobre techo corriente (${MM(t.pedidoST)}), se requerirá priorizar el gasto dentro del techo o gestionar refuerzos presupuestarios durante el ejercicio.</li></ul>`);
-  S.push(`<h3>Recomendaciones</h3><ol class="s-list">
-    <li>Gestionar refuerzos de crédito para gasto corriente durante el ejercicio, priorizando repuestos y reparación de material rodante (revisiones decanuales) y limpieza, que inciden simultáneamente en las premisas 1 y 2.</li>
-    <li>Reasignar crédito dentro del techo hacia proyectos de prioridad Alta vinculados a más de una premisa, conforme la síntesis de Presidencia.</li>
-    <li>Habilitar partidas específicas, aun de baja cuantía, para los compromisos sin financiamiento: estudio de demanda, piloto de servicios diferenciales, armonización de indicadores y desarrollo de carrera.</li>
-    <li>Regularizar el exceso de compromisos de Material Rodante (órdenes de compra 2027 respecto del techo) antes del inicio del ejercicio.</li>
-    <li>Incorporar los indicadores de cumplimiento de cada premisa al seguimiento presupuestario mensual.</li></ol>`);
+  // cierre
+  S.push(`<div class="s-cover s-close"><div class="s-eyebrow">Trenes Argentinos Operaciones · SOFSA</div><h1>Muchas gracias</h1>
+    <h2>A todas las gerencias, subgerencias y áreas que participaron del proceso de formulación presupuestaria 2027, por la información aportada, el trabajo conjunto y el compromiso sostenido en cada una de sus etapas.</h2>
+    <div class="s-meta">${esc(CREDITOS.dep)}</div>
+    <div class="s-cred"><div><b>Elaborado por:</b> ${esc(CREDITOS.equipo)}</div><div><b>Dudas/consultas:</b> ${esc(CREDITOS.mail)}</div></div></div>`);
   return S;
 }
 const CREDITOS={dep:'Subgerencia de Presupuesto y Control de Gestión / Gerencia de Planificación y Control de Gestión / Gerencia General Administrativa',
   equipo:'Emmanuel Miranda, Fabián R. Álvarez · Gustavo Maida, Marlene Figueroa, Benjamín Sacido, Hernán Corro, Alejandra Quintana, Verónica Orosco',
-  mail:'emmanuel.miranda@trenesargentinos.gob.ar'};
-const slideFoot=(i,n)=>`<div class="s-foot"><span>SOFSA · Presupuesto 2027 · Elaborado por la Subgerencia de Presupuesto y Control de Gestión · consultas: ${CREDITOS.mail}</span><span>${i+1} / ${n}</span></div>`;
+  mail:'emmanuel.miranda@trenesargentinos.gob.ar · fabian.alvarez@trenesargentinos.gob.ar'};
+const slideFoot=(i,n)=>`<div class="s-foot"><span>SOFSA · Presupuesto 2027 · Subgerencia de Presupuesto y Control de Gestión · consultas: ${CREDITOS.mail}</span><span>${i+1} / ${n}</span></div>`;
 // Importes visibles en los gráficos de la presentación (pantalla y PDF)
 const SL_LBL={font:{size:10,weight:'700'},color:'#23252E'};
 function slStackTotals(ch,fmt){ // etiqueta con el total de la pila sobre el dataset superior visible
@@ -2912,6 +2908,16 @@ function slStackTotals(ch,fmt){ // etiqueta con el total de la pila sobre el dat
     formatter:(v,c)=>fmt(ds.reduce((a,d)=>a+(+d.data[c.dataIndex]||0),0))};
   const prev=top.datalabels; top.datalabels=prev?{labels:{...(prev.labels||{seg:prev}),tot}}:tot;
   ch.options.layout={padding:{top:20}}; ch.update('none');
+}
+function slFont(ch,fam="'Lato', sans-serif"){ // tipografía de la presentación en los gráficos de las láminas
+  const f=o=>{o.font={...(o.font||{}),family:fam};};
+  const O=ch.config.options; // opciones crudas (no el proxy resuelto)
+  const sc=O.scales=O.scales||{}; ['x','y'].forEach(k=>{sc[k]=sc[k]||{};}); Object.values(sc).forEach(a=>{a.ticks=a.ticks||{};f(a.ticks);if(a.title)f(a.title);});
+  const pl=O.plugins=O.plugins||{}; pl.legend=pl.legend||{}; pl.legend.labels=pl.legend.labels||{}; f(pl.legend.labels);
+  pl.tooltip=pl.tooltip||{}; pl.tooltip.titleFont={...(pl.tooltip.titleFont||{}),family:fam}; pl.tooltip.bodyFont={...(pl.tooltip.bodyFont||{}),family:fam};
+  pl.datalabels=pl.datalabels||{}; f(pl.datalabels);
+  ch.data.datasets.forEach(d=>{const dl=d.datalabels;if(!dl)return;if(dl.labels)Object.values(dl.labels).forEach(f);else f(dl);});
+  ch.update('none');
 }
 function slAmounts(){
   if(charts['sl-lin']){ const ch=charts['sl-lin'];
@@ -2935,6 +2941,7 @@ function slAmounts(){
     const li=ch.data.datasets[2]; li.datalabels={...li.datalabels,backgroundColor:'rgba(255,255,255,.92)',borderRadius:3,padding:{top:1,bottom:1,left:3,right:3}};
     ch.options.scales.y2.max=20;
     slStackTotals(ch,v=>nf0.format(v)); }
+  ['sl-casc','sl-mes','sl-lin','sl-hist','sl-sub'].forEach(k=>{if(charts[k])slFont(charts[k]);});
 }
 function drawSlideCharts(){
   ['sl-casc','sl-mes','sl-lin','sl-hist','sl-sub'].forEach(killChart);
@@ -2978,7 +2985,7 @@ function presPPTXBuild(){
   const hex=c=>{if(!c)return null;const m=c.match(/rgba?\(([^)]+)\)/);if(!m)return null;const p=m[1].split(/[ ,\/]+/).filter(Boolean).map(Number);
     if(p.length>3&&p[3]===0)return null;let [r,g,b,a]=p;if(a!=null&&a<1){r=Math.round(r*a+255*(1-a));g=Math.round(g*a+255*(1-a));b=Math.round(b*a+255*(1-a));}
     return [r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();};
-  const font=f=>/Lora/.test(f)?'Georgia':/Mono/.test(f)?'Consolas':'Calibri';
+  const font=f=>/Montserrat/.test(f)?'Montserrat':/Lato/.test(f)?'Lato':/Lora/.test(f)?'Georgia':/Mono/.test(f)?'Consolas':'Lato';
   const bg=cs=>hex(cs.backgroundColor)||(/gradient/.test(cs.backgroundImage)?hex((cs.backgroundImage.match(/rgba?\([^)]+\)/)||[])[0]):null);
   const INL=d=>/^inline/.test(d);
   const runsOf=(el,acc=[],first=true)=>{

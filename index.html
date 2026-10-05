@@ -299,12 +299,32 @@ table.compact td{font-size:13px}
 .nl-name{font-size:14px}.nl-val{font-size:12px}.nl-lvl{font-size:10.5px}
 .foot{font-size:12.5px;color:#5C6073}
 .s-note{font-size:13px}
-/* créditos (sutil, debajo del encabezado) */
-.credits{max-width:1320px;margin:0 auto;padding:6px 26px 0;font-size:11px;line-height:1.5;color:#7A7E92;text-align:right;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px 8px}
-.credits b{font-weight:600;color:#5C6073}
-.credits a{color:#5C6073;text-decoration:none;border-bottom:1px dotted #A9AEC0}
-.credits a:hover{color:var(--blue);border-bottom-color:var(--blue)}
-.credits .cr-sep{color:#B5B9C8}
+/* créditos (debajo del encabezado) */
+.credits{max-width:1320px;margin:0 auto;padding:12px 26px 0}
+.cr-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 18px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:9px 14px;box-shadow:0 1px 2px rgba(22,28,48,.04)}
+.cr-who{font-size:12.5px;color:#3A3E50;line-height:1.5}
+.cr-who b,.cr-mail b{color:var(--navy);font-weight:700}
+.cr-dot{color:var(--gold-700);font-weight:700;margin:0 2px}
+.cr-mail{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#3A3E50;text-decoration:none;background:#F4F6FB;border:1px solid #DCE2EE;border-radius:8px;padding:5px 10px;white-space:nowrap;transition:all .15s}
+.cr-mail svg{width:15px;height:15px;color:var(--blue);flex:none}
+.cr-mail:hover{border-color:var(--blue);background:#EEF4FB;color:var(--blue)}
+/* créditos en slides y PDF de la presentación */
+.slide .s-cover{flex:1;height:auto}
+.s-cred{margin-top:26px;padding-top:14px;border-top:1px solid rgba(174,198,228,.35);font-size:12.5px;color:#D8E3F2;line-height:1.6;max-width:900px}
+.s-cred b{color:var(--gold);font-weight:600}
+.s-foot span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:14px}
+#pres-print{position:fixed;left:-20000px;top:0;width:1123px}
+#pres-print .pslide{width:1123px;height:794px;border-radius:0;margin:0;page-break-after:always;break-after:page}
+#pres-print .pslide:last-child{page-break-after:auto;break-after:auto}
+#pres-print .s-chart{height:520px;flex:none}
+@media print{
+  @page{size:A4 landscape;margin:0}
+  html,body{background:#fff!important}
+  body.printing-pres>*:not(#pres-print){display:none!important}
+  body.printing-pres #pres-print{position:static;left:auto;width:auto}
+  body.printing-pres .pslide{width:297mm;height:210mm;box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.printing-pres .pslide *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 /* ===== MOBILE ===== */
 @media(max-width:760px){
   body{font-size:13.5px}
@@ -316,8 +336,10 @@ table.compact td{font-size:13px}
   .top h1{font-size:16px!important;text-align:left!important;line-height:1.3}
   .top-sub{font-size:10px!important;text-align:left;line-height:1.4}
   .top-exp{font-size:10px!important}
-  .credits{padding:7px 16px 0;font-size:10px;text-align:left;justify-content:flex-start}
-  .credits .cr-sep{display:none}
+  .credits{padding:10px 16px 0}
+  .cr-in{padding:9px 11px}
+  .cr-who,.cr-mail{font-size:11.5px}
+  .cr-mail{white-space:normal}
   .filters{position:static}
   .filters-in{padding:10px 16px}
   .fgroup{min-width:0;flex:1 1 140px}
@@ -406,7 +428,10 @@ table.compact td{font-size:13px}
     <div class="top-exp" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ice);margin-top:3px;letter-spacing:.04em">Expediente <b style="color:var(--gold)">EX-2026-39744235-APN-SG#SOFSE</b></div>
   </div>
 </div></div>
-<div class="credits"><span>Elaborado por: Emmanuel Miranda, Fabián R. Álvarez · Gustavo Maida, Marlene Figueroa, Benjamín Sacido, Hernán Corro, Alejandra Quintana, Verónica Orosco</span><span class="cr-sep">·</span><span>Dudas/consultas: <a href="mailto:emmanuel.miranda@trenesargentinos.gob.ar">emmanuel.miranda@trenesargentinos.gob.ar</a></span></div>
+<div class="credits"><div class="cr-in">
+  <span class="cr-who"><b>Elaborado por:</b> Emmanuel Miranda, Fabián R. Álvarez <span class="cr-dot">·</span> Gustavo Maida, Marlene Figueroa, Benjamín Sacido, Hernán Corro, Alejandra Quintana, Verónica Orosco</span>
+  <a class="cr-mail" href="mailto:emmanuel.miranda@trenesargentinos.gob.ar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="1.8" y="3.2" width="12.4" height="9.6" rx="1.6"/><path d="M2.4 4.2 8 8.6l5.6-4.4"/></svg><span><b>Dudas/consultas:</b> emmanuel.miranda@trenesargentinos.gob.ar</span></a>
+</div></div>
 
 <div class="filters hidden" id="pluri-filters"><div class="filters-in">
   <div class="fgroup"><label>Inciso</label><select id="f-inciso"></select></div>
@@ -757,6 +782,7 @@ table.compact td{font-size:13px}
         <div id="pres-dots"></div>
         <button class="btn" id="pres-next">Siguiente →</button>
         <button class="btn" id="pres-fs">Pantalla completa</button>
+        <button class="btn" id="pres-pdf" style="background:var(--gold);color:var(--navy-900);border-color:var(--gold)">⬇ Descargar PDF</button>
       </div>
     </div>
     <div style="font-size:11.5px;color:var(--muted);margin-top:8px">Navegá con ← → del teclado. Las cifras se calculan en vivo con los mismos datos del tablero.</div>
@@ -2686,8 +2712,9 @@ function slideHTML(){
   const S=[];
   S.push(`<div class="s-cover"><div class="s-eyebrow">Trenes Argentinos Operaciones · SOFSA</div><h1>Presupuesto 2027</h1>
     <h2>Del plurianual 2027–2029 a los techos del Ministerio de Economía, alineado a los lineamientos de Presidencia</h2>
-    <div class="s-meta">Gerencia General Administrativa · Gerencia de Planificación y Control de Gestión · Subgerencia de Presupuesto y Control de Gestión</div>
-    <div class="s-meta mono">${esc(META.expediente)} · versión ${esc(ANUAL.version)}</div></div>`);
+    <div class="s-meta">${esc(CREDITOS.dep)}</div>
+    <div class="s-meta mono">${esc(META.expediente)} · versión ${esc(ANUAL.version)}</div>
+    <div class="s-cred"><div><b>Elaborado por:</b> ${esc(CREDITOS.equipo)}</div><div><b>Dudas/consultas:</b> ${esc(CREDITOS.mail)}</div></div></div>`);
   S.push(`<h3>Resumen ejecutivo</h3><div class="s-kpis">${big(MM(t.techo),'Presupuesto 2027 presentado','conciliado con la versión final · Δ $ 0')}${big(pctTxt(t.techo,t.req),'Cobertura del requerido','brecha '+MM(t.req-t.techo))}${big(fmtPct(deltaPct(t.techo,t.pluri)),'vs plurianual 2027','plurianual '+MM(t.pluri))}</div>
     <ul class="s-list">
       <li>La Secretaría de Transporte comunicó un techo de <b>${MM(t.techoME)}</b>; el Proyecto de Ley sumó <b>${MM(t.buSobre)}</b> de sobre techo sólo para capital. Con <b>${MM(t.ingresos)}</b> de ingresos propios y <b>${MM(t.sifer)}</b> de SIFER (Material Rodante DMU), el presupuesto presentado asciende a <b>${MM(t.techo)}</b>.</li>
@@ -2737,15 +2764,15 @@ function slideHTML(){
     <li>Incorporar los indicadores de éxito de cada premisa al seguimiento presupuestario mensual.</li></ol>`);
   return S;
 }
-function renderPres(){
-  const S=slideHTML(); SLIDE=Math.max(0,Math.min(SLIDE,S.length-1));
-  document.getElementById('pres-stage').innerHTML=`<div class="slide">${S[SLIDE]}<div class="s-foot"><span>SOFSA · Presupuesto 2027</span><span>${SLIDE+1} / ${S.length}</span></div></div>`;
-  document.getElementById('pres-dots').innerHTML=S.map((_,i)=>`<button class="${i===SLIDE?'on':''}" data-i="${i}"></button>`).join('');
-  document.querySelectorAll('#pres-dots button').forEach(b=>b.onclick=()=>{SLIDE=+b.dataset.i;renderPres();});
+const CREDITOS={dep:'Subgerencia de Presupuesto y Control de Gestión / Gerencia de Planificación y Control de Gestión / Gerencia General Administrativa',
+  equipo:'Emmanuel Miranda, Fabián R. Álvarez · Gustavo Maida, Marlene Figueroa, Benjamín Sacido, Hernán Corro, Alejandra Quintana, Verónica Orosco',
+  mail:'emmanuel.miranda@trenesargentinos.gob.ar'};
+const slideFoot=(i,n)=>`<div class="s-foot"><span>SOFSA · Presupuesto 2027 · Elaborado por la Subgerencia de Presupuesto y Control de Gestión · consultas: ${CREDITOS.mail}</span><span>${i+1} / ${n}</span></div>`;
+function drawSlideCharts(){
   ['sl-casc','sl-mes','sl-lin','sl-hist'].forEach(killChart);
   if(document.getElementById('sl-casc')) drawCascada('sl-casc','sl-casc');
   if(document.getElementById('sl-mes')) drawMensual('sl-mes','sl-mes');
-  if(document.getElementById('sl-hist')){ killChart('sl-hist'); const E=HIST.ejec;
+  if(document.getElementById('sl-hist')){ const E=HIST.ejec;
     charts['sl-hist']=new Chart(document.getElementById('sl-hist'),{data:{labels:E.map(x=>x.a),datasets:[
       {type:'bar',label:'Formulación',data:E.map(x=>x.f/1e6),backgroundColor:'#C9CFDD',borderRadius:3,order:2},
       {type:'bar',label:'Otorgado',data:E.map(x=>x.o/1e6),backgroundColor:'#222C4F',borderRadius:3,order:2},
@@ -2754,6 +2781,24 @@ function renderPres(){
         datalabels:{display:true,align:'top',color:'#C25A3C',font:{weight:'700'},formatter:v=>v==null?'':nf0.format(v)+'%'}}]},
       options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>nf0.format(v)},title:{display:true,text:'millones de $'}},y2:{position:'right',grid:{display:false},min:0,max:140,ticks:{callback:v=>v+'%'}}}}}); }
   if(document.getElementById('sl-lin')) drawLinDiscOn('sl-lin');
+}
+// PDF: arma todas las slides en hojas A4 apaisadas y abre el diálogo de impresión ("Guardar como PDF")
+function presPDF(){
+  const S=slideHTML(); const box=document.createElement('div'); box.id='pres-print';
+  box.innerHTML=S.map((h,i)=>`<div class="slide pslide">${h}${slideFoot(i,S.length)}</div>`).join('');
+  document.getElementById('pres-stage').innerHTML=''; ['sl-casc','sl-mes','sl-lin','sl-hist'].forEach(killChart);
+  document.body.appendChild(box); document.body.classList.add('printing-pres');
+  const anim=Chart.defaults.animation; Chart.defaults.animation=false; drawSlideCharts(); Chart.defaults.animation=anim;
+  const done=()=>{window.removeEventListener('afterprint',done); box.remove(); document.body.classList.remove('printing-pres'); renderPres();};
+  window.addEventListener('afterprint',done);
+  setTimeout(()=>window.print(),350);
+}
+function renderPres(){
+  const S=slideHTML(); SLIDE=Math.max(0,Math.min(SLIDE,S.length-1));
+  document.getElementById('pres-stage').innerHTML=`<div class="slide">${S[SLIDE]}${slideFoot(SLIDE,S.length)}</div>`;
+  document.getElementById('pres-dots').innerHTML=S.map((_,i)=>`<button class="${i===SLIDE?'on':''}" data-i="${i}"></button>`).join('');
+  document.querySelectorAll('#pres-dots button').forEach(b=>b.onclick=()=>{SLIDE=+b.dataset.i;renderPres();});
+  drawSlideCharts();
 }
 function drawLinDiscOn(id){ const sd=linStats(AL.filter(r=>!isStruct(r)));
   charts[id]=new Chart(document.getElementById(id),{type:'bar',data:{labels:LKEYS.map(k=>LIN[k].corto),datasets:[
@@ -3679,6 +3724,7 @@ function initPluriMens(){
   initSub(fs);
   document.getElementById('pres-prev').onclick=()=>{SLIDE--;renderPres();};
   document.getElementById('pres-next').onclick=()=>{SLIDE++;renderPres();};
+  document.getElementById('pres-pdf').onclick=presPDF;
   document.getElementById('pres-fs').onclick=()=>{const el=document.getElementById('pres-wrap');(el.requestFullscreen||el.webkitRequestFullscreen).call(el);};
   document.addEventListener('keydown',e=>{if(state.tab!=='pres')return;if(e.key==='ArrowRight'||e.key==='PageDown'){SLIDE++;renderPres();}if(e.key==='ArrowLeft'||e.key==='PageUp'){SLIDE--;renderPres();}});
 })();

@@ -327,7 +327,7 @@ table.compact td{font-size:13px}
 #pres-print .s-flow .s-kv{font-size:21px}#pres-print .s-table.s-tiny{font-size:12.5px}#pres-print .s-table.s-tiny td,#pres-print .s-table.s-tiny th{padding:4px 8px}
 @media(max-width:760px){.s-flow{grid-template-columns:1fr}.s-arr{transform:rotate(90deg);justify-self:center}.s-grid4{grid-template-columns:1fr 1fr}}
 
-#pres-print .slide{padding:40px 52px 50px}
+#pres-print .slide{padding:40px 52px 72px}#pres-print .s-cover{margin:-40px -52px -72px}
 #pres-print .slide h3{font-size:30px;margin-bottom:18px}
 #pres-print .s-table{font-size:14.5px}#pres-print .s-table td,#pres-print .s-table th{padding:8px 10px}
 #pres-print .s-table.s-compact td,#pres-print .s-table.s-compact th{padding:5px 10px}
@@ -348,9 +348,6 @@ body .slide .s-table td{font-variant-numeric:tabular-nums}
 .s-close h1{font-size:clamp(36px,6vw,72px)!important}
 .s-close h2{max-width:860px!important}
 
-.s-cred{margin-top:26px;padding-top:14px;border-top:1px solid rgba(174,198,228,.35);font-size:12.5px;color:#D8E3F2;line-height:1.6;max-width:900px}
-.s-cred b{color:var(--gold);font-weight:600}
-.s-foot span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:14px}
 #pres-print{position:fixed;left:-20000px;top:0;width:1123px}
 #pres-print .pslide{width:1123px;height:794px;border-radius:0;margin:0;page-break-after:always;break-after:page}
 #pres-print .pslide:last-child{page-break-after:auto;break-after:auto}
@@ -414,8 +411,9 @@ body .slide .s-table td{font-variant-numeric:tabular-nums}
   #net-box{max-height:none;border:none;background:none}
   #pres-wrap{padding:8px}
   #pres-stage{aspect-ratio:auto}
-  .slide{height:auto;min-height:70vh;padding:18px 16px 40px}
-  .s-cover{margin:-18px -16px -40px;padding:32px 20px}
+  .slide{height:auto;min-height:70vh;padding:18px 16px 128px}
+  .s-cover{margin:-18px -16px -128px;padding:32px 20px 140px}
+  .s-foot{flex-direction:column;align-items:flex-start;gap:4px}
   .s-kpis{flex-direction:column}
   .s-lin{grid-template-columns:1fr 1fr}
   .s-chart{min-height:280px}
@@ -430,9 +428,9 @@ body .slide .s-table td{font-variant-numeric:tabular-nums}
 #pres-wrap:fullscreen{justify-content:center;border-radius:0}
 #pres-stage{width:100%;max-width:1180px;aspect-ratio:16/9}
 #pres-wrap:fullscreen #pres-stage{max-width:calc(100vh * 16 / 9 - 60px)}
-.slide{width:100%;height:100%;background:#fff;border-radius:10px;padding:34px 46px 44px;position:relative;overflow:hidden;display:flex;flex-direction:column;border-top:6px solid var(--gold)}
+.slide{width:100%;height:100%;background:#fff;border-radius:10px;padding:34px 46px 66px;position:relative;overflow:hidden;display:flex;flex-direction:column;border-top:6px solid var(--gold)}
 .slide h3{font-family:'Lora',serif;color:var(--navy);font-size:clamp(18px,2.4vw,28px);margin:0 0 16px}
-.s-cover{display:flex;flex-direction:column;justify-content:center;height:100%;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-700) 100%);margin:-34px -46px -44px;padding:50px 60px;color:#fff}
+.s-cover{display:flex;flex-direction:column;justify-content:center;height:100%;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-700) 100%);margin:-34px -46px -66px;padding:50px 60px 80px;color:#fff}
 .s-cover h1{font-family:'Lora',serif;font-size:clamp(30px,5vw,60px);margin:10px 0;color:#fff}.s-cover h2{font-weight:400;font-size:clamp(14px,1.8vw,21px);color:var(--ice);max-width:780px;margin:0 0 28px;line-height:1.4}
 .s-eyebrow{letter-spacing:.18em;text-transform:uppercase;font-size:12px;color:var(--gold);font-weight:700}
 .s-meta{font-size:12px;color:var(--ice);margin-top:6px}
@@ -446,13 +444,25 @@ body .slide .s-table td{font-variant-numeric:tabular-nums}
 .s-note{font-size:12px;color:var(--muted);margin-top:10px}
 .s-lin{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.s-lc{border-top:5px solid var(--c);background:#F7F8FC;border-radius:8px;padding:14px}
 .s-ln{font-family:'Lora',serif;font-size:32px;font-weight:700;color:var(--c);line-height:1}.s-lt{font-weight:600;color:var(--navy);font-size:13.5px;margin:6px 0;min-height:38px}.s-lv{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--c)}.s-ls{font-size:11.5px;color:var(--muted)}
-.s-foot{position:absolute;left:46px;right:46px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
-.s-cover + .s-foot{color:var(--ice)}
+.s-foot{position:absolute;left:46px;right:46px;bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:18px;font-size:10.5px;line-height:1.5;color:#5A6072;border-top:1px solid var(--line);padding-top:7px}
+.s-foot b{color:var(--navy);font-weight:700}.s-foot .sf-pg{white-space:nowrap;text-align:right;color:var(--muted)}
+.s-cover + .s-foot{color:#D8E3F2;border-top-color:rgba(174,198,228,.35)}.s-cover + .s-foot b{color:var(--gold)}.s-cover + .s-foot .sf-pg{color:var(--ice)}
+#pres-print .s-foot{left:52px;right:52px;bottom:14px;font-size:11px}
 .pres-ctrl{display:flex;align-items:center;gap:10px}
 .pres-ctrl .btn{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
 #pres-dots{display:flex;gap:6px}#pres-dots button{width:9px;height:9px;padding:0;border-radius:50%;border:none;background:rgba(255,255,255,.3);cursor:pointer}#pres-dots button.on{background:var(--gold)}
-@media(max-width:1000px){.lmap{grid-template-columns:1fr}.lcards,.litems,.s-lin{grid-template-columns:1fr 1fr}.findings{grid-template-columns:1fr}.slide{padding:18px 20px 34px}}
+@media(max-width:1000px){.lmap{grid-template-columns:1fr}.lcards,.litems,.s-lin{grid-template-columns:1fr 1fr}.findings{grid-template-columns:1fr}.slide{padding:18px 20px 96px}.s-cover{margin:-18px -20px -96px}}
 @media(max-width:640px){.lcards,.litems{grid-template-columns:1fr}}
+/* Pantalla: la lámina crece con su contenido y el pie de créditos queda siempre debajo (no superpuesto) */
+#pres-stage{aspect-ratio:auto}
+#pres-stage .slide{height:auto;aspect-ratio:16/9;overflow:visible;padding-bottom:12px}
+#pres-stage .s-foot{position:static;margin-top:auto}
+#pres-stage .slide>*:nth-last-child(2):not(.s-cover){margin-bottom:16px}
+#pres-stage .s-cover{margin-bottom:-12px;padding-bottom:96px;border-radius:0 0 10px 10px}
+#pres-stage .s-cover+.s-foot{position:absolute;left:46px;right:46px;bottom:12px}
+#pres-wrap:fullscreen{overflow:auto}
+@media(max-width:1000px){#pres-stage .s-cover{margin:-18px -20px -12px}#pres-stage .s-cover+.s-foot{left:20px;right:20px}}
+@media(max-width:760px){#pres-stage .slide{aspect-ratio:auto;padding-bottom:12px;overflow-x:auto}#pres-stage .s-cover{margin:-18px -16px -12px;padding-bottom:150px}#pres-stage .s-cover+.s-foot{left:16px;right:16px}}
 </style>
 </head>
 <body>
@@ -2753,8 +2763,7 @@ function slideHTML(){
   S.push(`<div class="s-cover"><div class="s-eyebrow">Trenes Argentinos Operaciones · SOFSA</div><h1>Presupuesto 2027</h1>
     <h2>Del plurianual 2027–2029 a los techos del Ministerio de Economía, alineado a los lineamientos de Presidencia</h2>
     <div class="s-meta">${esc(CREDITOS.dep)}</div>
-    <div class="s-meta mono">${esc(META.expediente)}</div>
-    <div class="s-cred"><div><b>Elaborado por:</b> ${esc(CREDITOS.equipo)}</div><div><b>Dudas/consultas:</b> ${esc(CREDITOS.mail)}</div></div></div>`);
+    <div class="s-meta mono">${esc(META.expediente)}</div></div>`);
   // ---------- bloque analítico inicial ----------
   const PM=ANUAL.pluri_m||[]; const pY=i=>PM.reduce((a,r)=>a+r.y[i],0); const pYc=(c,i)=>PM.filter(r=>r.efgh===c).reduce((a,r)=>a+r.y[i],0);
   const pInc=(inc,i)=>PM.filter(r=>r.inc===inc).reduce((a,r)=>a+r.y[i],0);
@@ -2891,14 +2900,14 @@ function slideHTML(){
   // cierre
   S.push(`<div class="s-cover s-close"><div class="s-eyebrow">Trenes Argentinos Operaciones · SOFSA</div><h1>Muchas gracias</h1>
     <h2>A todas las gerencias, subgerencias y áreas que participaron del proceso de formulación presupuestaria 2027, por la información aportada, el trabajo conjunto y el compromiso sostenido en cada una de sus etapas.</h2>
-    <div class="s-meta">${esc(CREDITOS.dep)}</div>
-    <div class="s-cred"><div><b>Elaborado por:</b> ${esc(CREDITOS.equipo)}</div><div><b>Dudas/consultas:</b> ${esc(CREDITOS.mail)}</div></div></div>`);
+    <div class="s-meta">${esc(CREDITOS.dep)}</div></div>`);
   return S;
 }
 const CREDITOS={dep:'Subgerencia de Presupuesto y Control de Gestión / Gerencia de Planificación y Control de Gestión / Gerencia General Administrativa',
   equipo:'Emmanuel Miranda, Fabián R. Álvarez · Gustavo Maida, Marlene Figueroa, Benjamín Sacido, Hernán Corro, Alejandra Quintana, Verónica Orosco',
   mail:'emmanuel.miranda@trenesargentinos.gob.ar · fabian.alvarez@trenesargentinos.gob.ar'};
-const slideFoot=(i,n)=>`<div class="s-foot"><span>SOFSA · Presupuesto 2027 · Subgerencia de Presupuesto y Control de Gestión · consultas: ${CREDITOS.mail}</span><span>${i+1} / ${n}</span></div>`;
+// pie fijo de cada lámina: créditos y contactos acompañan siempre a la presentación
+const slideFoot=(i,n)=>`<div class="s-foot"><div class="sf-cred"><div><b>Elaborado por:</b> ${esc(CREDITOS.equipo)}</div><div><b>Dudas/consultas:</b> ${esc(CREDITOS.mail)}</div></div><div class="sf-pg">SOFSA · Presupuesto 2027 · ${i+1} / ${n}</div></div>`;
 // Importes visibles en los gráficos de la presentación (pantalla y PDF)
 const SL_LBL={font:{size:10,weight:'700'},color:'#23252E'};
 function slStackTotals(ch,fmt){ // etiqueta con el total de la pila sobre el dataset superior visible
@@ -3022,7 +3031,7 @@ function presPPTXBuild(){
     const f=bg(cs);if(f&&el.tagName!=='TD'&&el.tagName!=='TH'&&el.tagName!=='TR')sl.addShape(pptx.ShapeType.rect,{...b,fill:{color:f},line:{type:'none'}});
     const bl=parseFloat(cs.borderLeftWidth),bt=parseFloat(cs.borderTopWidth),cl=hex(cs.borderLeftColor),ct=hex(cs.borderTopColor);
     if(bl>=2&&cl&&cs.borderLeftStyle!=='none')sl.addShape(pptx.ShapeType.rect,{x:b.x,y:b.y,w:bl*PX,h:b.h,fill:{color:cl},line:{type:'none'}});
-    if(bt>=2&&ct&&cs.borderTopStyle!=='none')sl.addShape(pptx.ShapeType.rect,{x:b.x,y:b.y,w:b.w,h:bt*PX,fill:{color:ct},line:{type:'none'}});};
+    if(bt>=1&&ct&&cs.borderTopStyle!=='none')sl.addShape(pptx.ShapeType.rect,{x:b.x,y:b.y,w:b.w,h:Math.max(bt,1)*PX,fill:{color:ct},line:{type:'none'}});};
   const addTable=(sl,tb,o)=>{const rows=[];const b=box(tb,o);
     const trs=[...tb.querySelectorAll('tr')];const head=trs[0];
     const colW=[...head.children].map(c=>c.getBoundingClientRect().width*PX);

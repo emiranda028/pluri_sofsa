@@ -4,553 +4,506 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>LTELC Consultora</title>
-<meta name="description" content="LTELC (Lo Tengo en la Cabeza) — Consultora en sistemas de administración, balances contables, tableros de indicadores, apps a medida, automatización e integración de sistemas.">
-<meta name="theme-color" content="#0A1A21">
+<meta name="description" content="LTELC (Lo Tengo en la Cabeza) — Consultora argentina en sistemas de administración, balances contables, tableros de indicadores, software a medida, automatización e integración.">
+<meta name="theme-color" content="#060E1D">
 <link rel="canonical" href="https://ltelc.tech/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_AR">
 <meta property="og:site_name" content="LTELC">
 <meta property="og:title" content="LTELC · Lo Tengo en la Cabeza">
-<meta property="og:description" content="Lo que tu organización tiene en la cabeza, lo convertimos en sistema. Administración, balances, indicadores, apps, automatización e integración.">
+<meta property="og:description" content="Todo lo que tu organización tiene en la cabeza, lo convertimos en sistema.">
 <meta property="og:url" content="https://ltelc.tech/">
+<meta property="og:image" content="https://ltelc.tech/img/hero.jpg">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap">
 <style>
-/* Layout: abre en "noche" (fondo fijo) con ideas sueltas que se ordenan en una grilla = de la cabeza al sistema;
-   alterna secciones claras/oscuras; Archivo expandida como protagonista, Plex para leer y para datos. */
+/* Concepto: "de la cabeza al sistema". Blanco amplio con medios redondeados grandes (Meta), paneles azul noche
+   con resplandor (Datco), títulos de peso mixto y paneles alternados (Genit). Una sola familia: Figtree. */
 :root{
-  /* superficies "noche": fijas en ambos temas, son parte de la identidad */
-  --night:#0A1A21; --night-2:#102830; --night-line:#1F3D46; --night-fg:#E7F1F0; --night-muted:#8FAAAE;
-  --glow:#3FD6C8; --amber:#F5B544;
-  /* tokens que siguen el tema */
-  --bg:#F1F4F3; --surface:#FFFFFF; --ink:#0E1D24; --muted:#55676D; --line:#D2DCDA;
-  --accent:#0B7A80; --accent-soft:#D5EDEC; --warm:#B8740F;
-  --font-display:"Archivo","Arial Black","Segoe UI",system-ui,sans-serif;
-  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
-  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-  --wrap:1220px;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0C171C; --surface:#12222A; --ink:#E4EEED; --muted:#93A9AD; --line:#23383F;
-    --accent:#45CFC6; --accent-soft:#163A3E; --warm:#F2B04F; color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0C171C; --surface:#12222A; --ink:#E4EEED; --muted:#93A9AD; --line:#23383F;
-  --accent:#45CFC6; --accent-soft:#163A3E; --warm:#F2B04F; color-scheme:dark;
+  --bg:#FFFFFF; --surface:#F1F4F7; --ink:#1C2B33; --muted:#5F6B73; --line:#E3E8EC;
+  --blue:#0A5BFF; --blue-ink:#0848C9; --navy:#060E1D; --navy-2:#0C1A33; --navy-line:#1C2C4A;
+  --on-navy:#EAF0FA; --on-navy-muted:#93A3BC; --amber:#FFB547;
+  --font:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+  --r-xl:32px; --r-lg:24px; --r-md:16px;
+  --wrap:1240px;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:var(--accent)}
-:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
-h1,h2,h3{font-family:var(--font-display);margin:0;line-height:1.02;text-wrap:balance}
-h2{font-size:clamp(2.1rem,4.6vw,3.8rem);font-weight:800;font-stretch:112%;letter-spacing:-.025em}
-.eyebrow{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px;display:flex;align-items:center;gap:10px}
-.eyebrow::before{content:"";width:22px;height:2px;background:currentColor}
-section{padding-block:clamp(64px,9vw,128px)}
-.night{background:var(--night);color:var(--night-fg)}
-.night .eyebrow{color:var(--glow)}
+html{-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3{margin:0;font-weight:400;letter-spacing:-.02em;line-height:1.08;text-wrap:balance}
+h2{font-size:clamp(2rem,4.2vw,3.4rem)}
+h2 b,h1 b{font-weight:700}
+.kicker{font-size:.9rem;font-weight:600;color:var(--blue);margin:0 0 14px}
+.lead{font-size:1.15rem;color:var(--muted);max-width:38em}
+section{position:relative}
 
-/* ---------- encabezado ---------- */
-.top{position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:20}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:22px}
-.brand{display:flex;align-items:center;gap:12px;color:var(--night-fg);text-decoration:none}
-.brand svg{width:34px;height:34px;flex:none}
-.brand b{font-family:var(--font-display);font-weight:900;font-stretch:120%;font-size:1.3rem;letter-spacing:.04em}
-.brand small{display:block;font-family:var(--font-mono);font-size:.66rem;color:var(--night-muted);letter-spacing:.1em;text-transform:uppercase;line-height:1.2}
-.nav{display:flex;align-items:center;gap:26px}
-.nav a{color:var(--night-fg);text-decoration:none;font-size:.94rem;opacity:.85}
-.nav a:hover{opacity:1;color:var(--glow)}
-.btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:14px 26px;font:600 1rem var(--font-body);cursor:pointer;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
-.btn-glow{background:var(--glow);color:var(--night)}
-.btn-glow:hover{transform:translateY(-2px);box-shadow:0 10px 30px -8px rgba(63,214,200,.6)}
-.btn-line{color:var(--night-fg);background:transparent;box-shadow:inset 0 0 0 1.5px var(--night-line)}
-.btn-line:hover{box-shadow:inset 0 0 0 1.5px var(--glow)}
-.nav .btn{padding:10px 20px;opacity:1;color:var(--night)}
-.btn .arr{transition:transform .2s ease}
-.btn:hover .arr{transform:translateX(4px)}
-@media (max-width:860px){.nav a:not(.btn){display:none}}
+/* botones píldora */
+.pill{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:13px 24px;font:600 .98rem var(--font);text-decoration:none;border:0;cursor:pointer;transition:background .2s ease,transform .2s ease,color .2s ease,box-shadow .2s ease;min-height:46px}
+.pill-blue{background:var(--blue);color:#fff}
+.pill-blue:hover{background:var(--blue-ink)}
+.pill-white{background:#fff;color:var(--ink)}
+.pill-white:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(10,91,255,.6)}
+.pill-ghost{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);backdrop-filter:blur(6px)}
+.pill-ghost:hover{background:rgba(255,255,255,.16)}
+.pill-line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.pill-line:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.arrow-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;flex:none;transition:transform .3s ease}
+.arrow-btn svg{width:18px;height:18px}
 
-/* ---------- héroe ---------- */
-.hero{position:relative;overflow:hidden;padding-block:clamp(130px,16vw,190px) clamp(56px,7vw,96px);isolation:isolate}
-.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 70% 60% at 20% 45%,rgba(10,26,33,.92),rgba(10,26,33,.35) 70%,transparent)}
-.hero .kicker{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--glow);margin:0 0 22px}
-.acro{font-family:var(--font-display);font-weight:900;font-stretch:118%;font-size:clamp(3.1rem,10.5vw,9.6rem);line-height:.9;letter-spacing:-.035em;margin:0;display:flex;flex-wrap:wrap;column-gap:.22em}
-.acro .w{white-space:nowrap}
-.acro b{font-weight:900;color:var(--glow);transition:text-shadow 1.4s ease}
-.acro i{font-style:normal;color:var(--night-fg);transition:opacity 1.4s ease .2s}
-.settled .acro i{opacity:.28}
-.settled .acro b{text-shadow:0 0 38px rgba(63,214,200,.45)}
-.tagline{font-family:var(--font-display);font-weight:600;font-size:clamp(1.35rem,2.6vw,2.15rem);line-height:1.2;max-width:24ch;margin:34px 0 0}
-.tagline em{font-style:normal;color:var(--amber)}
-.hero .lead{color:var(--night-muted);font-size:1.12rem;max-width:40em;margin:18px 0 34px}
-.cta-row{display:flex;flex-wrap:wrap;gap:12px}
-.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(56px,8vw,96px);border-top:1px solid var(--night-line)}
-.pillars div{padding:18px 18px 0 0}
-.pillars div + div{padding-left:18px;border-left:1px solid var(--night-line)}
-.pillars span{font-family:var(--font-mono);font-size:.72rem;color:var(--amber);letter-spacing:.1em}
-.pillars strong{display:block;font-family:var(--font-display);font-stretch:108%;font-size:1.25rem;font-weight:700;margin-top:4px}
-.pillars p{margin:4px 0 0;color:var(--night-muted);font-size:.92rem}
-@media (max-width:860px){.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.pillars div:nth-child(3){padding-left:0;border-left:0}.pillars div:nth-child(n+3){border-top:1px solid var(--night-line);margin-top:18px}}
+/* ---------- navegación ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.86);backdrop-filter:saturate(1.4) blur(14px);transition:box-shadow .3s ease}
+.nav.scrolled{box-shadow:0 1px 0 var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo svg{width:30px;height:30px}
+.logo b{font-weight:800;letter-spacing:.06em;font-size:1.15rem}
+.logo span{font-size:.78rem;color:var(--muted);border-left:1px solid var(--line);padding-left:10px;line-height:1.2}
+.nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0;font-size:.95rem;font-weight:500}
+.nav ul a{text-decoration:none;color:var(--ink);opacity:.8}
+.nav ul a:hover{opacity:1;color:var(--blue)}
+@media (max-width:900px){.nav ul,.logo span{display:none}}
 
-/* ---------- encabezados de sección ---------- */
-.head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px 64px;align-items:end;margin-bottom:56px}
-.head p{color:var(--muted);margin:0;font-size:1.08rem;max-width:36em}
-.night .head p{color:var(--night-muted)}
-@media (max-width:860px){.head{grid-template-columns:1fr}}
+/* ---------- héroe 3D ---------- */
+.hero{padding:8px clamp(8px,1.4vw,18px) 0}
+.stage{position:relative;height:calc(100svh - 84px);min-height:560px;border-radius:var(--r-xl);overflow:hidden;background:radial-gradient(120% 90% at 70% 30%,#10285A 0%,#08142B 45%,var(--navy) 100%);color:#fff;isolation:isolate}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.stage::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(6,14,29,.78) 0%,rgba(6,14,29,.25) 48%,rgba(6,14,29,0) 70%)}
+.hero-copy{position:absolute;z-index:2;left:clamp(20px,5vw,72px);bottom:clamp(28px,7vh,80px);right:clamp(20px,5vw,72px);max-width:760px}
+.hero-copy .tag{display:inline-flex;align-items:center;gap:10px;font-size:.85rem;font-weight:600;color:var(--on-navy);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:6px 14px 6px 8px;margin-bottom:24px;backdrop-filter:blur(6px)}
+.hero-copy .tag i{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px var(--amber)}
+.h1-wrap{position:relative;min-height:2.2em;font-size:clamp(2.5rem,6.2vw,5.6rem);line-height:1.02}
+.h1-wrap h1{font-size:inherit;line-height:inherit;font-weight:300;letter-spacing:-.035em}
+.h1-wrap .l{display:block}
+.h1-wrap .l2{position:absolute;left:0;top:0;opacity:0}
+.hero-copy p{color:var(--on-navy-muted);font-size:1.12rem;max-width:34em;margin:22px 0 28px}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.scroll-cue{position:absolute;z-index:2;right:clamp(20px,4vw,48px);bottom:clamp(28px,7vh,80px);display:flex;align-items:center;gap:12px;font-size:.8rem;color:var(--on-navy-muted);writing-mode:vertical-rl}
+.scroll-cue::after{content:"";width:1px;height:56px;background:linear-gradient(var(--on-navy-muted),transparent)}
+.progress-dots{position:absolute;z-index:2;right:clamp(16px,2vw,28px);top:50%;transform:translateY(-50%);display:grid;gap:8px}
+.progress-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);transition:background .3s ease,transform .3s ease}
+.progress-dots i.on{background:#fff;transform:scale(1.3)}
+@media (max-width:760px){.stage::after{background:linear-gradient(0deg,rgba(6,14,29,.9) 0%,rgba(6,14,29,.35) 55%,rgba(6,14,29,0) 80%)}.scroll-cue{display:none}}
 
-/* ---------- servicios ---------- */
-.svcs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.svc{background:var(--surface);padding:30px 26px 28px;display:flex;flex-direction:column;gap:12px;position:relative;transition:background .25s ease}
-.svc::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--accent);transition:width .35s ease}
-.svc:hover::before{width:100%}
-.svc:hover{background:var(--accent-soft)}
-.svc svg{width:40px;height:40px;color:var(--accent)}
-.svc h3{font-size:1.32rem;font-weight:800;font-stretch:106%;letter-spacing:-.01em}
-.svc p{margin:0;color:var(--muted);font-size:.95rem}
-.svc .tags{margin-top:auto;padding-top:6px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink);opacity:.75}
-.svc.star{background:var(--ink);color:var(--bg)}
-.svc.star p,.svc.star .tags{color:var(--bg)}
-.svc.star p{opacity:.75}
-.svc.star svg{color:var(--warm)}
-.svc.star:hover{background:var(--ink)}
-.svc.star .badge{position:absolute;top:18px;right:18px;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm)}
-@media (max-width:1020px){.svcs{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.svcs{grid-template-columns:1fr}}
+/* ---------- manifiesto ---------- */
+.manifesto{padding-block:clamp(90px,13vw,170px) clamp(60px,8vw,110px);text-align:center}
+.manifesto p{font-size:clamp(1.7rem,3.6vw,3rem);line-height:1.18;letter-spacing:-.025em;max-width:24em;margin:0 auto;font-weight:400}
+.manifesto p b{font-weight:700}
+.manifesto .w{opacity:.16;transition:opacity .2s linear}
+.manifesto .meta{margin-top:40px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 
-/* ---------- datos ---------- */
-.screen{background:var(--night-2);border:1px solid var(--night-line);border-radius:20px;padding:14px;box-shadow:0 40px 80px -40px rgba(0,0,0,.7)}
-.screen-bar{display:flex;align-items:center;gap:8px;padding:4px 6px 14px}
-.screen-bar i{width:10px;height:10px;border-radius:50%;background:var(--night-line)}
-.screen-bar span{margin-left:10px;font-family:var(--font-mono);font-size:.72rem;color:var(--night-muted)}
-.dash{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:14px}
-.panel{background:var(--night);border:1px solid var(--night-line);border-radius:14px;padding:22px;min-width:0}
-.panel h3{font-family:var(--font-body);font-size:1rem;font-weight:600}
-.panel .meta{font-family:var(--font-mono);font-size:.72rem;color:var(--night-muted);margin:2px 0 16px}
-.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:18px}
-.kpi{border-top:1px solid var(--night-line);padding-top:12px}
-.kpi .k{font-size:.82rem;color:var(--night-muted)}
-.kpi .v{font-family:var(--font-display);font-weight:800;font-stretch:110%;font-size:clamp(1.8rem,3.2vw,2.5rem);line-height:1.05;font-variant-numeric:tabular-nums}
-.kpi .d{font-family:var(--font-mono);font-size:.72rem}
-.up{color:var(--glow)} .warn{color:var(--amber)}
-.chart{width:100%;height:auto;display:block}
-.chart text{font-family:var(--font-mono);font-size:10px;fill:var(--night-muted)}
-.chart .grid{stroke:var(--night-line);stroke-width:1}
-.chart .bar{fill:var(--glow)}
-.chart .plan{fill:none;stroke:var(--amber);stroke-width:2}
-.chart .dot{fill:var(--amber)}
-.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.78rem;color:var(--night-muted);margin-top:8px}
-.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-.bal{width:100%;border-collapse:collapse;font-size:.9rem;font-variant-numeric:tabular-nums}
-.bal td{padding:8px 0;border-bottom:1px solid var(--night-line)}
-.bal td:last-child{text-align:right;font-family:var(--font-mono);font-size:.84rem}
-.bal tr.sub td{color:var(--night-muted)}
-.bal tr.tot td{font-weight:700;border-bottom:0;border-top:2px solid var(--night-fg);color:var(--glow)}
-.gauge{display:flex;align-items:center;gap:16px;margin-top:18px;padding-top:16px;border-top:1px solid var(--night-line)}
-.gauge svg{width:64px;height:64px;flex:none}
-.gauge p{margin:0;font-size:.86rem;color:var(--night-muted)}
-.gauge strong{color:var(--night-fg)}
-.sample{font-family:var(--font-mono);font-size:.7rem;color:var(--night-muted);letter-spacing:.08em;text-transform:uppercase;margin:14px 0 0}
-.impact{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:56px}
-.impact div{border-left:2px solid var(--glow);padding-left:18px}
-.impact strong{display:block;font-family:var(--font-display);font-stretch:110%;font-size:1.2rem;margin-bottom:6px}
-.impact p{margin:0;color:var(--night-muted);font-size:.95rem}
-@media (max-width:900px){.dash{grid-template-columns:1fr}.impact{grid-template-columns:1fr}}
-@media (max-width:520px){.kpis{grid-template-columns:1fr}}
+/* ---------- clientes ---------- */
+.clients{padding-bottom:clamp(70px,9vw,120px)}
+.clients h3{text-align:center;font-size:1rem;font-weight:600;color:var(--muted);margin-bottom:30px;letter-spacing:0}
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee-track{display:flex;align-items:center;gap:72px;width:max-content;animation:mq 42s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.client{display:flex;align-items:center;gap:12px;color:#8C98A1;font-weight:700;font-size:1.25rem;white-space:nowrap;letter-spacing:-.01em;transition:color .2s ease}
+.client:hover{color:var(--ink)}
+.client svg{width:30px;height:30px;flex:none}
+@keyframes mq{to{transform:translateX(-50%)}}
 
-/* ---------- proyectos ---------- */
-.count{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
-.count b{font-family:var(--font-display);font-weight:900;font-stretch:120%;font-size:clamp(4rem,9vw,7.5rem);line-height:.85;color:var(--accent);letter-spacing:-.04em}
-.count span{font-family:var(--font-display);font-stretch:108%;font-weight:700;font-size:clamp(1.4rem,2.6vw,2rem);max-width:14ch;line-height:1.1}
-.works{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.work{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;min-height:250px;min-width:0;overflow:hidden;transition:transform .25s ease,border-color .25s ease}
-.work:hover{transform:translateY(-4px);border-color:var(--accent)}
-.work .sec{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);position:relative}
-.work h3{font-size:1.55rem;font-weight:800;font-stretch:110%;letter-spacing:-.015em;margin-top:auto;position:relative}
-.work p{margin:0;color:var(--muted);font-size:.92rem;position:relative}
-.work .mono{position:absolute;top:14px;right:16px;font-family:var(--font-display);font-weight:900;font-stretch:125%;font-size:3.6rem;line-height:1;color:var(--line);pointer-events:none}
-.work a{font-size:.88rem;font-weight:600;text-decoration:none;position:relative}
-.work.wide{grid-column:span 2;background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.work.wide p{color:var(--bg);opacity:.75}
-.work.wide .sec,.work.wide a{color:var(--warm)}
-.work.wide .mono{color:var(--bg);opacity:.08}
-@media (max-width:1020px){.works{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.works{grid-template-columns:1fr}.work.wide{grid-column:auto}}
+/* ---------- ejes de solución ---------- */
+.axes{padding-block:clamp(40px,6vw,80px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:20px 60px;align-items:end;margin-bottom:44px}
+.sec-head .lead{margin:0}
+@media (max-width:860px){.sec-head{grid-template-columns:1fr}}
+.axes-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.axis{position:relative;grid-column:span 2;min-height:380px;border-radius:var(--r-lg);overflow:hidden;color:#fff;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;padding:26px;isolation:isolate}
+.axis.w4{grid-column:span 4}
+.axis.w3{grid-column:span 3}
+.axis img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.axis::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(6,14,29,.55) 0%,rgba(6,14,29,.1) 40%,rgba(6,14,29,.82) 100%)}
+.axis:hover img{transform:scale(1.06)}
+.axis:hover .arrow-btn{transform:rotate(-45deg)}
+.axis h3{font-size:clamp(1.4rem,2vw,1.8rem);font-weight:600;letter-spacing:-.02em}
+.axis .bot{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.axis .bot p{margin:0;font-size:.98rem;color:#DDE5F1;max-width:30em}
+.axis .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.axis .chips span{font-size:.76rem;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+@media (max-width:980px){.axis,.axis.w4,.axis.w3{grid-column:span 3}}
+@media (max-width:640px){.axis,.axis.w4,.axis.w3{grid-column:span 6;min-height:320px}}
 
-/* ---------- origen ---------- */
-.origin{background:var(--accent-soft)}
-.origin .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,6vw,96px);align-items:center}
-.quote{font-family:var(--font-display);font-weight:800;font-stretch:108%;font-size:clamp(1.9rem,4vw,3.3rem);line-height:1.05;letter-spacing:-.02em;margin:0}
-.quote span{color:var(--accent)}
-.origin p.txt{margin:0 0 14px;font-size:1.06rem;max-width:34em}
-.origin .sig{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);margin:0}
-@media (max-width:860px){.origin .wrap{grid-template-columns:1fr}}
+/* ---------- panel noche: cifras ---------- */
+.night{margin:clamp(40px,6vw,80px) clamp(8px,1.4vw,18px) 0;border-radius:var(--r-xl);background:var(--navy);color:var(--on-navy);overflow:hidden;position:relative;isolation:isolate;padding-block:clamp(70px,9vw,120px)}
+.night .blob{position:absolute;z-index:-1;border-radius:50%;filter:blur(90px);opacity:.75;pointer-events:none}
+.night .b1{width:620px;height:620px;background:#1745D6;left:-180px;top:-160px}
+.night .b2{width:520px;height:520px;background:#0A2C8C;right:-120px;bottom:-200px}
+.night .kicker{color:#7FA6FF}
+.night h2{max-width:20ch}
+.night .lead{color:var(--on-navy-muted)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:64px}
+.stat{border-top:1px solid var(--navy-line);padding-top:22px}
+.stat b{display:block;font-size:clamp(2.6rem,5vw,4.2rem);font-weight:300;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;color:#fff}
+.stat span{display:block;margin-top:10px;color:var(--on-navy-muted);font-size:.98rem}
+@media (max-width:860px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-/* ---------- proceso (secuencia real) ---------- */
-.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));counter-reset:s}
-.steps li{counter-increment:s;padding:0 22px 0 0;position:relative}
-.steps li::before{content:counter(s);display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);color:var(--accent);font-family:var(--font-display);font-weight:800;font-size:1.1rem;margin-bottom:18px;position:relative;z-index:1}
-.steps li::after{content:"";position:absolute;top:23px;left:46px;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 12px);opacity:.5}
-.steps li:last-child::after{display:none}
-.steps h3{font-size:1.25rem;font-weight:800;font-stretch:106%;margin-bottom:8px}
-.steps p{margin:0;color:var(--muted);font-size:.95rem}
-.steps .t{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:.72rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
-@media (max-width:900px){.steps{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:36px}.steps li:nth-child(2)::after{display:none}}
-@media (max-width:520px){.steps{grid-template-columns:1fr}.steps li::after{display:none}}
+/* ---------- sectores (tarjetas tipo producto) ---------- */
+.sectors{padding-block:clamp(90px,11vw,150px) 0;text-align:center}
+.sectors h2{max-width:18ch;margin:0 auto}
+.sectors .lead{margin:18px auto 0}
+.sector-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:56px;text-align:center}
+.sector .ph{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/5}
+.sector .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.sector:hover .ph img{transform:scale(1.05)}
+.sector h3{font-size:1.35rem;font-weight:600;margin-top:22px}
+.sector p{margin:6px auto 0;color:var(--muted);font-size:.95rem;max-width:22em}
+@media (max-width:980px){.sector-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.sector-grid{grid-template-columns:1fr}}
 
-/* ---------- integraciones ---------- */
-.integr{display:flex;flex-wrap:wrap;gap:10px}
-.integr span{font-family:var(--font-mono);font-size:.88rem;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);transition:border-color .2s ease,color .2s ease}
-.integr span:hover{border-color:var(--accent);color:var(--accent)}
+/* ---------- proyectos: recorrido horizontal ---------- */
+.work{padding-top:clamp(100px,12vw,160px);overflow:hidden}
+.work .sec-head{margin-bottom:36px}
+.track-outer{overflow:hidden}
+.track{display:flex;gap:20px;padding-inline:clamp(16px,4vw,40px);width:max-content;padding-bottom:12px}
+.proj{width:min(520px,82vw);flex:none;text-decoration:none;color:var(--ink);display:flex;flex-direction:column}
+.proj .frame{border-radius:var(--r-lg);overflow:hidden;background:var(--surface);aspect-ratio:16/10;position:relative;border:1px solid var(--line)}
+.proj .bar{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;background:#E9EDF1;border-bottom:1px solid var(--line)}
+.proj .bar i{width:9px;height:9px;border-radius:50%;background:#C9D1D8}
+.proj .bar span{margin-left:10px;font-size:.72rem;color:var(--muted);background:#fff;border-radius:6px;padding:2px 10px;flex:1;max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj .shot{position:absolute;left:0;right:0;top:30px;bottom:0;overflow:hidden}
+.proj .shot img{width:100%;height:auto;transition:transform 2.4s cubic-bezier(.2,.7,.2,1)}
+.proj:hover .shot img{transform:translateY(-6%)}
+.proj .mock{position:absolute;left:0;right:0;top:30px;bottom:0;display:grid;grid-template-columns:110px 1fr;background:#fff}
+.proj .mock .side{background:#0C1A33;padding:16px 12px;display:grid;align-content:start;gap:10px}
+.proj .mock .side i{height:7px;border-radius:4px;background:#22355A}
+.proj .mock .side i:first-child{background:#3A6BFF;width:70%}
+.proj .mock .main{padding:16px;display:grid;grid-template-rows:auto auto 1fr;gap:12px}
+.proj .mock .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.proj .mock .kpis i{height:38px;border-radius:8px;background:var(--surface)}
+.proj .mock .chart{display:flex;align-items:flex-end;gap:6px;height:90px;padding:8px;border-radius:8px;background:var(--surface)}
+.proj .mock .chart i{flex:1;border-radius:3px 3px 0 0;background:#B8C8F5}
+.proj .mock .chart i:nth-child(4n){background:var(--blue)}
+.proj .mock .rows{display:grid;gap:7px;align-content:start}
+.proj .mock .rows i{height:7px;border-radius:4px;background:var(--surface)}
+.proj .mock .tbar{display:flex;justify-content:space-between;align-items:center}
+.proj .mock .tbar i{height:10px;width:40%;border-radius:5px;background:var(--surface)}
+.proj .mock .tbar i.btn{width:64px;height:20px;border-radius:999px;background:var(--blue)}
+.proj .mock .table{display:grid;gap:6px;align-content:start}
+.proj .mock .trow{display:grid;grid-template-columns:1fr 60px 40px;gap:10px;align-items:center;padding:6px 8px;border-radius:6px;background:var(--surface)}
+.proj .mock .trow i{height:6px;border-radius:3px;background:#C9D3DE}
+.proj .mock .trow b{height:12px;border-radius:999px;background:#CFE0FF}
+.proj .mock .trow b.warn{background:#FFE2B0}.proj .mock .trow b.new{background:#0A5BFF}
+.proj .mock .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;align-content:start}
+.proj .mock .cal i{aspect-ratio:1.4;border-radius:5px;background:var(--surface)}
+.proj .mock .cal i.b{background:#0A5BFF}.proj .mock .cal i.a{background:#FFD18A}.proj .mock .cal i.g{background:#B8C8F5}
+.proj .lock{position:absolute;right:14px;bottom:14px;display:flex;align-items:center;gap:8px;background:rgba(12,26,51,.88);color:#fff;font-size:.76rem;font-weight:600;padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px)}
+.proj .lock svg{width:13px;height:13px}
+.proj .meta{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:20px 4px 0}
+.proj h3{font-size:1.4rem;font-weight:600}
+.proj .sector-tag{font-size:.86rem;color:var(--blue);font-weight:600;margin-bottom:4px}
+.proj p{margin:6px 0 0;color:var(--muted);font-size:.95rem}
+.proj .go{width:40px;height:40px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--line);display:grid;place-items:center;flex:none;transition:background .2s ease,color .2s ease}
+.proj:hover .go{background:var(--ink);color:#fff}
+.proj .go svg{width:16px;height:16px}
+.track-hint{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:26px;font-size:.9rem;color:var(--muted)}
+.track-bar{flex:1;max-width:260px;height:2px;background:var(--line);border-radius:2px;overflow:hidden}
+.track-bar i{display:block;height:100%;width:0;background:var(--ink)}
+@media (max-width:800px){.track-outer{overflow-x:auto;scroll-snap-type:x mandatory}.proj{scroll-snap-align:start}}
+
+/* ---------- nosotros ---------- */
+.about{padding-block:clamp(100px,12vw,160px) 0}
+.about .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,90px);align-items:center}
+.about .ph{border-radius:var(--r-xl);overflow:hidden;aspect-ratio:1/1}
+.about .ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+.about blockquote{margin:0 0 26px;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.15;letter-spacing:-.025em;font-weight:400}
+.about blockquote b{font-weight:700}
+.about p{color:var(--muted);margin:0 0 14px;max-width:34em}
+.acr{display:flex;flex-wrap:wrap;gap:6px 14px;margin:30px 0;font-size:1.05rem}
+.acr span b{color:var(--blue);font-weight:800;font-size:1.3em}
+@media (max-width:860px){.about .grid{grid-template-columns:1fr}}
+
+/* ---------- proceso (pestañas) ---------- */
+.process{margin:clamp(100px,12vw,160px) clamp(8px,1.4vw,18px) 0;border-radius:var(--r-xl);background:#0B0F14;color:#F2F5F8;padding-block:clamp(70px,9vw,110px);overflow:hidden;position:relative;isolation:isolate}
+.process::before{content:"";position:absolute;z-index:-1;right:-200px;bottom:-260px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(255,181,71,.38),transparent 65%)}
+.process .kicker{color:var(--amber)}
+.process .lead{color:#9AA6B2}
+.tabs{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);margin-top:48px;align-items:stretch}
+.tablist{display:grid;gap:10px;align-content:start}
+.tab{all:unset;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:var(--r-md);background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);transition:background .25s ease,box-shadow .25s ease;font-size:1.05rem;font-weight:500;position:relative;overflow:hidden}
+.tab:hover{background:rgba(255,255,255,.07)}
+.tab[aria-selected="true"]{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,181,71,.6)}
+.tab:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.tab .n{font-size:.82rem;color:var(--amber);font-weight:700;font-variant-numeric:tabular-nums}
+.tab .fill{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--amber)}
+.panel-box{border-radius:var(--r-lg);background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);padding:clamp(24px,3.4vw,44px);display:flex;flex-direction:column;gap:18px;min-height:340px}
+.panel-box .big{font-size:clamp(4rem,9vw,7rem);font-weight:200;line-height:.9;letter-spacing:-.05em;color:#fff}
+.panel-box h3{font-size:clamp(1.6rem,2.6vw,2.2rem);font-weight:600}
+.panel-box p{margin:0;color:#B3BDC8;max-width:36em}
+.panel-box ul{margin:4px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.panel-box li{display:flex;gap:12px;color:#D7DEE5}
+.panel-box li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--amber);margin-top:.65em;flex:none}
+@media (max-width:860px){.tabs{grid-template-columns:1fr}}
 
 /* ---------- contacto ---------- */
-.contact .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,80px);align-items:start}
-.contact h2{font-size:clamp(2.6rem,6vw,5rem);font-stretch:116%}
-.contact h2 em{font-style:normal;color:var(--glow)}
-.contact .lead{color:var(--night-muted);font-size:1.1rem;margin:20px 0 0;max-width:30em}
-.direct{display:grid;gap:22px;margin-top:40px}
-.direct .lbl{display:block;font-family:var(--font-mono);font-size:.72rem;color:var(--amber);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
-.direct .row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
-.direct .val{font-family:var(--font-display);font-stretch:104%;font-size:clamp(1.25rem,2.4vw,1.7rem);font-weight:700;user-select:all;overflow-wrap:anywhere}
-.copy{font:500 .76rem var(--font-mono);background:transparent;border:1px solid var(--night-line);color:var(--night-fg);border-radius:6px;padding:5px 11px;cursor:pointer}
-.copy:hover{border-color:var(--glow)}
-form{background:var(--night-2);border:1px solid var(--night-line);border-radius:20px;padding:clamp(22px,3vw,34px);display:grid;gap:16px}
+.contact{margin:clamp(40px,6vw,80px) clamp(8px,1.4vw,18px) 0;border-radius:var(--r-xl);background:var(--navy);color:var(--on-navy);overflow:hidden;position:relative;isolation:isolate;padding-block:clamp(70px,9vw,120px)}
+.contact .blob{position:absolute;z-index:-1;width:760px;height:760px;border-radius:50%;filter:blur(110px);background:#1A4FE8;opacity:.6;left:30%;top:-420px}
+.contact .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,90px)}
+.contact h2{font-size:clamp(2.6rem,6vw,5rem);font-weight:300;letter-spacing:-.04em}
+.contact .lead{color:var(--on-navy-muted)}
+.direct{display:grid;gap:18px;margin-top:40px}
+.direct a{display:flex;align-items:center;gap:16px;text-decoration:none;padding:16px 18px;border-radius:var(--r-md);background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--navy-line);transition:background .2s ease}
+.direct a:hover{background:rgba(255,255,255,.1)}
+.direct .ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--blue);flex:none}
+.direct .ic svg{width:20px;height:20px;color:#fff}
+.direct small{display:block;color:var(--on-navy-muted);font-size:.8rem}
+.direct strong{font-weight:600;font-size:1.1rem;overflow-wrap:anywhere}
+form{background:#fff;color:var(--ink);border-radius:var(--r-lg);padding:clamp(22px,3vw,36px);display:grid;gap:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .field{display:grid;gap:6px}
-.field label{font-size:.88rem;font-weight:600;color:var(--night-fg)}
-.field input,.field textarea,.field select{font:inherit;color:var(--night-fg);background:var(--night);border:1px solid var(--night-line);border-radius:10px;padding:12px 14px;width:100%;color-scheme:dark}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--glow);outline:none}
+.field label{font-size:.85rem;font-weight:600}
+.field input,.field select,.field textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--surface);border:1px solid transparent;border-radius:12px;padding:12px 14px;width:100%;transition:border-color .2s ease,background .2s ease}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);background:#fff}
 .field textarea{min-height:120px;resize:vertical}
-.field ::placeholder{color:var(--night-muted);opacity:.7}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-actions{display:flex;flex-wrap:wrap;gap:10px}
-.status{font-size:.9rem;color:var(--glow);margin:0;min-height:1.2em}
-@media (max-width:900px){.contact .wrap{grid-template-columns:1fr}}
-@media (max-width:560px){.two{grid-template-columns:1fr}}
+.form-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.status{margin:0;font-size:.9rem;color:var(--blue-ink);min-height:1.3em}
+@media (max-width:860px){.contact .grid{grid-template-columns:1fr}}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
 
-footer{background:var(--night);color:var(--night-muted);border-top:1px solid var(--night-line);padding-block:30px;font-size:.86rem}
-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
-footer b{color:var(--night-fg);font-family:var(--font-display);font-stretch:120%;letter-spacing:.04em}
-footer .mono{font-family:var(--font-mono)}
+/* ---------- pie ---------- */
+footer{padding-block:clamp(56px,7vw,90px) 36px}
+.foot{display:grid;grid-template-columns:1.4fr repeat(3,minmax(0,1fr));gap:32px}
+.foot h4{margin:0 0 14px;font-size:.9rem;font-weight:700}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.92rem}
+.foot ul a{text-decoration:none;color:var(--muted)}
+.foot ul a:hover{color:var(--ink)}
+.foot p{color:var(--muted);font-size:.92rem;max-width:22em}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted)}
+@media (max-width:860px){.foot{grid-template-columns:1fr 1fr}}
 
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{transition:none!important}
-}
+/* animaciones de entrada (solo con JS y sin preferencia de movimiento reducido) */
+.js .rise{transform:translateY(36px);opacity:.001}
+@media (prefers-reduced-motion:reduce){.js .rise{transform:none;opacity:1}.marquee-track{animation:none}.manifesto .w{opacity:1}}
 </style>
 </head>
 <body>
 
-<header class="top">
+<header class="nav" id="nav">
   <div class="wrap">
-    <a class="brand" href="#inicio" aria-label="LTELC, inicio">
-      <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="9" fill="#3FD6C8"/><path d="M9 9v16h7M18 9h8M22 9v16" stroke="#0A1A21" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26.5" cy="25" r="2.6" fill="#F5B544"/></svg>
-      <span><b>LTELC</b><small>Lo tengo en la cabeza</small></span>
+    <a class="logo" href="#top" aria-label="LTELC, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#060E1D"/><circle cx="16" cy="13" r="7.5" fill="none" stroke="#0A5BFF" stroke-width="2"/><path d="M9 25h14" stroke="#EAF0FA" stroke-width="2.2" stroke-linecap="round"/><circle cx="16" cy="13" r="2.2" fill="#FFB547"/></svg>
+      <b>LTELC</b><span>Lo Tengo<br>en la Cabeza</span>
     </a>
-    <nav class="nav" aria-label="Secciones">
-      <a href="#servicios">Servicios</a>
-      <a href="#datos">Datos</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#como-trabajamos">Cómo trabajamos</a>
-      <a class="btn btn-glow" href="#contacto">Contacto</a>
+    <nav aria-label="Secciones">
+      <ul>
+        <li><a href="#soluciones">Soluciones</a></li>
+        <li><a href="#sectores">Sectores</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+      </ul>
     </nav>
+    <a class="pill pill-blue" href="#contacto">Contacto</a>
   </div>
 </header>
 
-<main id="inicio">
+<main id="top">
 
-  <!-- HÉROE -->
-  <section class="hero night">
-    <canvas id="mind" aria-hidden="true"></canvas>
-    <div class="wrap">
-      <p class="kicker">Consultora · Sistemas · Datos · Automatización</p>
-      <h1 class="acro" aria-label="LTELC, Lo Tengo En La Cabeza">
-        <span class="w"><b>L</b><i>o</i></span>
-        <span class="w"><b>T</b><i>engo</i></span>
-        <span class="w"><b>E</b><i>n</i></span>
-        <span class="w"><b>L</b><i>a</i></span>
-        <span class="w"><b>C</b><i>abeza</i></span>
-      </h1>
-      <p class="tagline">Lo que hoy está en tu cabeza, <em>mañana es un sistema.</em></p>
-      <p class="lead">Sistemas de administración completos, balances contables, tableros de indicadores, apps a medida, automatización e integración. Tomamos lo que vive en planillas sueltas y en la memoria de tu equipo, y lo convertimos en información ordenada, al día y fácil de leer.</p>
-      <div class="cta-row">
-        <a class="btn btn-glow" href="#contacto">Pedí un diagnóstico sin cargo <span class="arr">→</span></a>
-        <a class="btn btn-line" href="#proyectos">Ver proyectos</a>
-      </div>
-      <div class="pillars">
-        <div><span>Gestión</span><strong>Administración</strong><p>Compras, ventas, stock y tesorería en un solo sistema.</p></div>
-        <div><span>Contabilidad</span><strong>Balances</strong><p>Estados contables armados desde los datos reales.</p></div>
-        <div><span>Decisión</span><strong>Indicadores</strong><p>Tableros que muestran el impacto de cada número.</p></div>
-        <div><span>Tecnología</span><strong>Desarrollo</strong><p>Apps, automatización e integración a medida.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICIOS -->
-  <section id="servicios">
-    <div class="wrap">
-      <div class="head">
-        <div><p class="eyebrow">Servicios</p><h2>De la administración al tablero de la dirección</h2></div>
-        <p>Trabajamos con empresas, comercios, hoteles, hospitales y organismos públicos. Construimos sobre lo que ya tenés, sin obligarte a cambiar todo de golpe.</p>
-      </div>
-      <div class="svcs">
-        <article class="svc star">
-          <span class="badge">Integral</span>
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="3"/><path d="M4 11h24M11 11v16M15 16h9M15 21h6"/></svg>
-          <h3>Sistemas de administración completos</h3>
-          <p>Toda la gestión en un sistema: compras, ventas, stock, cuentas corrientes, caja y bancos, facturación electrónica y reportes para la dirección.</p>
-          <p class="tags">compras · ventas · stock · tesorería · ARCA</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4v24M6 9h20M6 9l-4 9h8zM26 9l-4 9h8zM11 28h10"/></svg>
-          <h3>Balances y contabilidad</h3>
-          <p>Balances y estados de situación patrimonial, resultados y flujo de efectivo, con conciliaciones, libros IVA y cierres mensuales.</p>
-          <p class="tags">balances · estados contables · cierres</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h24M8 23V15M14 23V9M20 23v-5M26 23V12"/><path d="M6 12l8-6 6 5 7-6"/></svg>
-          <h3>Visualización e impacto de datos</h3>
-          <p>Indicadores que muestran qué pasó, por qué y cuánto impacta: presupuesto vs. ejecución, costos, rentabilidad y metas.</p>
-          <p class="tags">KPIs · tableros · mapas · Power BI</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="14" height="26" rx="3"/><path d="M14 24h4"/></svg>
-          <h3>Apps y soluciones a medida</h3>
-          <p>Aplicaciones web y móviles para tu forma de trabajar: pedidos, turnos, legajos, reservas, portales para clientes o proveedores.</p>
-          <p class="tags">web · mobile · portales</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="4"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/></svg>
-          <h3>Automatización de procesos</h3>
-          <p>Reportes que se arman solos, avisos automáticos, carga de datos desde mails o formularios y controles programados.</p>
-          <p class="tags">flujos · bots · n8n</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 8h-3a5 5 0 0 0 0 10h3M21 14h3a5 5 0 0 1 0 10h-3M11 13h10M11 19h10"/></svg>
-          <h3>Integración de sistemas</h3>
-          <p>Conectamos ERP, planillas, cobros, facturación electrónica y mensajería por API, para que cada dato se cargue una sola vez.</p>
-          <p class="tags">APIs · sincronización · migraciones</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4l2.6 6.4L25 13l-6.4 2.6L16 22l-2.6-6.4L7 13l6.4-2.6z"/><path d="M25 21l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg>
-          <h3>Inteligencia artificial aplicada</h3>
-          <p>Asistentes que responden consultas, leen comprobantes, clasifican documentos o analizan CVs, con control humano donde importa.</p>
-          <p class="tags">asistentes · lectura de comprobantes</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l11-5 11 5-11 5z"/><path d="M5 16l11 5 11-5M5 23l11 5 11-5"/></svg>
-          <h3>Consultoría y acompañamiento</h3>
-          <p>Relevamos procesos, priorizamos qué conviene ordenar primero y capacitamos a tu equipo para que las herramientas se usen.</p>
-          <p class="tags">relevamiento · capacitación</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- DATOS -->
-  <section id="datos" class="night">
-    <div class="wrap">
-      <div class="head">
-        <div><p class="eyebrow">Datos e indicadores</p><h2>Números que se entienden a primera vista</h2></div>
-        <p>Del balance al tablero: los mismos datos del sistema alimentan los estados contables y los indicadores, así lo que ve la dirección coincide con lo que cierra contabilidad.</p>
-      </div>
-      <div class="screen">
-        <div class="screen-bar"><i></i><i></i><i></i><span>tablero · dirección general</span></div>
-        <div class="dash">
-          <div class="panel">
-            <h3>Ejecución presupuestaria</h3>
-            <p class="meta">Millones de $ por mes · ejecutado vs. presupuestado</p>
-            <div class="kpis">
-              <div class="kpi"><div class="k">Ejecución acumulada</div><div class="v">87,4%</div><div class="d up">▲ 6,1 pp interanual</div></div>
-              <div class="kpi"><div class="k">Margen bruto</div><div class="v">32,8%</div><div class="d up">▲ 2,4 pp</div></div>
-              <div class="kpi"><div class="k">Días de cobro</div><div class="v">28</div><div class="d warn">▼ antes 41 días</div></div>
-            </div>
-            <svg class="chart" id="execChart" viewBox="0 0 560 210" role="img" aria-label="Barras de ejecución mensual con línea de presupuesto"></svg>
-            <div class="legend"><span><i style="background:var(--glow)"></i>Ejecutado</span><span><i style="background:var(--amber)"></i>Presupuestado</span></div>
-          </div>
-          <div class="panel">
-            <h3>Estado de resultados</h3>
-            <p class="meta">Ejercicio en curso · millones de $</p>
-            <table class="bal">
-              <tr><td>Ventas netas</td><td>1.284,6</td></tr>
-              <tr class="sub"><td>Costo de ventas</td><td>(863,2)</td></tr>
-              <tr><td>Resultado bruto</td><td>421,4</td></tr>
-              <tr class="sub"><td>Gastos de administración</td><td>(148,9)</td></tr>
-              <tr class="sub"><td>Gastos de comercialización</td><td>(97,3)</td></tr>
-              <tr class="sub"><td>Resultados financieros</td><td>(31,7)</td></tr>
-              <tr class="tot"><td>Resultado del ejercicio</td><td>143,5</td></tr>
-            </table>
-            <div class="gauge">
-              <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--night-line)" stroke-width="7"/><circle cx="32" cy="32" r="26" fill="none" stroke="var(--glow)" stroke-width="7" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="44.1" transform="rotate(-90 32 32)"/><text x="32" y="36" text-anchor="middle" fill="var(--night-fg)" font-family="IBM Plex Mono, monospace" font-size="12">73%</text></svg>
-              <p><strong>Meta anual de resultado</strong><br>143,5 de 196,0 millones alcanzados</p>
-            </div>
-          </div>
+  <!-- HÉROE: de la cabeza al sistema -->
+  <section class="hero" aria-label="Presentación">
+    <div class="stage" id="stage">
+      <canvas id="gl" aria-hidden="true"></canvas>
+      <div class="hero-copy">
+        <span class="tag"><i></i>Consultora argentina · Sistemas, datos y software</span>
+        <div class="h1-wrap">
+          <h1><span class="l l1">Todo lo que tu organización <b>tiene en la cabeza</b>…</span><span class="l l2">…lo convertimos en <b>sistema.</b></span></h1>
+        </div>
+        <p>Sistemas de administración, balances contables, tableros de indicadores y software a medida para organizaciones que no pueden detenerse.</p>
+        <div class="hero-ctas">
+          <a class="pill pill-white" href="#contacto">Agendá un diagnóstico sin cargo</a>
+          <a class="pill pill-ghost" href="#proyectos">Ver proyectos</a>
         </div>
       </div>
-      <p class="sample">Datos de ejemplo, con fines ilustrativos</p>
-      <div class="impact">
-        <div><strong>Qué pasó</strong><p>El número del período, comparado con lo previsto y con el año anterior.</p></div>
-        <div><strong>Por qué</strong><p>Apertura por área, cuenta o proyecto hasta llegar al comprobante.</p></div>
-        <div><strong>Cuánto impacta</strong><p>Desvíos y metas en contexto, para decidir antes del cierre.</p></div>
+      <div class="progress-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      <div class="scroll-cue" aria-hidden="true">Deslizá</div>
+    </div>
+  </section>
+
+  <!-- MANIFIESTO -->
+  <section class="manifesto">
+    <div class="wrap">
+      <p id="manifesto">Somos <b>LTELC</b>, la sigla de <b>Lo Tengo en la Cabeza</b>. Tomamos el conocimiento que hoy vive en planillas sueltas y en la memoria de tu equipo y lo convertimos en <b>sistemas, balances e indicadores</b> que funcionan todos los días.</p>
+      <div class="meta">
+        <a class="pill pill-blue" href="#soluciones">Nuestras soluciones</a>
+        <a class="pill pill-line" href="#nosotros">Por qué LTELC</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTES -->
+  <section class="clients" aria-labelledby="clientsT">
+    <h3 id="clientsT">Organizaciones que confiaron en nosotros</h3>
+    <div class="marquee">
+      <div class="marquee-track" id="mq">
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="2" y="2" width="26" height="26" rx="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 19h14M10 15h10M12 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Trenes Argentinos Operaciones</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M4 20c4 4 18 4 22 0M15 4v16M9 11h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Cooperativa de Practicaje</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M15 4v22M4 15h22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Hospital El Cruce</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="11" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 17l4-6 6 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Profeed</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M15 4c5 6 8 10 8 14a8 8 0 0 1-16 0c0-4 3-8 8-14z" fill="none" stroke="currentColor" stroke-width="2"/></svg>ABSA</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="4" y="4" width="10" height="10" rx="2" fill="currentColor"/><rect x="16" y="16" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>GGA</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M5 25V11l10-6 10 6v14M11 25v-7h8v7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>[Hotel]</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M6 21q9-15 18 0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="8" cy="10" r="3" fill="currentColor"/><circle cx="22" cy="10" r="3" fill="currentColor"/></svg>Trabajar en Saladillo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EJES DE SOLUCIÓN -->
+  <section class="axes" id="soluciones">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="kicker">Soluciones</p><h2>Cinco ejes para <b>ordenar, medir y automatizar</b> tu organización</h2></div>
+        <p class="lead">Desde la carga del primer comprobante hasta el indicador que mira la dirección. Construimos sobre lo que ya tenés, por etapas.</p>
+      </div>
+      <div class="axes-grid">
+        <a class="axis w4 rise" href="#contacto">
+          <img src="img/administracion.jpg" alt="" loading="lazy">
+          <h3>Sistemas de administración completos</h3>
+          <div class="bot">
+            <div><p>Compras, ventas, stock, cuentas corrientes, caja y bancos y facturación electrónica en un solo sistema.</p><div class="chips"><span>Compras</span><span>Ventas</span><span>Stock</span><span>Tesorería</span><span>ARCA</span></div></div>
+            <span class="arrow-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15L15 5M7 5h8v8"/></svg></span>
+          </div>
+        </a>
+        <a class="axis rise" href="#contacto">
+          <img src="img/hero.jpg" alt="" loading="lazy">
+          <h3>Balances y contabilidad</h3>
+          <div class="bot"><p>Estados contables, conciliaciones y cierres desde los datos reales.</p><span class="arrow-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15L15 5M7 5h8v8"/></svg></span></div>
+        </a>
+        <a class="axis rise" href="#contacto">
+          <img src="img/datos.jpg" alt="" loading="lazy">
+          <h3>Indicadores e impacto de datos</h3>
+          <div class="bot"><p>Tableros que muestran qué pasó, por qué y cuánto impacta.</p><span class="arrow-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15L15 5M7 5h8v8"/></svg></span></div>
+        </a>
+        <a class="axis rise" href="#contacto">
+          <img src="img/equipo.jpg" alt="" loading="lazy">
+          <h3>Software y apps a medida</h3>
+          <div class="bot"><p>Web y mobile para tu forma de trabajar: turnos, reservas, legajos, portales.</p><span class="arrow-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15L15 5M7 5h8v8"/></svg></span></div>
+        </a>
+        <a class="axis rise" href="#contacto">
+          <img src="img/puerto.jpg" alt="" loading="lazy">
+          <h3>Automatización, integración e IA</h3>
+          <div class="bot"><p>Sistemas conectados, reportes que se arman solos y lectura de comprobantes con IA.</p><span class="arrow-btn"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15L15 5M7 5h8v8"/></svg></span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIFRAS -->
+  <section class="night" aria-labelledby="numT">
+    <span class="blob b1"></span><span class="blob b2"></span>
+    <div class="wrap">
+      <p class="kicker">LTELC en números</p>
+      <h2 id="numT">Sistemas que sostienen <b>operaciones reales</b>, todos los días</h2>
+      <div class="stats">
+        <div class="stat"><b data-count="10">10</b><span>sistemas y plataformas en producción</span></div>
+        <div class="stat"><b data-count="4">4</b><span>sectores: transporte, puertos, salud y hotelería</span></div>
+        <div class="stat"><b data-count="197">197</b><span>países analizados en el Atlas Político Mundial</span></div>
+        <div class="stat"><b data-count="100" data-suffix="%">100%</b><span>desarrollo propio y a medida</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTORES -->
+  <section class="sectors" id="sectores">
+    <div class="wrap">
+      <p class="kicker">Sectores</p>
+      <h2>Donde la información <b>no puede fallar</b></h2>
+      <p class="lead">En la vía, en el puerto, en la guardia y en la recepción. Conocemos las operaciones que no se detienen.</p>
+      <div class="sector-grid">
+        <article class="sector rise"><div class="ph"><img src="img/transporte.jpg" alt="Formación ferroviaria" loading="lazy"></div><h3>Transporte ferroviario</h3><p>Presupuesto, ejecución y planificación plurianual.</p></article>
+        <article class="sector rise"><div class="ph"><img src="img/puerto.jpg" alt="Puerto visto desde el aire" loading="lazy"></div><h3>Puertos y practicaje</h3><p>Gestión de servicios y administración de la cooperativa.</p></article>
+        <article class="sector rise"><div class="ph"><img src="img/salud.jpg" alt="Edificio hospitalario" loading="lazy"></div><h3>Salud</h3><p>Sistemas para la gestión hospitalaria.</p></article>
+        <article class="sector rise"><div class="ph"><img src="img/hoteleria.jpg" alt="Hotel con piscina al atardecer" loading="lazy"></div><h3>Hotelería</h3><p>Reservas, huéspedes y facturación integradas.</p></article>
       </div>
     </div>
   </section>
 
   <!-- PROYECTOS -->
-  <section id="proyectos">
+  <section class="work" id="proyectos" aria-labelledby="workT">
     <div class="wrap">
-      <div class="head">
-        <div>
-          <p class="eyebrow">Proyectos</p>
-          <div class="count"><b>9</b><span>proyectos en uso</span></div>
-        </div>
-        <p>Salud, hotelería, sector público, análisis político, empleo y empresas. Cada uno empezó con alguien que lo tenía en la cabeza.</p>
-      </div>
-      <div class="works">
-        <article class="work wide">
-          <span class="mono" aria-hidden="true">HEC</span>
-          <span class="sec">Salud pública</span>
-          <h3>Sistema para Hospital El Cruce</h3>
-          <p>Sistema a medida para la gestión del hospital: información ordenada y disponible para los equipos que la necesitan.</p>
-        </article>
-        <article class="work">
-          <span class="mono" aria-hidden="true">GH</span>
-          <span class="sec">Hotelería</span>
-          <h3>Gestión de Hoteles</h3>
-          <p>Reservas, habitaciones, huéspedes y facturación en un solo sistema.</p>
-        </article>
-        <article class="work">
-          <span class="mono" aria-hidden="true">AB</span>
-          <span class="sec">Administración</span>
-          <h3>Administración ABSA</h3>
-          <p>Sistema de administración con circuitos, registros y reportes para la gestión diaria.</p>
-        </article>
-        <article class="work">
-          <span class="mono" aria-hidden="true">GGA</span>
-          <span class="sec">Gestión integral</span>
-          <h3>Sistema GGA</h3>
-          <p>Sistema de gestión desarrollado a medida de la operación.</p>
-        </article>
-        <article class="work">
-          <span class="mono" aria-hidden="true">CP</span>
-          <span class="sec">Control de gestión</span>
-          <h3>Control Profeed</h3>
-          <p>Seguimiento y control con indicadores para tomar decisiones a tiempo.</p>
-        </article>
-        <article class="work">
-          <span class="mono" aria-hidden="true">B</span>
-          <span class="sec">Registro y seguimiento</span>
-          <h3>Bitácora</h3>
-          <p>Registro digital de novedades y actividades, con historial consultable.</p>
-        </article>
-        <article class="work">
-          <span class="mono" aria-hidden="true">P27</span>
-          <span class="sec">Sector público · Indicadores</span>
-          <h3>Presupuesto plurianual</h3>
-          <p>Tablero interactivo de techos, ejecución y proyectos, con exportación a Excel, PDF y PowerPoint.</p>
-        </article>
-        <article class="work wide">
-          <span class="mono" aria-hidden="true">APM</span>
-          <span class="sec">Datos · Cartografía interactiva</span>
-          <h3>Atlas Político Mundial</h3>
-          <p>Cartografía interactiva del poder mundial: 197 países con sistemas electorales, ideología de los gobiernos e indicadores socioeconómicos comparados.</p>
-          <a href="https://atlaspoliticoelectoral.com/" target="_blank" rel="noopener">atlaspoliticoelectoral.com ↗</a>
-        </article>
-        <article class="work wide">
-          <span class="mono" aria-hidden="true">TS</span>
-          <span class="sec">Plataforma web · Empleo regional</span>
-          <h3>Trabajar en Saladillo</h3>
-          <p>Bolsa de empleo para Saladillo y la región: CV gratis con análisis al instante por inteligencia artificial y publicación de búsquedas para empresas.</p>
-          <a href="https://trabajarensaladillo.com/" target="_blank" rel="noopener">trabajarensaladillo.com ↗</a>
-        </article>
+      <div class="sec-head">
+        <div><p class="kicker">Proyectos</p><h2 id="workT">Trabajo <b>en producción</b></h2></div>
+        <p class="lead">Sistemas internos de clientes y plataformas abiertas al público. Cada uno empezó con alguien que lo tenía en la cabeza.</p>
       </div>
     </div>
+    <div class="track-outer" id="trackOuter">
+      <div class="track" id="track"></div>
+    </div>
+    <div class="wrap"><div class="track-hint"><span>Deslizá para recorrer los proyectos</span><span class="track-bar"><i id="trackBar"></i></span></div></div>
   </section>
 
-  <!-- ORIGEN -->
-  <section class="origin" aria-labelledby="originT">
-    <div class="wrap">
+  <!-- NOSOTROS -->
+  <section class="about" id="nosotros">
+    <div class="wrap grid">
+      <div class="ph rise"><img src="img/equipo.jpg" alt="Equipo trabajando frente a computadoras" loading="lazy"></div>
       <div>
-        <p class="eyebrow" id="originT">Por qué LTELC</p>
-        <p class="quote">"Eso no está escrito en ningún lado, <span>lo tengo en la cabeza</span>."</p>
-      </div>
-      <div>
-        <p class="txt">LTELC son las iniciales de <strong>Lo Tengo en la Cabeza</strong>, el nombre con el que empezamos.</p>
-        <p class="txt">Es la frase que escuchamos en casi todas las organizaciones: cómo se arma el cierre del mes, qué proveedor se paga primero, de dónde sale tal indicador. Todo funciona, pero depende de que alguien lo recuerde.</p>
-        <p class="txt">Nuestro trabajo es sacarlo de ahí y convertirlo en un sistema que funcione igual aunque esa persona esté de vacaciones.</p>
-        <p class="sig">Lo Tengo en la Cabeza → LTELC · ltelc.tech</p>
+        <p class="kicker">Por qué LTELC</p>
+        <blockquote>"Eso no está escrito en ningún lado, <b>lo tengo en la cabeza</b>."</blockquote>
+        <p>Es la frase que escuchamos en casi todas las organizaciones: cómo se arma el cierre del mes, qué proveedor se paga primero, de dónde sale tal indicador. Todo funciona, pero depende de que alguien lo recuerde.</p>
+        <p>Nuestro trabajo es convertir ese conocimiento en un sistema que funcione igual aunque esa persona esté de vacaciones.</p>
+        <div class="acr" aria-label="Lo Tengo En La Cabeza"><span><b>L</b>o</span><span><b>T</b>engo</span><span><b>E</b>n</span><span><b>L</b>a</span><span><b>C</b>abeza</span></div>
+        <a class="pill pill-blue" href="#contacto">Hablemos de tu proyecto</a>
       </div>
     </div>
   </section>
 
   <!-- PROCESO -->
-  <section id="como-trabajamos">
+  <section class="process" aria-labelledby="procT">
     <div class="wrap">
-      <div class="head">
-        <div><p class="eyebrow">Cómo trabajamos</p><h2>De la charla a algo que funciona</h2></div>
-        <p>Entregas cortas y visibles. Ves avances reales desde la primera semana y decidimos juntos el paso siguiente.</p>
+      <div class="sec-head">
+        <div><p class="kicker">Cómo trabajamos</p><h2 id="procT">De la charla a algo <b>que funciona</b></h2></div>
+        <p class="lead">Entregas cortas y visibles. Ves avances reales desde las primeras semanas y decidimos juntos el paso siguiente.</p>
       </div>
-      <ol class="steps">
-        <li><h3>Diagnóstico</h3><p>Relevamos cómo trabajás hoy, qué sistemas usás y dónde se pierde el tiempo.</p><span class="t">sin cargo</span></li>
-        <li><h3>Propuesta</h3><p>Definimos alcance, prioridades, plazos y presupuesto cerrado por etapa.</p><span class="t">por escrito</span></li>
-        <li><h3>Desarrollo</h3><p>Construimos en etapas cortas, con una versión de prueba que usás desde temprano.</p><span class="t">avances semanales</span></li>
-        <li><h3>Puesta en marcha</h3><p>Implementamos, capacitamos al equipo y quedamos para soporte y mejoras.</p><span class="t">soporte continuo</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- INTEGRACIONES -->
-  <section style="padding-top:0">
-    <div class="wrap">
-      <div class="head" style="margin-bottom:32px">
-        <div><p class="eyebrow">Integraciones</p><h2>Nos conectamos con lo que ya usás</h2></div>
-        <p>Si tiene API, exporta archivos o manda mails, lo podemos integrar.</p>
-      </div>
-      <div class="integr">
-        <span>Excel · Google Sheets</span><span>WhatsApp Business</span><span>Mercado Pago</span><span>ARCA · Factura electrónica</span><span>Tango · ERP</span><span>Bancos · extractos</span><span>Gmail · Outlook</span><span>Google Drive</span><span>Power BI</span><span>Bases SQL</span><span>APIs REST</span><span>n8n</span><span>Modelos de IA</span>
+      <div class="tabs">
+        <div class="tablist" role="tablist" aria-label="Etapas">
+          <button class="tab" role="tab" id="t1" aria-controls="tp" aria-selected="true"><span class="n">01</span>Diagnóstico<span class="fill"></span></button>
+          <button class="tab" role="tab" id="t2" aria-controls="tp" aria-selected="false" tabindex="-1"><span class="n">02</span>Propuesta<span class="fill"></span></button>
+          <button class="tab" role="tab" id="t3" aria-controls="tp" aria-selected="false" tabindex="-1"><span class="n">03</span>Desarrollo<span class="fill"></span></button>
+          <button class="tab" role="tab" id="t4" aria-controls="tp" aria-selected="false" tabindex="-1"><span class="n">04</span>Puesta en marcha<span class="fill"></span></button>
+        </div>
+        <div class="panel-box" role="tabpanel" id="tp" aria-labelledby="t1">
+          <span class="big" id="tpN">01</span>
+          <h3 id="tpH">Diagnóstico</h3>
+          <p id="tpP">Relevamos cómo trabajás hoy, qué sistemas y planillas usás y dónde se pierde el tiempo. La primera reunión no tiene costo.</p>
+          <ul id="tpL"><li>Entrevistas con las áreas clave</li><li>Mapa de procesos y de datos</li><li>Prioridades por impacto</li></ul>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CONTACTO -->
-  <section id="contacto" class="contact night">
-    <div class="wrap">
+  <section class="contact" id="contacto" aria-labelledby="contactT">
+    <span class="blob"></span>
+    <div class="wrap grid">
       <div>
-        <p class="eyebrow">Contacto</p>
-        <h2>¿Qué tenés <em>en la cabeza?</em></h2>
-        <p class="lead">Contanos qué te gustaría ordenar, automatizar o medir. Respondemos en el día hábil y la primera reunión de diagnóstico no tiene costo.</p>
+        <p class="kicker" style="color:#7FA6FF">Contacto</p>
+        <h2 id="contactT">¿Qué tenés <b>en la cabeza?</b></h2>
+        <p class="lead">Contanos qué querés ordenar, automatizar o medir. Respondemos en el día hábil.</p>
         <div class="direct">
-          <div><span class="lbl">WhatsApp</span><div class="row"><span class="val" id="waVal">+54 9 11 5706-2947</span><button class="copy" type="button" data-copy="waVal">Copiar</button></div></div>
-          <div><span class="lbl">Email</span><div class="row"><span class="val" id="mailVal">agencialtelc@gmail.com</span><button class="copy" type="button" data-copy="mailVal">Copiar</button></div></div>
+          <a href="https://wa.me/5491157062947" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/></svg></span><span><small>WhatsApp</small><strong>+54 9 11 5706-2947</strong></span></a>
+          <a href="mailto:agencialtelc@gmail.com"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span><small>Email</small><strong>agencialtelc@gmail.com</strong></span></a>
         </div>
       </div>
       <form id="contactForm" novalidate>
         <div class="two">
           <div class="field"><label for="f-name">Nombre</label><input id="f-name" name="nombre" autocomplete="name" required></div>
-          <div class="field"><label for="f-org">Empresa u organismo</label><input id="f-org" name="empresa" autocomplete="organization"></div>
+          <div class="field"><label for="f-org">Organización</label><input id="f-org" name="empresa" autocomplete="organization"></div>
         </div>
-        <div class="field">
-          <label for="f-topic">¿Qué necesitás?</label>
+        <div class="field"><label for="f-topic">¿Qué necesitás?</label>
           <select id="f-topic" name="tema">
-            <option>Sistema de administración</option>
-            <option>Balances y contabilidad</option>
-            <option>Tablero de indicadores</option>
-            <option>App o sistema a medida</option>
-            <option>Automatizar un proceso</option>
-            <option>Integrar sistemas</option>
-            <option>Inteligencia artificial</option>
-            <option>No estoy seguro, quiero asesoramiento</option>
+            <option>Sistema de administración</option><option>Balances y contabilidad</option><option>Tablero de indicadores</option><option>Software o app a medida</option><option>Automatización o integración</option><option>Inteligencia artificial</option><option>Quiero asesoramiento</option>
           </select>
         </div>
         <div class="field"><label for="f-msg">Contanos brevemente</label><textarea id="f-msg" name="mensaje" required placeholder="Ej.: llevamos la administración en tres planillas y el balance lo armamos a mano cada mes."></textarea></div>
         <div class="form-actions">
-          <button class="btn btn-glow" type="submit" data-via="wa">Enviar por WhatsApp <span class="arr">→</span></button>
-          <button class="btn btn-line" type="submit" data-via="mail">Enviar por email</button>
+          <button class="pill pill-blue" type="submit" data-via="wa">Enviar por WhatsApp</button>
+          <button class="pill pill-line" type="submit" data-via="mail">Enviar por email</button>
         </div>
         <p class="status" id="formStatus" role="status"></p>
       </form>
@@ -560,110 +513,340 @@ footer .mono{font-family:var(--font-mono)}
 
 <footer>
   <div class="wrap">
-    <span>© <span id="yr">2026</span> <b>LTELC</b> · Lo Tengo en la Cabeza</span>
-    <span class="mono">ltelc.tech · Buenos Aires, Argentina</span>
+    <div class="foot">
+      <div>
+        <a class="logo" href="#top" aria-label="LTELC, inicio"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#060E1D"/><circle cx="16" cy="13" r="7.5" fill="none" stroke="#0A5BFF" stroke-width="2"/><path d="M9 25h14" stroke="#EAF0FA" stroke-width="2.2" stroke-linecap="round"/><circle cx="16" cy="13" r="2.2" fill="#FFB547"/></svg><b>LTELC</b></a>
+        <p>Lo Tengo en la Cabeza. Consultora en sistemas de gestión, datos y software a medida.</p>
+      </div>
+      <div><h4>Soluciones</h4><ul><li><a href="#soluciones">Administración</a></li><li><a href="#soluciones">Balances</a></li><li><a href="#soluciones">Indicadores</a></li><li><a href="#soluciones">Software a medida</a></li><li><a href="#soluciones">Automatización e IA</a></li></ul></div>
+      <div><h4>Sectores</h4><ul><li><a href="#sectores">Transporte</a></li><li><a href="#sectores">Puertos</a></li><li><a href="#sectores">Salud</a></li><li><a href="#sectores">Hotelería</a></li></ul></div>
+      <div><h4>Contacto</h4><ul><li><a href="https://wa.me/5491157062947" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="mailto:agencialtelc@gmail.com">agencialtelc@gmail.com</a></li><li><a href="#contacto">Formulario</a></li></ul></div>
+    </div>
+    <div class="legal"><span>© <span id="yr">2026</span> LTELC · Lo Tengo en la Cabeza</span><span>ltelc.tech · Buenos Aires, Argentina</span></div>
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
 (function(){
+  'use strict';
   var CONTACT = { mail: 'agencialtelc@gmail.com', wa: '5491157062947', waShow: '+54 9 11 5706-2947' };
-  document.getElementById('yr').textContent = new Date().getFullYear();
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGsap = !!(window.gsap && window.ScrollTrigger);
+  if (hasGsap && !reduce) document.documentElement.classList.add('js');
+  document.getElementById('yr').textContent = new Date().getFullYear();
 
-  // la frase se asienta en la sigla
-  setTimeout(function(){ document.body.classList.add('settled'); }, reduce ? 0 : 900);
+  /* ---------------- proyectos ---------------- */
+  var PROJECTS = [
+    { name: 'Presupuesto plurianual', sector: 'Trenes Argentinos Operaciones', desc: 'Tablero de techos, ejecución y proyectos con exportación a Excel, PDF y PowerPoint.', url: 'tablero interno' },
+    { name: 'Sistema para Hospital El Cruce', sector: 'Salud pública', desc: '[Qué resuelve y para qué áreas del hospital]', url: 'sistema interno' },
+    { name: 'Practicaje', sector: 'Cooperativa de Practicaje', desc: '[Qué resuelve el sistema para la cooperativa]', url: 'sistema interno' },
+    { name: 'Atlas Político Mundial', sector: 'Datos y cartografía', desc: '197 países: sistemas electorales, gobiernos e indicadores comparados.', url: 'atlaspoliticoelectoral.com', href: 'https://atlaspoliticoelectoral.com/', img: 'img/atlas.jpg' },
+    { name: 'Control Profeed', sector: 'Control de gestión', desc: 'Seguimiento y control con indicadores para decidir a tiempo.', url: 'sistema interno' },
+    { name: 'Gestión de Hoteles', sector: 'Hotelería', desc: 'Reservas, habitaciones, huéspedes y facturación en un solo sistema.', url: 'sistema interno' },
+    { name: 'Trabajar en Saladillo', sector: 'Empleo regional', desc: 'Bolsa de empleo con análisis de CV por inteligencia artificial.', url: 'trabajarensaladillo.com', href: 'https://trabajarensaladillo.com/', img: 'img/saladillo.jpg' },
+    { name: 'Administración ABSA', sector: 'Administración', desc: 'Circuitos, registros y reportes para la gestión diaria.', url: 'sistema interno' },
+    { name: 'Sistema GGA', sector: 'Gestión integral', desc: 'Sistema de gestión desarrollado a medida de la operación.', url: 'sistema interno' },
+    { name: 'Bitácora', sector: 'Registro y seguimiento', desc: 'Registro digital de novedades y actividades con historial.', url: 'sistema interno' }
+  ];
+  var arrowSvg = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15L15 5M7 5h8v8"/></svg>';
+  var lockSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function mock(i){
+    var side = '<div class="side"><i></i><i></i><i></i><i></i><i></i></div>', v = i % 3, inner = '';
+    if (v === 0){
+      var bars = ''; for (var k = 0; k < 12; k++) bars += '<i style="height:' + (30 + ((i * 37 + k * 23) % 65)) + '%"></i>';
+      inner = '<div class="kpis"><i></i><i></i><i></i></div><div class="chart">' + bars + '</div><div class="rows"><i></i><i style="width:80%"></i><i style="width:90%"></i></div>';
+    } else if (v === 1){
+      var rows = ''; for (var r = 0; r < 7; r++) rows += '<div class="trow"><i style="width:' + (40 + (r * 17 + i * 7) % 45) + '%"></i><i></i><b class="' + (['ok','warn','ok','new'][(r + i) % 4]) + '"></b></div>';
+      inner = '<div class="tbar"><i></i><i class="btn"></i></div><div class="table">' + rows + '</div>';
+    } else {
+      var cells = ''; for (var c2 = 0; c2 < 28; c2++){ var m = (c2 * 5 + i * 3) % 9; cells += '<i class="' + (m === 0 ? 'b' : m === 4 ? 'a' : m === 7 ? 'g' : '') + '"></i>'; }
+      inner = '<div class="tbar"><i></i><i class="btn"></i></div><div class="cal">' + cells + '</div>';
+    }
+    return '<div class="mock" aria-hidden="true">' + side + '<div class="main">' + inner + '</div></div>';
+  }
+  document.getElementById('track').innerHTML = PROJECTS.map(function(p, i){
+    var tag = p.href ? 'a' : 'article', attrs = p.href ? ' href="' + p.href + '" target="_blank" rel="noopener"' : '';
+    var body = p.img ? '<div class="shot"><img src="' + p.img + '" alt="Captura de ' + esc(p.name) + '" loading="lazy"></div>'
+                     : mock(i) + '<span class="lock">' + lockSvg + 'Sistema de uso interno</span>';
+    return '<' + tag + ' class="proj"' + attrs + '><div class="frame"><div class="bar"><i></i><i></i><i></i><span>' + esc(p.url) + '</span></div>' + body + '</div>' +
+      '<div class="meta"><div><div class="sector-tag">' + esc(p.sector) + '</div><h3>' + esc(p.name) + '</h3><p>' + esc(p.desc) + '</p></div>' +
+      (p.href ? '<span class="go">' + arrowSvg + '</span>' : '') + '</div></' + tag + '>';
+  }).join('');
 
-  // héroe: ideas sueltas que se ordenan en una grilla conectada
+  /* ---------------- marquesina: duplicar para el bucle ---------------- */
+  var mq = document.getElementById('mq'); mq.innerHTML += mq.innerHTML;
+  Array.prototype.forEach.call(mq.children, function(el, i){ if (i >= mq.children.length / 2) el.setAttribute('aria-hidden', 'true'); });
+
+  /* ---------------- manifiesto: palabras ---------------- */
+  var man = document.getElementById('manifesto');
+  (function split(node){
+    Array.prototype.slice.call(node.childNodes).forEach(function(n){
+      if (n.nodeType === 3){
+        var frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function(t){
+          if (!t) return;
+          if (/^\s+$/.test(t)) frag.appendChild(document.createTextNode(t));
+          else { var s = document.createElement('span'); s.className = 'w'; s.textContent = t; frag.appendChild(s); }
+        });
+        node.replaceChild(frag, n);
+      } else if (n.nodeType === 1) split(n);
+    });
+  })(man);
+
+  /* ---------------- escena 3D: cabeza de partículas → sistema ---------------- */
+  var scene3d = { progress: 0 };
   (function(){
-    var cv = document.getElementById('mind'); if (!cv || !cv.getContext) return;
-    var ctx = cv.getContext('2d'), pts = [], W = 0, H = 0, cols = 0, rows = 0, gap = 0, t0 = performance.now(), pulses = [];
-    function build(){
-      var r = cv.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
-      W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
-      gap = W < 640 ? 46 : 64; cols = Math.ceil(W / gap) + 1; rows = Math.ceil(H / gap) + 1; pts = [];
-      for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++){
-        pts.push({ gx: i * gap, gy: j * gap, sx: W * .5 + (Math.random() - .5) * W * .9, sy: H * .45 + (Math.random() - .5) * H * .8,
-                   ph: Math.random() * 6.28, d: Math.random() * .5, i: i, j: j });
-      }
+    var canvas = document.getElementById('gl'), stage = document.getElementById('stage');
+    if (!window.THREE) return;
+    var renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: 'high-performance' }); }
+    catch (e) { return; }
+    var small = innerWidth < 760, N = small ? 7000 : 15000;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(dpr);
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50); camera.position.set(0, 0, 6.4);
+
+    // 1) silueta de una cabeza de perfil, muestreada desde un canvas
+    var W = 240, H = 270, c = document.createElement('canvas'); c.width = W; c.height = H;
+    var g = c.getContext('2d');
+    g.fillStyle = '#fff';
+    g.fill(new Path2D('M78 262 L80 214 C46 202 30 166 32 124 C35 62 82 20 136 22 C188 24 214 66 208 110 L206 122 L224 150 C227 155 222 158 215 158 L210 159 L213 172 L206 178 L210 185 C208 198 198 205 182 203 L166 202 L164 262 Z'));
+    var data = g.getImageData(0, 0, W, H).data, inside = [];
+    for (var y = 0; y < H; y += 1) for (var x = 0; x < W; x += 1) if (data[(y * W + x) * 4 + 3] > 128) inside.push(x, y);
+    var M = inside.length / 2;
+    var start = new Float32Array(N * 3), end = new Float32Array(N * 3), rnd = new Float32Array(N);
+    function depthAt(px, py){
+      var nx = (px - 128) / 100, ny = (py - 112) / 112;
+      var d = 1 - nx * nx * 0.9 - ny * ny * 0.55;
+      if (py > 205) d = 0.42 - ((px - 122) / 60) * ((px - 122) / 60) * 0.4;
+      return Math.max(0.05, d);
     }
-    function ease(x){ return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
-    function pos(p, k){ var e = ease((k - p.d) / (1 - p.d * .6)), w = (1 - e) * 10;
-      return [p.sx + (p.gx - p.sx) * e + Math.cos(p.ph + k * 4) * w, p.sy + (p.gy - p.sy) * e + Math.sin(p.ph + k * 4) * w, e]; }
-    function line(a, b){ var al = Math.min(a[2], b[2]) * .16; if (al < .01) return;
-      ctx.strokeStyle = 'rgba(63,214,200,' + al + ')'; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
-    function frame(now){
-      var k = reduce ? 1 : Math.min((now - t0) / 3200, 1);
-      ctx.clearRect(0, 0, W, H);
-      var P = pts.map(function(p){ return pos(p, k); });
-      ctx.lineWidth = 1;
-      for (var n = 0; n < pts.length; n++){
-        if (pts[n].i < cols - 1) line(P[n], P[n + 1]);
-        if (pts[n].j < rows - 1) line(P[n], P[n + cols]);
-      }
-      for (n = 0; n < pts.length; n++){
-        ctx.fillStyle = 'rgba(231,241,240,' + (.25 + .35 * (1 - P[n][2])) + ')';
-        ctx.beginPath(); ctx.arc(P[n][0], P[n][1], 1.6 + (1 - P[n][2]) * 1.4, 0, 6.283); ctx.fill();
-      }
-      if (!reduce && k >= 1){
-        if (pulses.length < 6 && Math.random() < .05){
-          var s = pts[(Math.random() * pts.length) | 0], hz = Math.random() < .5;
-          pulses.push({ x: s.gx, y: s.gy, dx: hz ? 1 : 0, dy: hz ? 0 : 1, life: 0, len: gap * (3 + Math.random() * 4) });
-        }
-        pulses = pulses.filter(function(q){ q.life += 1.6; var x = q.x + q.dx * q.life, y = q.y + q.dy * q.life;
-          ctx.fillStyle = '#F5B544'; ctx.shadowColor = '#F5B544'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(x, y, 2.6, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0;
-          return q.life < q.len; });
-      }
-      if (!reduce) requestAnimationFrame(frame);
+    for (var i = 0; i < N; i++){
+      var k = (Math.random() * M) | 0, px = inside[k * 2] + Math.random(), py = inside[k * 2 + 1] + Math.random();
+      var dz = depthAt(px, py) * 0.95, side = Math.random() < 0.5 ? -1 : 1;
+      var surf = Math.random() < 0.7 ? (0.82 + Math.random() * 0.18) : Math.random();
+      start[i * 3] = (px - 128) / 100; start[i * 3 + 1] = -(py - 140) / 100; start[i * 3 + 2] = side * dz * surf;
+      rnd[i] = Math.random();
     }
-    build(); requestAnimationFrame(frame);
-    var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ build(); if (reduce) frame(0); }, 150); });
+    // 2) destino: un tablero de sistema hecho de partículas (paneles con barras, líneas y tablas)
+    var cols = 4, rows = 3, pw = 0.74, ph = 0.5, gap = 0.09;
+    var totalW = cols * pw + (cols - 1) * gap, totalH = rows * ph + (rows - 1) * gap;
+    var panelSeed = []; for (var p = 0; p < cols * rows; p++){ var hs = []; for (var b = 0; b < 7; b++) hs.push(0.25 + Math.random() * 0.7); panelSeed.push(hs); }
+    for (i = 0; i < N; i++){
+      var pi = (Math.random() * cols * rows) | 0, cx = pi % cols, cy = (pi / cols) | 0;
+      var x0 = -totalW / 2 + cx * (pw + gap), y0 = totalH / 2 - cy * (ph + gap) - ph;
+      var type = pi === 0 ? 3 : pi % 3, r = Math.random(), lx, ly;
+      if (r < 0.28){ // borde
+        var t = Math.random() * 2 * (pw + ph);
+        if (t < pw){ lx = t; ly = 0; } else if (t < pw + ph){ lx = pw; ly = t - pw; } else if (t < 2 * pw + ph){ lx = t - pw - ph; ly = ph; } else { lx = 0; ly = t - 2 * pw - ph; }
+      } else if (type === 0){ // barras
+        var bi = (Math.random() * 7) | 0, bw = (pw - 0.12) / 7;
+        lx = 0.06 + bi * bw + Math.random() * bw * 0.62; ly = 0.06 + Math.random() * (ph - 0.16) * panelSeed[pi][bi];
+      } else if (type === 1){ // línea
+        lx = 0.05 + Math.random() * (pw - 0.1); ly = 0.12 + (ph - 0.24) * (0.5 + 0.38 * Math.sin(lx * 7 + pi) * Math.cos(lx * 3)) + (Math.random() - 0.5) * 0.012;
+        if (Math.random() < 0.3) ly = 0.06 + Math.random() * (ly - 0.06);
+      } else if (type === 2){ // tabla
+        var row = (Math.random() * 6) | 0; lx = 0.06 + Math.random() * (pw - 0.12) * (row === 0 ? 0.5 : 1); ly = ph - 0.08 - row * ((ph - 0.12) / 6) + (Math.random() - 0.5) * 0.006;
+      } else { // anillo de indicador
+        var ang = Math.random() * Math.PI * 2 * (Math.random() < 0.75 ? 0.73 : 1), rr = 0.15 + Math.random() * 0.025;
+        lx = pw / 2 + Math.cos(ang) * rr; ly = ph / 2 + Math.sin(ang) * rr;
+      }
+      end[i * 3] = x0 + lx; end[i * 3 + 1] = y0 + ly; end[i * 3 + 2] = (Math.random() - 0.5) * 0.02 + (cy - 1) * 0.06;
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(start, 3));
+    geo.setAttribute('aEnd', new THREE.BufferAttribute(end, 3));
+    geo.setAttribute('aRand', new THREE.BufferAttribute(rnd, 1));
+    var mat = new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      uniforms: { uP: { value: 0 }, uTime: { value: 0 }, uSize: { value: (small ? 13 : 11) * dpr } },
+      vertexShader: [
+        'attribute vec3 aEnd; attribute float aRand; uniform float uP; uniform float uTime; uniform float uSize;',
+        'varying float vMix; varying float vR;',
+        'void main(){',
+        '  float t = clamp((uP - aRand*0.3)/0.7, 0.0, 1.0); t = t*t*(3.0-2.0*t);',
+        '  vec3 pos = mix(position, aEnd, t);',
+        '  float s = sin(t*3.14159);',
+        '  pos += vec3(sin(aRand*61.0), cos(aRand*47.0), sin(aRand*29.0)) * s * 0.55;',
+        '  pos += vec3(sin(uTime*0.7+aRand*40.0), cos(uTime*0.6+aRand*25.0), sin(uTime*0.5+aRand*17.0)) * 0.012 * (1.0 - t*0.6);',
+        '  vec4 mv = modelViewMatrix * vec4(pos, 1.0);',
+        '  gl_Position = projectionMatrix * mv;',
+        '  gl_PointSize = uSize * (0.55 + aRand*0.9) / -mv.z;',
+        '  vMix = t; vR = aRand;',
+        '}'
+      ].join('\n'),
+      fragmentShader: [
+        'varying float vMix; varying float vR;',
+        'void main(){',
+        '  vec2 c = gl_PointCoord - 0.5; float d = length(c); if (d > 0.5) discard;',
+        '  float a = smoothstep(0.5, 0.0, d);',
+        '  vec3 head = mix(vec3(0.55,0.68,1.0), vec3(0.95,0.97,1.0), vR*0.6);',
+        '  vec3 sys = vR > 0.93 ? vec3(1.0,0.71,0.28) : mix(vec3(0.12,0.4,1.0), vec3(0.6,0.78,1.0), vR);',
+        '  gl_FragColor = vec4(mix(head, sys, vMix), a * 0.85);',
+        '}'
+      ].join('\n')
+    });
+    var pts = new THREE.Points(geo, mat), group = new THREE.Group(); group.add(pts); scene.add(group);
+
+    var mx = 0, my = 0;
+    stage.addEventListener('pointermove', function(e){ var r = stage.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width - 0.5; my = (e.clientY - r.top) / r.height - 0.5; });
+    function resize(){
+      var w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      small = w < 760;
+    }
+    resize(); addEventListener('resize', resize);
+    var visible = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[0].isIntersecting; }).observe(stage);
+    var clock = new THREE.Clock(), cur = 0;
+    function frame(){
+      requestAnimationFrame(frame);
+      if (!visible) return;
+      var t = clock.getElapsedTime();
+      cur += ((reduce ? 0 : scene3d.progress) - cur) * 0.08;
+      mat.uniforms.uP.value = cur; mat.uniforms.uTime.value = t;
+      var headX = small ? 0 : 1.15, sysX = small ? 0 : 0.85;
+      group.position.x = headX + (sysX - headX) * cur;
+      group.position.y = small ? 0.75 : 0.1;
+      var idle = (1 - cur) * Math.sin(t * 0.35) * 0.45;
+      group.rotation.y += ((-0.55 * (1 - cur) + idle + (-0.35) * cur + mx * 0.5) - group.rotation.y) * 0.05;
+      group.rotation.x += ((0.28 * cur + my * 0.25) - group.rotation.x) * 0.05;
+      var sc = small ? 0.72 : 1; group.scale.setScalar(sc * (1 + cur * 0.08));
+      renderer.render(scene, camera);
+    }
+    frame();
   })();
 
-  // gráfico de ejemplo: barras ejecutadas y línea de presupuesto en la misma escala
-  (function(){
-    var svg = document.getElementById('execChart'); if (!svg) return;
-    var NS = 'http://www.w3.org/2000/svg', M = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-    var ej = [82,88,95,91,104,99,108,112,106,118,0,0], pl = [90,92,100,100,105,108,110,112,115,118,120,140];
-    var x0 = 34, x1 = 552, y0 = 182, y1 = 12, max = 150, bw = (x1 - x0) / 12;
-    var y = function(v){ return y0 - (v / max) * (y0 - y1); };
-    var el = function(n, a, t){ var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); if (t != null) e.textContent = t; svg.appendChild(e); return e; };
-    [0,50,100,150].forEach(function(v){ el('line', {x1:x0, x2:x1, y1:y(v), y2:y(v), 'class':'grid'}); el('text', {x:x0 - 6, y:y(v) + 3, 'text-anchor':'end'}, v); });
-    M.forEach(function(m, i){
-      var cx = x0 + bw * i + bw / 2;
-      if (ej[i]) el('rect', {x:cx - bw * .32, y:y(ej[i]), width:bw * .64, height:y0 - y(ej[i]), rx:3, 'class':'bar', opacity: i === 9 ? 1 : .7});
-      el('text', {x:cx, y:y0 + 16, 'text-anchor':'middle'}, m);
-    });
-    el('polyline', {points: pl.map(function(v, i){ return (x0 + bw * i + bw / 2) + ',' + y(v); }).join(' '), 'class':'plan'});
-    pl.forEach(function(v, i){ el('circle', {cx:x0 + bw * i + bw / 2, cy:y(v), r:2.6, 'class':'dot'}); });
-  })();
+  /* ---------------- movimiento: Lenis + GSAP ---------------- */
+  var nav = document.getElementById('nav');
+  addEventListener('scroll', function(){ nav.classList.toggle('scrolled', scrollY > 10); }, { passive: true });
 
-  // botones de copiar
-  document.querySelectorAll('.copy').forEach(function(b){
-    b.addEventListener('click', function(){
-      var el = document.getElementById(b.dataset.copy), txt = el.textContent;
-      var done = function(){ b.textContent = 'Copiado'; setTimeout(function(){ b.textContent = 'Copiar'; }, 1600); };
-      var sel = function(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Seleccionado'; };
-      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, sel); else sel();
+  var l1 = document.querySelector('.h1-wrap .l1'), l2 = document.querySelector('.h1-wrap .l2'), dots = document.querySelectorAll('.progress-dots i');
+  function heroText(p){
+    var out = Math.min(1, Math.max(0, (p - 0.28) / 0.14)), inn = Math.min(1, Math.max(0, (p - 0.46) / 0.14));
+    l1.style.opacity = 1 - out; l2.style.opacity = inn;
+    l1.style.transform = 'translateY(' + (-out * 28) + 'px)'; l2.style.transform = 'translateY(' + ((1 - inn) * 28) + 'px)';
+    var di = p < 0.33 ? 0 : p < 0.8 ? 1 : 2;
+    dots.forEach(function(d, i){ d.classList.toggle('on', i === di); });
+  }
+
+  if (!hasGsap || reduce){
+    if (reduce){ l2.style.position = 'static'; l2.style.opacity = 1; }
+    initTabs(false); initForm(); countStatic();
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+  if (window.Lenis){
+    var lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click', function(e){ var id = a.getAttribute('href'); if (id.length > 1 && document.querySelector(id)){ e.preventDefault(); lenis.scrollTo(id, { offset: -76 }); } });
     });
+  }
+
+  // héroe fijado: la cabeza se transforma en sistema
+  ScrollTrigger.create({
+    trigger: '#stage', start: 'top 76px', end: '+=140%', pin: '.hero', scrub: true,
+    onUpdate: function(self){ scene3d.progress = self.progress; heroText(self.progress); }
   });
 
-  // formulario: arma el mensaje y lo abre en WhatsApp o en el correo
-  var form = document.getElementById('contactForm'), status = document.getElementById('formStatus');
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var via = (e.submitter && e.submitter.dataset.via) || 'wa';
-    var n = form.nombre.value.trim(), o = form.empresa.value.trim(), t = form.tema.value, m = form.mensaje.value.trim();
-    if (!n || !m){ status.textContent = 'Completá tu nombre y una breve descripción para poder responderte.'; (n ? form.mensaje : form.nombre).focus(); return; }
-    var body = 'Hola LTELC, soy ' + n + (o ? ' (' + o + ')' : '') + '.\nTema: ' + t + '\n\n' + m;
-    var url = via === 'mail'
-      ? 'mailto:' + CONTACT.mail + '?subject=' + encodeURIComponent('Consulta: ' + t) + '&body=' + encodeURIComponent(body)
-      : 'https://wa.me/' + CONTACT.wa + '?text=' + encodeURIComponent(body);
-    var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
-    status.textContent = via === 'mail'
-      ? 'Abrimos tu programa de correo con el mensaje listo. Si no se abrió, escribinos a ' + CONTACT.mail + '.'
-      : 'Abrimos WhatsApp con el mensaje listo para enviar. Si no se abrió, escribinos al ' + CONTACT.waShow + '.';
+  // manifiesto palabra por palabra
+  gsap.to('#manifesto .w', { opacity: 1, stagger: 0.04, ease: 'none', scrollTrigger: { trigger: '#manifesto', start: 'top 82%', end: 'bottom 45%', scrub: true } });
+
+  // entradas
+  gsap.utils.toArray('.rise').forEach(function(el, i){
+    gsap.to(el, { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', delay: (i % 3) * 0.08, scrollTrigger: { trigger: el, start: 'top 88%' } });
   });
+
+  // contadores
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    var to = +el.dataset.count, suf = el.dataset.suffix || '', o = { v: 0 };
+    el.textContent = '0' + suf;
+    gsap.to(o, { v: to, duration: 1.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' }, onUpdate: function(){ el.textContent = Math.round(o.v) + suf; } });
+  });
+
+  // proyectos: recorrido horizontal fijado en pantallas grandes
+  var track = document.getElementById('track'), bar = document.getElementById('trackBar'), outer = document.getElementById('trackOuter');
+  ScrollTrigger.matchMedia({
+    '(min-width: 801px)': function(){
+      var dist = function(){ return Math.max(0, track.scrollWidth - innerWidth); };
+      gsap.to(track, { x: function(){ return -dist(); }, ease: 'none',
+        scrollTrigger: { trigger: '#proyectos', start: 'top top', end: function(){ return '+=' + dist(); }, pin: true, scrub: 1, invalidateOnRefresh: true,
+          onUpdate: function(self){ bar.style.width = (self.progress * 100) + '%'; } } });
+    },
+    '(max-width: 800px)': function(){
+      var f = function(){ bar.style.width = (outer.scrollLeft / Math.max(1, outer.scrollWidth - outer.clientWidth) * 100) + '%'; };
+      outer.addEventListener('scroll', f, { passive: true }); f();
+    }
+  });
+
+  initTabs(true); initForm();
+  addEventListener('load', function(){ ScrollTrigger.refresh(); });
+
+  function countStatic(){ document.querySelectorAll('[data-count]').forEach(function(el){ el.textContent = el.dataset.count + (el.dataset.suffix || ''); }); }
+
+  /* ---------------- pestañas del proceso ---------------- */
+  function initTabs(auto){
+    var STEPS = [
+      { h: 'Diagnóstico', p: 'Relevamos cómo trabajás hoy, qué sistemas y planillas usás y dónde se pierde el tiempo. La primera reunión no tiene costo.', l: ['Entrevistas con las áreas clave', 'Mapa de procesos y de datos', 'Prioridades por impacto'] },
+      { h: 'Propuesta', p: 'Definimos alcance, etapas, plazos y presupuesto cerrado por etapa, por escrito y sin letra chica.', l: ['Alcance por módulos', 'Plan de entregas', 'Presupuesto por etapa'] },
+      { h: 'Desarrollo', p: 'Construimos en etapas cortas, con una versión de prueba que tu equipo usa desde las primeras semanas.', l: ['Avances semanales visibles', 'Pruebas con datos reales', 'Ajustes sobre la marcha'] },
+      { h: 'Puesta en marcha', p: 'Implementamos, migramos datos, capacitamos al equipo y quedamos para soporte y mejoras continuas.', l: ['Migración de datos', 'Capacitación por área', 'Soporte y evolución'] }
+    ];
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab')), panel = document.getElementById('tp');
+    var cur = 0, timer = null, fillTw = null;
+    function show(i, user){
+      cur = i;
+      tabs.forEach(function(t, k){ t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.tabIndex = k === i ? 0 : -1; t.querySelector('.fill').style.width = '0'; });
+      panel.setAttribute('aria-labelledby', tabs[i].id);
+      document.getElementById('tpN').textContent = '0' + (i + 1);
+      document.getElementById('tpH').textContent = STEPS[i].h;
+      document.getElementById('tpP').textContent = STEPS[i].p;
+      document.getElementById('tpL').innerHTML = STEPS[i].l.map(function(x){ return '<li>' + x + '</li>'; }).join('');
+      if (window.gsap && auto) gsap.fromTo(panel.children, { y: 14, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power3.out' });
+      if (user){ auto = false; if (fillTw) fillTw.kill(); clearTimeout(timer); }
+      if (auto && window.gsap){
+        if (fillTw) fillTw.kill();
+        fillTw = gsap.fromTo(tabs[i].querySelector('.fill'), { width: '0%' }, { width: '100%', duration: 6, ease: 'none', onComplete: function(){ show((cur + 1) % tabs.length); } });
+      }
+    }
+    tabs.forEach(function(t, i){
+      t.addEventListener('click', function(){ show(i, true); });
+      t.addEventListener('keydown', function(e){
+        var k = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+        if (k){ e.preventDefault(); var n = (i + k + tabs.length) % tabs.length; tabs[n].focus(); show(n, true); }
+      });
+    });
+    if (auto && window.ScrollTrigger) ScrollTrigger.create({ trigger: '.process', start: 'top 70%', once: true, onEnter: function(){ show(0); } });
+  }
+
+  /* ---------------- formulario ---------------- */
+  function initForm(){
+    var form = document.getElementById('contactForm'), status = document.getElementById('formStatus');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var via = (e.submitter && e.submitter.dataset.via) || 'wa';
+      var n = form.nombre.value.trim(), o = form.empresa.value.trim(), t = form.tema.value, m = form.mensaje.value.trim();
+      if (!n || !m){ status.textContent = 'Completá tu nombre y una breve descripción para poder responderte.'; (n ? form.mensaje : form.nombre).focus(); return; }
+      var body = 'Hola LTELC, soy ' + n + (o ? ' (' + o + ')' : '') + '.\nTema: ' + t + '\n\n' + m;
+      var url = via === 'mail'
+        ? 'mailto:' + CONTACT.mail + '?subject=' + encodeURIComponent('Consulta: ' + t) + '&body=' + encodeURIComponent(body)
+        : 'https://wa.me/' + CONTACT.wa + '?text=' + encodeURIComponent(body);
+      var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+      status.textContent = via === 'mail'
+        ? 'Abrimos tu correo con el mensaje listo. Si no se abrió, escribinos a ' + CONTACT.mail + '.'
+        : 'Abrimos WhatsApp con el mensaje listo. Si no se abrió, escribinos al ' + CONTACT.waShow + '.';
+    });
+  }
 })();
 </script>
 </body>

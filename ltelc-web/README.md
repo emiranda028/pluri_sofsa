@@ -1,11 +1,14 @@
 # Sitio web LTELC · ltelc.tech
 
-Sitio estático de una sola página (`index.html`), sin dependencias ni build.
+Sitio estático de una sola página (`index.html`), sin build. Usa Three.js (escena 3D de la portada), GSAP + ScrollTrigger (animaciones de scroll) y Lenis (scroll suave), cargados desde CDN. Si alguno no carga, la página sigue funcionando sin animaciones.
+
+Capturas de sistemas: reemplazar las maquetas de "Sistema de uso interno" agregando la imagen en `img/` y el campo `img` del proyecto en la lista `PROJECTS` del script.
 
 | Archivo | Para qué |
 |---|---|
 | `index.html` | El sitio completo (estilos y script incluidos) |
 | `favicon.svg` | Ícono de la pestaña |
+| `img/` | Fotos (Unsplash, uso comercial libre) y capturas de proyectos públicos |
 | `CNAME` | Dominio para GitHub Pages (`ltelc.tech`) |
 | `robots.txt`, `sitemap.xml` | Indexación en buscadores |
 

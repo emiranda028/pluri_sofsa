@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LTELC Consultora</title>
+<meta name="description" content="LTELC — Consultora en desarrollo de apps, soluciones a medida, automatización de procesos e integración de sistemas. Conectamos tus planillas, sistemas y canales para que la información fluya sola.">
+<meta name="theme-color" content="#0E6F78">
+<link rel="canonical" href="https://ltelc.tech/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:site_name" content="LTELC">
+<meta property="og:title" content="LTELC · Apps, automatización e integración a medida">
+<meta property="og:description" content="Desarrollamos apps, automatizamos tareas repetitivas e integramos tus sistemas. Software a medida para empresas y organismos.">
+<meta property="og:url" content="https://ltelc.tech/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: editorial a la izquierda; el héroe es un diagrama vivo de integración (sistemas que confluyen en uno), el resto son listas tipográficas con poco "card". */
+:root{
+  --bg:#F2F5F4;        /* papel frío, levemente verdoso */
+  --surface:#FFFFFF;
+  --ink:#12202A;       /* tinta azul petróleo */
+  --muted:#52646C;
+  --line:#D3DCDA;
+  --accent:#0E6F78;    /* cian de señal */
+  --accent-soft:#D7ECEC;
+  --pulse:#D98E1F;     /* ámbar: dato en tránsito */
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Menlo,monospace;
+  --step-0:1rem; --step-1:1.2rem; --step-2:1.6rem; --step-3:2.3rem; --step-4:clamp(2.4rem,6vw,4.4rem);
+  --wrap:1180px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1418; --surface:#121D22; --ink:#E3ECEB; --muted:#93A7AB; --line:#24363C;
+    --accent:#44C2C9; --accent-soft:#16343A; --pulse:#F2B04F; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1418; --surface:#121D22; --ink:#E3ECEB; --muted:#93A7AB; --line:#24363C;
+  --accent:#44C2C9; --accent-soft:#16343A; --pulse:#F2B04F; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--step-0);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--pulse);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3{font-family:var(--font-display);line-height:1.08;text-wrap:balance;margin:0;letter-spacing:-.015em}
+.eyebrow{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0}
+
+/* barra superior */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--font-display);font-weight:800;font-size:1.35rem;letter-spacing:.02em}
+.brand svg{width:30px;height:30px;flex:none}
+.brand small{font-family:var(--font-mono);font-weight:400;font-size:.7rem;color:var(--muted);letter-spacing:.08em}
+.nav{display:flex;gap:22px;align-items:center}
+.nav a{color:var(--ink);text-decoration:none;font-size:.95rem}
+.nav a:hover{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 22px;font:600 .98rem var(--font-body);cursor:pointer;text-decoration:none;transition:transform .15s ease,background .15s ease}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.nav .btn{padding:9px 18px;color:var(--bg)}
+@media (max-width:760px){.nav a:not(.btn){display:none}.nav .btn{padding:8px 14px;font-size:.88rem}.brand small{display:none}}
+
+/* héroe */
+.hero{padding-block:clamp(40px,7vw,90px) clamp(32px,5vw,64px)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,56px);align-items:center}
+.hero h1{font-size:var(--step-4);font-weight:800;margin-top:14px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.lead{font-size:var(--step-1);color:var(--muted);max-width:34em;margin:22px 0 30px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.flow{width:100%;max-width:100%;height:auto;display:block}
+.flow .wire{fill:none;stroke:var(--line);stroke-width:2}
+.flow .node rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.flow .node text{fill:var(--ink);font-family:var(--font-mono);font-size:13px}
+.flow .node text.sub{fill:var(--muted);font-size:10.5px}
+.flow .core rect{fill:var(--accent);stroke:none}
+.flow .core text{fill:var(--bg);font-family:var(--font-display);font-weight:700;font-size:17px}
+.flow .core text.sub{fill:var(--bg);font-family:var(--font-mono);font-weight:400;font-size:10.5px;opacity:.85}
+.flow .packet{fill:var(--pulse)}
+.flow-caption{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);margin-top:8px}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+
+/* secciones */
+section{padding-block:clamp(48px,7vw,96px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px 56px;align-items:end;margin-bottom:44px}
+.sec-head h2{font-size:var(--step-3);margin-top:10px}
+.sec-head p{color:var(--muted);margin:0;max-width:36em}
+@media (max-width:820px){.sec-head{grid-template-columns:1fr}}
+.rule{border:0;border-top:1px solid var(--line);margin:0}
+
+/* servicios: lista tipográfica en dos columnas */
+.services{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px}
+.svc{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 18px;padding-block:26px;border-top:1px solid var(--line)}
+.svc svg{width:34px;height:34px;color:var(--accent);grid-row:span 3}
+.svc h3{font-size:var(--step-2);font-weight:700}
+.svc p{margin:0;color:var(--muted)}
+.svc .tags{font-family:var(--font-mono);font-size:.78rem;color:var(--ink);opacity:.8;margin-top:8px}
+@media (max-width:820px){.services{grid-template-columns:1fr}}
+
+/* banda "antes/después" */
+.band{background:var(--ink);color:var(--bg)}
+.band .eyebrow{color:var(--pulse)}
+.band h2{font-size:var(--step-3);margin-top:10px;max-width:22ch}
+.ba{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:40px;border-top:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}
+.ba > div{padding:24px 24px 8px 0}
+.ba > div + div{padding-left:24px;border-left:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}
+.ba h3{font-family:var(--font-mono);font-weight:500;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--pulse);margin-bottom:12px}
+.ba p{margin:0 0 6px;font-size:1.02rem}
+.ba .from{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--bg) 45%,transparent);opacity:.7}
+.ba .to{font-weight:600}
+@media (max-width:820px){.ba{grid-template-columns:1fr}.ba > div + div{padding-left:0;border-left:0;border-top:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}}
+
+/* proceso: secuencia real, por eso numerada */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;counter-reset:s}
+.steps li{counter-increment:s;padding-top:18px;border-top:3px solid var(--accent)}
+.steps li::before{content:"Paso " counter(s);display:block;font-family:var(--font-mono);font-size:.78rem;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.steps h3{font-size:var(--step-1);font-weight:700;margin-bottom:8px}
+.steps p{margin:0;color:var(--muted);font-size:.97rem}
+.steps .t{display:block;font-family:var(--font-mono);font-size:.78rem;color:var(--ink);margin-top:10px}
+@media (max-width:900px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}}
+
+/* casos */
+.cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.case .kind{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.case h3{font-size:var(--step-2)}
+.case p{margin:0;color:var(--muted)}
+.case ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.case .stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.chip{font-family:var(--font-mono);font-size:.74rem;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+@media (max-width:820px){.cases{grid-template-columns:1fr}}
+
+/* integraciones */
+.integr{display:flex;flex-wrap:wrap;gap:10px}
+.integr span{font-family:var(--font-mono);font-size:.88rem;padding:9px 14px;border:1px dashed var(--line);border-radius:8px;background:var(--surface)}
+
+/* contacto */
+.contact .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px)}
+.contact h2{font-size:var(--step-3);margin-top:10px}
+.contact .direct{display:grid;gap:14px;margin-top:28px}
+.direct .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.direct .lbl{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;width:100%}
+.direct .val{font-size:1.15rem;font-weight:600;user-select:all}
+.copy{font:500 .8rem var(--font-mono);background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer}
+form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(20px,3vw,32px);display:grid;gap:16px}
+.field{display:grid;gap:6px}
+.field label{font-size:.9rem;font-weight:600}
+.field input,.field textarea,.field select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
+.field textarea{min-height:120px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.form-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.note{font-size:.85rem;color:var(--muted);margin:0}
+.status{font-size:.9rem;color:var(--accent);margin:0;min-height:1.2em}
+@media (max-width:900px){.contact .wrap{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer .mono{font-family:var(--font-mono)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="LTELC, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 9v14h7M17 9h7M20.5 9v14" stroke="var(--bg)" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="23" r="2.4" fill="var(--pulse)"/></svg>
+      <span>LTELC <small>consultora</small></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#servicios">Servicios</a>
+      <a href="#como-trabajamos">Cómo trabajamos</a>
+      <a href="#trabajos">Trabajos</a>
+      <a class="btn btn-primary" href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Apps · Soluciones a medida · Automatización · Integración</p>
+        <h1>Hacemos que tus sistemas <em>hablen entre sí</em>.</h1>
+        <p class="lead">Desarrollamos aplicaciones a medida, automatizamos las tareas que hoy se hacen a mano y conectamos tus planillas, sistemas y canales para que la información llegue sola, a tiempo y sin errores de copiado.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#contacto">Pedí un diagnóstico sin cargo</a>
+          <a class="btn btn-ghost" href="#trabajos">Ver trabajos</a>
+        </div>
+      </div>
+      <figure style="margin:0">
+        <svg class="flow" viewBox="0 0 520 400" role="img" aria-labelledby="flowT">
+          <title id="flowT">Diagrama: planillas, WhatsApp, cobros, facturación y sistema de gestión conectados a un núcleo que alimenta un tablero.</title>
+          <path id="w1" class="wire" d="M120 52 C 200 52, 200 200, 260 200"/>
+          <path id="w2" class="wire" d="M120 136 C 190 136, 200 200, 260 200"/>
+          <path id="w3" class="wire" d="M120 264 C 190 264, 200 200, 260 200"/>
+          <path id="w4" class="wire" d="M120 348 C 200 348, 200 200, 260 200"/>
+          <path id="w5" class="wire" d="M260 200 C 330 200, 330 110, 400 110"/>
+          <path id="w6" class="wire" d="M260 200 C 330 200, 330 290, 400 290"/>
+          <g class="node"><rect x="4" y="28" width="116" height="48" rx="9"/><text x="16" y="50">Planillas</text><text class="sub" x="16" y="66">Excel · Sheets</text></g>
+          <g class="node"><rect x="4" y="112" width="116" height="48" rx="9"/><text x="16" y="134">WhatsApp</text><text class="sub" x="16" y="150">pedidos · avisos</text></g>
+          <g class="node"><rect x="4" y="240" width="116" height="48" rx="9"/><text x="16" y="262">Cobros</text><text class="sub" x="16" y="278">Mercado Pago</text></g>
+          <g class="node"><rect x="4" y="324" width="116" height="48" rx="9"/><text x="16" y="346">Facturación</text><text class="sub" x="16" y="362">ARCA · ERP</text></g>
+          <g class="core"><rect x="190" y="164" width="140" height="72" rx="14"/><text x="206" y="196">Tu operación</text><text class="sub" x="206" y="216">un solo lugar</text></g>
+          <g class="node"><rect x="400" y="86" width="116" height="48" rx="9"/><text x="412" y="108">Tablero</text><text class="sub" x="412" y="124">al día</text></g>
+          <g class="node"><rect x="400" y="266" width="116" height="48" rx="9"/><text x="412" y="288">App / Web</text><text class="sub" x="412" y="304">para clientes</text></g>
+          <g id="packets"></g>
+        </svg>
+        <figcaption class="flow-caption">Cada punto es un dato que antes se copiaba a mano.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="servicios">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Servicios</p><h2>Lo que hacemos</h2></div>
+        <p>Trabajamos con empresas, comercios y organismos públicos. Empezamos por entender cómo funciona hoy tu operación y construimos sobre lo que ya tenés, sin obligarte a cambiar todo de golpe.</p>
+      </div>
+      <div class="services">
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="14" height="26" rx="3"/><path d="M14 24h4"/></svg>
+          <h3>Apps y sistemas a medida</h3>
+          <p>Aplicaciones web y móviles pensadas para tu forma de trabajar: gestión de pedidos, turnos, stock, legajos, portales para clientes o proveedores.</p>
+          <p class="tags">web · mobile · paneles de administración</p>
+        </article>
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="4"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/></svg>
+          <h3>Automatización de procesos</h3>
+          <p>Eliminamos el copiar y pegar: reportes que se arman solos, avisos automáticos, carga de datos desde mails o formularios, conciliaciones y controles.</p>
+          <p class="tags">flujos · bots · tareas programadas</p>
+        </article>
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 8h-3a5 5 0 0 0 0 10h3M21 14h3a5 5 0 0 1 0 10h-3M11 13h10M11 19h10"/></svg>
+          <h3>Integración de sistemas</h3>
+          <p>Conectamos tu ERP, planillas, plataformas de cobro, facturación electrónica y mensajería mediante APIs, para que un dato se cargue una sola vez.</p>
+          <p class="tags">APIs · sincronización · migraciones</p>
+        </article>
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h24M8 23V14M14 23V8M20 23v-6M26 23V11"/></svg>
+          <h3>Tableros y datos</h3>
+          <p>Tableros de control, presupuesto y seguimiento que se leen en la compu o el celular, con exportación a Excel, PDF y PowerPoint desde los mismos datos.</p>
+          <p class="tags">indicadores · reportes · Power BI · Excel</p>
+        </article>
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4l2.6 6.4L25 13l-6.4 2.6L16 22l-2.6-6.4L7 13l6.4-2.6z"/><path d="M25 21l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg>
+          <h3>Inteligencia artificial aplicada</h3>
+          <p>Asistentes que responden consultas, clasifican documentos, leen comprobantes o analizan CVs, integrados a tus procesos y con control humano donde importa.</p>
+          <p class="tags">asistentes · extracción de datos · clasificación</p>
+        </article>
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l11-5 11 5-11 5z"/><path d="M5 16l11 5 11-5M5 23l11 5 11-5"/></svg>
+          <h3>Consultoría y acompañamiento</h3>
+          <p>Relevamos procesos, priorizamos qué conviene automatizar primero y capacitamos a tu equipo para que las herramientas se usen de verdad.</p>
+          <p class="tags">relevamiento · roadmap · capacitación</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="eyebrow">Qué cambia</p>
+      <h2>Menos horas cargando datos, más tiempo para decidir.</h2>
+      <div class="ba">
+        <div>
+          <h3>Información</h3>
+          <p class="from">Cinco planillas que nadie sabe cuál es la última</p>
+          <p class="to">Una sola fuente de datos, actualizada</p>
+        </div>
+        <div>
+          <h3>Tareas</h3>
+          <p class="from">Reporte mensual armado a mano en dos días</p>
+          <p class="to">Reporte que se genera solo, al cierre</p>
+        </div>
+        <div>
+          <h3>Clientes</h3>
+          <p class="from">Consultas que esperan respuesta hasta el lunes</p>
+          <p class="to">Avisos y respuestas automáticas, 24 h</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-trabajamos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Cómo trabajamos</p><h2>De la charla a algo que funciona</h2></div>
+        <p>Entregas cortas y visibles. Ves avances reales desde la primera semana y decidimos juntos el paso siguiente.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Diagnóstico</h3><p>Relevamos cómo trabajás hoy, qué sistemas usás y dónde se pierde el tiempo.</p><span class="t">sin cargo</span></li>
+        <li><h3>Propuesta</h3><p>Definimos alcance, prioridades, plazos y presupuesto cerrado por etapa.</p><span class="t">por escrito</span></li>
+        <li><h3>Desarrollo</h3><p>Construimos en etapas cortas, con una versión de prueba que podés usar desde temprano.</p><span class="t">avances semanales</span></li>
+        <li><h3>Puesta en marcha</h3><p>Implementamos, capacitamos al equipo y quedamos para soporte y mejoras.</p><span class="t">soporte continuo</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="trabajos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Trabajos</p><h2>Algunos proyectos</h2></div>
+        <p>Soluciones en producción, usadas todos los días por equipos de trabajo y por el público.</p>
+      </div>
+      <div class="cases">
+        <article class="case">
+          <span class="kind">Sector público · Tablero de gestión</span>
+          <h3>Presupuesto plurianual interactivo</h3>
+          <p>Tablero para formular y defender el presupuesto anual y plurianual de un organismo: techos, ejecución histórica, apertura mensual y por área.</p>
+          <ul>
+            <li>Red deductiva navegable desde el total hasta cada proyecto y producto</li>
+            <li>Exportación a Excel, PDF y PowerPoint editable con los mismos datos</li>
+            <li>Versión para celular y presentación generada en vivo</li>
+          </ul>
+          <div class="stack"><span class="chip">JavaScript</span><span class="chip">Python</span><span class="chip">Excel</span><span class="chip">PDF · PPTX</span></div>
+        </article>
+        <article class="case">
+          <span class="kind">Plataforma web · Empleo regional</span>
+          <h3>Trabajar en Saladillo</h3>
+          <p>Bolsa de empleo local para Saladillo, Roque Pérez, 25 de Mayo y Tapalqué. Las personas suben su CV gratis y las empresas publican sus búsquedas.</p>
+          <ul>
+            <li>Análisis del CV al instante con inteligencia artificial</li>
+            <li>Buscador de ofertas y publicación para empleadores</li>
+            <li>Pensada primero para el celular</li>
+          </ul>
+          <div class="stack"><span class="chip">Web app</span><span class="chip">IA</span><span class="chip">SEO local</span></div>
+          <a href="https://trabajarensaladillo.com/" target="_blank" rel="noopener">trabajarensaladillo.com ↗</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Integraciones</p><h2>Nos conectamos con lo que ya usás</h2></div>
+        <p>Si tiene API, exporta archivos o manda mails, lo podemos integrar.</p>
+      </div>
+      <div class="integr">
+        <span>Excel · Google Sheets</span><span>WhatsApp Business</span><span>Mercado Pago</span><span>ARCA · Factura electrónica</span><span>Tango · ERP</span><span>Gmail · Outlook</span><span>Google Drive</span><span>Power BI</span><span>Bases SQL</span><span>APIs REST</span><span>n8n</span><span>Modelos de IA</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="contacto" class="contact">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Contacto</p>
+        <h2>Contanos qué te gustaría resolver</h2>
+        <p class="lead" style="margin-bottom:0">Respondemos en el día hábil. La primera reunión de diagnóstico no tiene costo.</p>
+        <div class="direct">
+          <div class="row"><span class="lbl">Email</span><span class="val" id="mailVal">contacto@ltelc.tech</span><button class="copy" type="button" data-copy="mailVal">Copiar</button></div>
+          <div class="row"><span class="lbl">WhatsApp</span><span class="val" id="waVal">+54 9 11 5706-2947</span><button class="copy" type="button" data-copy="waVal">Copiar</button></div>
+        </div>
+      </div>
+      <form id="contactForm" novalidate>
+        <div class="two">
+          <div class="field"><label for="f-name">Nombre</label><input id="f-name" name="nombre" autocomplete="name" required></div>
+          <div class="field"><label for="f-org">Empresa u organismo</label><input id="f-org" name="empresa" autocomplete="organization"></div>
+        </div>
+        <div class="field">
+          <label for="f-topic">¿Qué necesitás?</label>
+          <select id="f-topic" name="tema">
+            <option>App o sistema a medida</option>
+            <option>Automatizar un proceso</option>
+            <option>Integrar sistemas</option>
+            <option>Tablero o reportes</option>
+            <option>Inteligencia artificial</option>
+            <option>No estoy seguro, quiero asesoramiento</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-msg">Contanos brevemente</label><textarea id="f-msg" name="mensaje" required placeholder="Ej.: armamos los pedidos con WhatsApp y una planilla, y queremos que el stock se actualice solo."></textarea></div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" data-via="wa">Enviar por WhatsApp</button>
+          <button class="btn btn-ghost" type="submit" data-via="mail">Enviar por email</button>
+        </div>
+        <p class="status" id="formStatus" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> LTELC · Consultora en apps, automatización e integración</span>
+    <span class="mono">ltelc.tech · Buenos Aires, Argentina</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var CONTACT = { mail: 'contacto@ltelc.tech', wa: '5491157062947' };
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // paquetes de datos recorriendo los cables del diagrama
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var g = document.getElementById('packets'), NS = 'http://www.w3.org/2000/svg';
+  [['w1',0],['w2',1.1],['w3',.5],['w4',1.7],['w5',2.2],['w6',2.9]].forEach(function(p){
+    var c = document.createElementNS(NS,'circle');
+    c.setAttribute('r','5'); c.setAttribute('class','packet');
+    if (reduce){
+      var path = document.getElementById(p[0]), pt = path.getPointAtLength(path.getTotalLength()*.55);
+      c.setAttribute('cx',pt.x); c.setAttribute('cy',pt.y);
+    } else {
+      var m = document.createElementNS(NS,'animateMotion');
+      m.setAttribute('dur','3.4s'); m.setAttribute('repeatCount','indefinite'); m.setAttribute('begin', p[1]+'s');
+      var mp = document.createElementNS(NS,'mpath'); mp.setAttribute('href','#'+p[0]);
+      m.appendChild(mp); c.appendChild(m);
+    }
+    g.appendChild(c);
+  });
+
+  // botones de copiar
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click', function(){
+      var el = document.getElementById(b.dataset.copy), txt = el.textContent;
+      var done = function(){ b.textContent = 'Copiado'; setTimeout(function(){ b.textContent = 'Copiar'; }, 1600); };
+      var sel = function(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Seleccionado'; };
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, sel); else sel();
+    });
+  });
+
+  // formulario: arma el mensaje y lo abre en WhatsApp o en el correo
+  var form = document.getElementById('contactForm'), status = document.getElementById('formStatus');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var via = (e.submitter && e.submitter.dataset.via) || 'wa';
+    var n = form.nombre.value.trim(), o = form.empresa.value.trim(), t = form.tema.value, m = form.mensaje.value.trim();
+    if (!n || !m){ status.textContent = 'Completá tu nombre y una breve descripción para poder responderte.'; (n ? form.mensaje : form.nombre).focus(); return; }
+    var body = 'Hola LTELC, soy ' + n + (o ? ' (' + o + ')' : '') + '.\nTema: ' + t + '\n\n' + m;
+    var url = via === 'mail'
+      ? 'mailto:' + CONTACT.mail + '?subject=' + encodeURIComponent('Consulta: ' + t) + '&body=' + encodeURIComponent(body)
+      : 'https://wa.me/' + CONTACT.wa + '?text=' + encodeURIComponent(body);
+    var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+    status.textContent = via === 'mail'
+      ? 'Abrimos tu programa de correo con el mensaje listo. Si no se abrió, escribinos a ' + CONTACT.mail + '.'
+      : 'Abrimos WhatsApp con el mensaje listo para enviar. Si no se abrió, escribinos al +54 9 11 5706-2947.';
+  });
+})();
+</script>
+</body>
+</html>

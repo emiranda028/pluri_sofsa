@@ -30,5 +30,5 @@ Hoy el dominio apunta a los nameservers de *parking* de Hostinger (`lunar/solar.
    - `CNAME` `www` → `<usuario-github>.github.io`
 4. Esperar la propagación (de minutos a unas horas).
 
-## Email contacto@ltelc.tech
-El sitio muestra `contacto@ltelc.tech`. Hay que crear esa casilla (Hostinger ofrece correo con el dominio, botón "Solicitalo ahora" en la vista del dominio) o reemplazar la dirección en `index.html`.
+## Contacto
+El sitio usa `agencialtelc@gmail.com` y el WhatsApp +54 9 11 5706-2947 (bloque `CONTACT` en `index.html`).

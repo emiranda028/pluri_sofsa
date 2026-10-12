@@ -4,171 +4,244 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>LTELC Consultora</title>
-<meta name="description" content="LTELC — Consultora en desarrollo de apps, soluciones a medida, automatización de procesos e integración de sistemas. Conectamos tus planillas, sistemas y canales para que la información fluya sola.">
-<meta name="theme-color" content="#0E6F78">
+<meta name="description" content="LTELC (Lo Tengo en la Cabeza) — Consultora en sistemas de administración, balances contables, tableros de indicadores, apps a medida, automatización e integración de sistemas.">
+<meta name="theme-color" content="#0A1A21">
 <link rel="canonical" href="https://ltelc.tech/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_AR">
 <meta property="og:site_name" content="LTELC">
-<meta property="og:title" content="LTELC · Apps, automatización e integración a medida">
-<meta property="og:description" content="Desarrollamos apps, automatizamos tareas repetitivas e integramos tus sistemas. Software a medida para empresas y organismos.">
+<meta property="og:title" content="LTELC · Lo Tengo en la Cabeza">
+<meta property="og:description" content="Lo que tu organización tiene en la cabeza, lo convertimos en sistema. Administración, balances, indicadores, apps, automatización e integración.">
 <meta property="og:url" content="https://ltelc.tech/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: editorial a la izquierda; el héroe es un diagrama vivo de integración (sistemas que confluyen en uno), el resto son listas tipográficas con poco "card". */
+/* Layout: abre en "noche" (fondo fijo) con ideas sueltas que se ordenan en una grilla = de la cabeza al sistema;
+   alterna secciones claras/oscuras; Archivo expandida como protagonista, Plex para leer y para datos. */
 :root{
-  --bg:#F2F5F4;        /* papel frío, levemente verdoso */
-  --surface:#FFFFFF;
-  --ink:#12202A;       /* tinta azul petróleo */
-  --muted:#52646C;
-  --line:#D3DCDA;
-  --accent:#0E6F78;    /* cian de señal */
-  --accent-soft:#D7ECEC;
-  --pulse:#D98E1F;     /* ámbar: dato en tránsito */
-  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  /* superficies "noche": fijas en ambos temas, son parte de la identidad */
+  --night:#0A1A21; --night-2:#102830; --night-line:#1F3D46; --night-fg:#E7F1F0; --night-muted:#8FAAAE;
+  --glow:#3FD6C8; --amber:#F5B544;
+  /* tokens que siguen el tema */
+  --bg:#F1F4F3; --surface:#FFFFFF; --ink:#0E1D24; --muted:#55676D; --line:#D2DCDA;
+  --accent:#0B7A80; --accent-soft:#D5EDEC; --warm:#B8740F;
+  --font-display:"Archivo","Arial Black","Segoe UI",system-ui,sans-serif;
   --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
-  --font-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Menlo,monospace;
-  --step-0:1rem; --step-1:1.2rem; --step-2:1.6rem; --step-3:2.3rem; --step-4:clamp(2.4rem,6vw,4.4rem);
-  --wrap:1180px;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --wrap:1220px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0C1418; --surface:#121D22; --ink:#E3ECEB; --muted:#93A7AB; --line:#24363C;
-    --accent:#44C2C9; --accent-soft:#16343A; --pulse:#F2B04F; color-scheme:dark;
+    --bg:#0C171C; --surface:#12222A; --ink:#E4EEED; --muted:#93A9AD; --line:#23383F;
+    --accent:#45CFC6; --accent-soft:#163A3E; --warm:#F2B04F; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0C1418; --surface:#121D22; --ink:#E3ECEB; --muted:#93A7AB; --line:#24363C;
-  --accent:#44C2C9; --accent-soft:#16343A; --pulse:#F2B04F; color-scheme:dark;
+  --bg:#0C171C; --surface:#12222A; --ink:#E4EEED; --muted:#93A9AD; --line:#23383F;
+  --accent:#45CFC6; --accent-soft:#163A3E; --warm:#F2B04F; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--step-0);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:var(--accent)}
-a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--pulse);outline-offset:3px}
-.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
-h1,h2,h3{font-family:var(--font-display);line-height:1.08;text-wrap:balance;margin:0;letter-spacing:-.015em}
-.eyebrow{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
+h1,h2,h3{font-family:var(--font-display);margin:0;line-height:1.02;text-wrap:balance}
+h2{font-size:clamp(2.1rem,4.6vw,3.8rem);font-weight:800;font-stretch:112%;letter-spacing:-.025em}
+.eyebrow{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:2px;background:currentColor}
+section{padding-block:clamp(64px,9vw,128px)}
+.night{background:var(--night);color:var(--night-fg)}
+.night .eyebrow{color:var(--glow)}
 
-/* barra superior */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--font-display);font-weight:800;font-size:1.35rem;letter-spacing:.02em}
-.brand svg{width:30px;height:30px;flex:none}
-.brand small{font-family:var(--font-mono);font-weight:400;font-size:.7rem;color:var(--muted);letter-spacing:.08em}
-.nav{display:flex;gap:22px;align-items:center}
-.nav a{color:var(--ink);text-decoration:none;font-size:.95rem}
-.nav a:hover{color:var(--accent)}
-.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 22px;font:600 .98rem var(--font-body);cursor:pointer;text-decoration:none;transition:transform .15s ease,background .15s ease}
-.btn-primary{background:var(--accent);color:var(--bg)}
-.btn-primary:hover{transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
-.btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--accent)}
-.nav .btn{padding:9px 18px;color:var(--bg)}
-@media (max-width:760px){.nav a:not(.btn){display:none}.nav .btn{padding:8px 14px;font-size:.88rem}.brand small{display:none}}
+/* ---------- encabezado ---------- */
+.top{position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:20}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:22px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--night-fg);text-decoration:none}
+.brand svg{width:34px;height:34px;flex:none}
+.brand b{font-family:var(--font-display);font-weight:900;font-stretch:120%;font-size:1.3rem;letter-spacing:.04em}
+.brand small{display:block;font-family:var(--font-mono);font-size:.66rem;color:var(--night-muted);letter-spacing:.1em;text-transform:uppercase;line-height:1.2}
+.nav{display:flex;align-items:center;gap:26px}
+.nav a{color:var(--night-fg);text-decoration:none;font-size:.94rem;opacity:.85}
+.nav a:hover{opacity:1;color:var(--glow)}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:14px 26px;font:600 1rem var(--font-body);cursor:pointer;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.btn-glow{background:var(--glow);color:var(--night)}
+.btn-glow:hover{transform:translateY(-2px);box-shadow:0 10px 30px -8px rgba(63,214,200,.6)}
+.btn-line{color:var(--night-fg);background:transparent;box-shadow:inset 0 0 0 1.5px var(--night-line)}
+.btn-line:hover{box-shadow:inset 0 0 0 1.5px var(--glow)}
+.nav .btn{padding:10px 20px;opacity:1;color:var(--night)}
+.btn .arr{transition:transform .2s ease}
+.btn:hover .arr{transform:translateX(4px)}
+@media (max-width:860px){.nav a:not(.btn){display:none}}
 
-/* héroe */
-.hero{padding-block:clamp(40px,7vw,90px) clamp(32px,5vw,64px)}
-.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,56px);align-items:center}
-.hero h1{font-size:var(--step-4);font-weight:800;margin-top:14px}
-.hero h1 em{font-style:normal;color:var(--accent)}
-.lead{font-size:var(--step-1);color:var(--muted);max-width:34em;margin:22px 0 30px}
+/* ---------- héroe ---------- */
+.hero{position:relative;overflow:hidden;padding-block:clamp(130px,16vw,190px) clamp(56px,7vw,96px);isolation:isolate}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 70% 60% at 20% 45%,rgba(10,26,33,.92),rgba(10,26,33,.35) 70%,transparent)}
+.hero .kicker{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--glow);margin:0 0 22px}
+.acro{font-family:var(--font-display);font-weight:900;font-stretch:118%;font-size:clamp(3.1rem,10.5vw,9.6rem);line-height:.9;letter-spacing:-.035em;margin:0;display:flex;flex-wrap:wrap;column-gap:.22em}
+.acro .w{white-space:nowrap}
+.acro b{font-weight:900;color:var(--glow);transition:text-shadow 1.4s ease}
+.acro i{font-style:normal;color:var(--night-fg);transition:opacity 1.4s ease .2s}
+.settled .acro i{opacity:.28}
+.settled .acro b{text-shadow:0 0 38px rgba(63,214,200,.45)}
+.tagline{font-family:var(--font-display);font-weight:600;font-size:clamp(1.35rem,2.6vw,2.15rem);line-height:1.2;max-width:24ch;margin:34px 0 0}
+.tagline em{font-style:normal;color:var(--amber)}
+.hero .lead{color:var(--night-muted);font-size:1.12rem;max-width:40em;margin:18px 0 34px}
 .cta-row{display:flex;flex-wrap:wrap;gap:12px}
-.flow{width:100%;max-width:100%;height:auto;display:block}
-.flow .wire{fill:none;stroke:var(--line);stroke-width:2}
-.flow .node rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
-.flow .node text{fill:var(--ink);font-family:var(--font-mono);font-size:13px}
-.flow .node text.sub{fill:var(--muted);font-size:10.5px}
-.flow .core rect{fill:var(--accent);stroke:none}
-.flow .core text{fill:var(--bg);font-family:var(--font-display);font-weight:700;font-size:17px}
-.flow .core text.sub{fill:var(--bg);font-family:var(--font-mono);font-weight:400;font-size:10.5px;opacity:.85}
-.flow .packet{fill:var(--pulse)}
-.flow-caption{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);margin-top:8px}
-@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(56px,8vw,96px);border-top:1px solid var(--night-line)}
+.pillars div{padding:18px 18px 0 0}
+.pillars div + div{padding-left:18px;border-left:1px solid var(--night-line)}
+.pillars span{font-family:var(--font-mono);font-size:.72rem;color:var(--amber);letter-spacing:.1em}
+.pillars strong{display:block;font-family:var(--font-display);font-stretch:108%;font-size:1.25rem;font-weight:700;margin-top:4px}
+.pillars p{margin:4px 0 0;color:var(--night-muted);font-size:.92rem}
+@media (max-width:860px){.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.pillars div:nth-child(3){padding-left:0;border-left:0}.pillars div:nth-child(n+3){border-top:1px solid var(--night-line);margin-top:18px}}
 
-/* secciones */
-section{padding-block:clamp(48px,7vw,96px)}
-.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px 56px;align-items:end;margin-bottom:44px}
-.sec-head h2{font-size:var(--step-3);margin-top:10px}
-.sec-head p{color:var(--muted);margin:0;max-width:36em}
-@media (max-width:820px){.sec-head{grid-template-columns:1fr}}
-.rule{border:0;border-top:1px solid var(--line);margin:0}
+/* ---------- encabezados de sección ---------- */
+.head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px 64px;align-items:end;margin-bottom:56px}
+.head p{color:var(--muted);margin:0;font-size:1.08rem;max-width:36em}
+.night .head p{color:var(--night-muted)}
+@media (max-width:860px){.head{grid-template-columns:1fr}}
 
-/* servicios: lista tipográfica en dos columnas */
-.services{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px}
-.svc{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 18px;padding-block:26px;border-top:1px solid var(--line)}
-.svc svg{width:34px;height:34px;color:var(--accent);grid-row:span 3}
-.svc h3{font-size:var(--step-2);font-weight:700}
-.svc p{margin:0;color:var(--muted)}
-.svc .tags{font-family:var(--font-mono);font-size:.78rem;color:var(--ink);opacity:.8;margin-top:8px}
-@media (max-width:820px){.services{grid-template-columns:1fr}}
+/* ---------- servicios ---------- */
+.svcs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.svc{background:var(--surface);padding:30px 26px 28px;display:flex;flex-direction:column;gap:12px;position:relative;transition:background .25s ease}
+.svc::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--accent);transition:width .35s ease}
+.svc:hover::before{width:100%}
+.svc:hover{background:var(--accent-soft)}
+.svc svg{width:40px;height:40px;color:var(--accent)}
+.svc h3{font-size:1.32rem;font-weight:800;font-stretch:106%;letter-spacing:-.01em}
+.svc p{margin:0;color:var(--muted);font-size:.95rem}
+.svc .tags{margin-top:auto;padding-top:6px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink);opacity:.75}
+.svc.star{background:var(--ink);color:var(--bg)}
+.svc.star p,.svc.star .tags{color:var(--bg)}
+.svc.star p{opacity:.75}
+.svc.star svg{color:var(--warm)}
+.svc.star:hover{background:var(--ink)}
+.svc.star .badge{position:absolute;top:18px;right:18px;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm)}
+@media (max-width:1020px){.svcs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.svcs{grid-template-columns:1fr}}
 
-/* banda "antes/después" */
-.band{background:var(--ink);color:var(--bg)}
-.band .eyebrow{color:var(--pulse)}
-.band h2{font-size:var(--step-3);margin-top:10px;max-width:22ch}
-.ba{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:40px;border-top:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}
-.ba > div{padding:24px 24px 8px 0}
-.ba > div + div{padding-left:24px;border-left:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}
-.ba h3{font-family:var(--font-mono);font-weight:500;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--pulse);margin-bottom:12px}
-.ba p{margin:0 0 6px;font-size:1.02rem}
-.ba .from{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--bg) 45%,transparent);opacity:.7}
-.ba .to{font-weight:600}
-@media (max-width:820px){.ba{grid-template-columns:1fr}.ba > div + div{padding-left:0;border-left:0;border-top:1px solid color-mix(in srgb,var(--bg) 25%,transparent)}}
+/* ---------- datos ---------- */
+.screen{background:var(--night-2);border:1px solid var(--night-line);border-radius:20px;padding:14px;box-shadow:0 40px 80px -40px rgba(0,0,0,.7)}
+.screen-bar{display:flex;align-items:center;gap:8px;padding:4px 6px 14px}
+.screen-bar i{width:10px;height:10px;border-radius:50%;background:var(--night-line)}
+.screen-bar span{margin-left:10px;font-family:var(--font-mono);font-size:.72rem;color:var(--night-muted)}
+.dash{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:14px}
+.panel{background:var(--night);border:1px solid var(--night-line);border-radius:14px;padding:22px;min-width:0}
+.panel h3{font-family:var(--font-body);font-size:1rem;font-weight:600}
+.panel .meta{font-family:var(--font-mono);font-size:.72rem;color:var(--night-muted);margin:2px 0 16px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:18px}
+.kpi{border-top:1px solid var(--night-line);padding-top:12px}
+.kpi .k{font-size:.82rem;color:var(--night-muted)}
+.kpi .v{font-family:var(--font-display);font-weight:800;font-stretch:110%;font-size:clamp(1.8rem,3.2vw,2.5rem);line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi .d{font-family:var(--font-mono);font-size:.72rem}
+.up{color:var(--glow)} .warn{color:var(--amber)}
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--font-mono);font-size:10px;fill:var(--night-muted)}
+.chart .grid{stroke:var(--night-line);stroke-width:1}
+.chart .bar{fill:var(--glow)}
+.chart .plan{fill:none;stroke:var(--amber);stroke-width:2}
+.chart .dot{fill:var(--amber)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.78rem;color:var(--night-muted);margin-top:8px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.bal{width:100%;border-collapse:collapse;font-size:.9rem;font-variant-numeric:tabular-nums}
+.bal td{padding:8px 0;border-bottom:1px solid var(--night-line)}
+.bal td:last-child{text-align:right;font-family:var(--font-mono);font-size:.84rem}
+.bal tr.sub td{color:var(--night-muted)}
+.bal tr.tot td{font-weight:700;border-bottom:0;border-top:2px solid var(--night-fg);color:var(--glow)}
+.gauge{display:flex;align-items:center;gap:16px;margin-top:18px;padding-top:16px;border-top:1px solid var(--night-line)}
+.gauge svg{width:64px;height:64px;flex:none}
+.gauge p{margin:0;font-size:.86rem;color:var(--night-muted)}
+.gauge strong{color:var(--night-fg)}
+.sample{font-family:var(--font-mono);font-size:.7rem;color:var(--night-muted);letter-spacing:.08em;text-transform:uppercase;margin:14px 0 0}
+.impact{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:56px}
+.impact div{border-left:2px solid var(--glow);padding-left:18px}
+.impact strong{display:block;font-family:var(--font-display);font-stretch:110%;font-size:1.2rem;margin-bottom:6px}
+.impact p{margin:0;color:var(--night-muted);font-size:.95rem}
+@media (max-width:900px){.dash{grid-template-columns:1fr}.impact{grid-template-columns:1fr}}
+@media (max-width:520px){.kpis{grid-template-columns:1fr}}
 
-/* proceso: secuencia real, por eso numerada */
-.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;counter-reset:s}
-.steps li{counter-increment:s;padding-top:18px;border-top:3px solid var(--accent)}
-.steps li::before{content:"Paso " counter(s);display:block;font-family:var(--font-mono);font-size:.78rem;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.steps h3{font-size:var(--step-1);font-weight:700;margin-bottom:8px}
-.steps p{margin:0;color:var(--muted);font-size:.97rem}
-.steps .t{display:block;font-family:var(--font-mono);font-size:.78rem;color:var(--ink);margin-top:10px}
-@media (max-width:900px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.steps{grid-template-columns:1fr}}
+/* ---------- proyectos ---------- */
+.count{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+.count b{font-family:var(--font-display);font-weight:900;font-stretch:120%;font-size:clamp(4rem,9vw,7.5rem);line-height:.85;color:var(--accent);letter-spacing:-.04em}
+.count span{font-family:var(--font-display);font-stretch:108%;font-weight:700;font-size:clamp(1.4rem,2.6vw,2rem);max-width:14ch;line-height:1.1}
+.works{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.work{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;min-height:250px;min-width:0;overflow:hidden;transition:transform .25s ease,border-color .25s ease}
+.work:hover{transform:translateY(-4px);border-color:var(--accent)}
+.work .sec{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);position:relative}
+.work h3{font-size:1.55rem;font-weight:800;font-stretch:110%;letter-spacing:-.015em;margin-top:auto;position:relative}
+.work p{margin:0;color:var(--muted);font-size:.92rem;position:relative}
+.work .mono{position:absolute;top:14px;right:16px;font-family:var(--font-display);font-weight:900;font-stretch:125%;font-size:3.6rem;line-height:1;color:var(--line);pointer-events:none}
+.work a{font-size:.88rem;font-weight:600;text-decoration:none;position:relative}
+.work.wide{grid-column:span 2;background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.work.wide p{color:var(--bg);opacity:.75}
+.work.wide .sec,.work.wide a{color:var(--warm)}
+.work.wide .mono{color:var(--bg);opacity:.08}
+@media (max-width:1020px){.works{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.works{grid-template-columns:1fr}.work.wide{grid-column:auto}}
 
-/* casos */
-.cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.case{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:14px;min-width:0}
-.case .kind{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.case h3{font-size:var(--step-2)}
-.case p{margin:0;color:var(--muted)}
-.case ul{margin:0;padding-left:18px;display:grid;gap:4px}
-.case .stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
-.chip{font-family:var(--font-mono);font-size:.74rem;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
-@media (max-width:820px){.cases{grid-template-columns:1fr}}
+/* ---------- origen ---------- */
+.origin{background:var(--accent-soft)}
+.origin .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,6vw,96px);align-items:center}
+.quote{font-family:var(--font-display);font-weight:800;font-stretch:108%;font-size:clamp(1.9rem,4vw,3.3rem);line-height:1.05;letter-spacing:-.02em;margin:0}
+.quote span{color:var(--accent)}
+.origin p.txt{margin:0 0 14px;font-size:1.06rem;max-width:34em}
+.origin .sig{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);margin:0}
+@media (max-width:860px){.origin .wrap{grid-template-columns:1fr}}
 
-/* integraciones */
+/* ---------- proceso (secuencia real) ---------- */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));counter-reset:s}
+.steps li{counter-increment:s;padding:0 22px 0 0;position:relative}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);color:var(--accent);font-family:var(--font-display);font-weight:800;font-size:1.1rem;margin-bottom:18px;position:relative;z-index:1}
+.steps li::after{content:"";position:absolute;top:23px;left:46px;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 12px);opacity:.5}
+.steps li:last-child::after{display:none}
+.steps h3{font-size:1.25rem;font-weight:800;font-stretch:106%;margin-bottom:8px}
+.steps p{margin:0;color:var(--muted);font-size:.95rem}
+.steps .t{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:.72rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+@media (max-width:900px){.steps{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:36px}.steps li:nth-child(2)::after{display:none}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}.steps li::after{display:none}}
+
+/* ---------- integraciones ---------- */
 .integr{display:flex;flex-wrap:wrap;gap:10px}
-.integr span{font-family:var(--font-mono);font-size:.88rem;padding:9px 14px;border:1px dashed var(--line);border-radius:8px;background:var(--surface)}
+.integr span{font-family:var(--font-mono);font-size:.88rem;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);transition:border-color .2s ease,color .2s ease}
+.integr span:hover{border-color:var(--accent);color:var(--accent)}
 
-/* contacto */
-.contact .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px)}
-.contact h2{font-size:var(--step-3);margin-top:10px}
-.contact .direct{display:grid;gap:14px;margin-top:28px}
-.direct .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.direct .lbl{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;width:100%}
-.direct .val{font-size:1.15rem;font-weight:600;user-select:all}
-.copy{font:500 .8rem var(--font-mono);background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer}
-form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(20px,3vw,32px);display:grid;gap:16px}
+/* ---------- contacto ---------- */
+.contact .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,80px);align-items:start}
+.contact h2{font-size:clamp(2.6rem,6vw,5rem);font-stretch:116%}
+.contact h2 em{font-style:normal;color:var(--glow)}
+.contact .lead{color:var(--night-muted);font-size:1.1rem;margin:20px 0 0;max-width:30em}
+.direct{display:grid;gap:22px;margin-top:40px}
+.direct .lbl{display:block;font-family:var(--font-mono);font-size:.72rem;color:var(--amber);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.direct .row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.direct .val{font-family:var(--font-display);font-stretch:104%;font-size:clamp(1.25rem,2.4vw,1.7rem);font-weight:700;user-select:all;overflow-wrap:anywhere}
+.copy{font:500 .76rem var(--font-mono);background:transparent;border:1px solid var(--night-line);color:var(--night-fg);border-radius:6px;padding:5px 11px;cursor:pointer}
+.copy:hover{border-color:var(--glow)}
+form{background:var(--night-2);border:1px solid var(--night-line);border-radius:20px;padding:clamp(22px,3vw,34px);display:grid;gap:16px}
 .field{display:grid;gap:6px}
-.field label{font-size:.9rem;font-weight:600}
-.field input,.field textarea,.field select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
+.field label{font-size:.88rem;font-weight:600;color:var(--night-fg)}
+.field input,.field textarea,.field select{font:inherit;color:var(--night-fg);background:var(--night);border:1px solid var(--night-line);border-radius:10px;padding:12px 14px;width:100%;color-scheme:dark}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--glow);outline:none}
 .field textarea{min-height:120px;resize:vertical}
+.field ::placeholder{color:var(--night-muted);opacity:.7}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media (max-width:560px){.two{grid-template-columns:1fr}}
-.form-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.note{font-size:.85rem;color:var(--muted);margin:0}
-.status{font-size:.9rem;color:var(--accent);margin:0;min-height:1.2em}
+.form-actions{display:flex;flex-wrap:wrap;gap:10px}
+.status{font-size:.9rem;color:var(--glow);margin:0;min-height:1.2em}
 @media (max-width:900px){.contact .wrap{grid-template-columns:1fr}}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
 
-footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:.88rem}
+footer{background:var(--night);color:var(--night-muted);border-top:1px solid var(--night-line);padding-block:30px;font-size:.86rem}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer b{color:var(--night-fg);font-family:var(--font-display);font-stretch:120%;letter-spacing:.04em}
 footer .mono{font-family:var(--font-mono)}
 
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important}
+}
 </style>
 </head>
 <body>
@@ -176,200 +249,284 @@ footer .mono{font-family:var(--font-mono)}
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#inicio" aria-label="LTELC, inicio">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 9v14h7M17 9h7M20.5 9v14" stroke="var(--bg)" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="23" r="2.4" fill="var(--pulse)"/></svg>
-      <span>LTELC <small>consultora</small></span>
+      <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="9" fill="#3FD6C8"/><path d="M9 9v16h7M18 9h8M22 9v16" stroke="#0A1A21" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26.5" cy="25" r="2.6" fill="#F5B544"/></svg>
+      <span><b>LTELC</b><small>Lo tengo en la cabeza</small></span>
     </a>
     <nav class="nav" aria-label="Secciones">
       <a href="#servicios">Servicios</a>
+      <a href="#datos">Datos</a>
+      <a href="#proyectos">Proyectos</a>
       <a href="#como-trabajamos">Cómo trabajamos</a>
-      <a href="#trabajos">Trabajos</a>
-      <a class="btn btn-primary" href="#contacto">Contacto</a>
+      <a class="btn btn-glow" href="#contacto">Contacto</a>
     </nav>
   </div>
 </header>
 
 <main id="inicio">
-  <section class="hero">
+
+  <!-- HÉROE -->
+  <section class="hero night">
+    <canvas id="mind" aria-hidden="true"></canvas>
     <div class="wrap">
-      <div>
-        <p class="eyebrow">Apps · Soluciones a medida · Automatización · Integración</p>
-        <h1>Hacemos que tus sistemas <em>hablen entre sí</em>.</h1>
-        <p class="lead">Desarrollamos aplicaciones a medida, automatizamos las tareas que hoy se hacen a mano y conectamos tus planillas, sistemas y canales para que la información llegue sola, a tiempo y sin errores de copiado.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#contacto">Pedí un diagnóstico sin cargo</a>
-          <a class="btn btn-ghost" href="#trabajos">Ver trabajos</a>
-        </div>
+      <p class="kicker">Consultora · Sistemas · Datos · Automatización</p>
+      <h1 class="acro" aria-label="LTELC, Lo Tengo En La Cabeza">
+        <span class="w"><b>L</b><i>o</i></span>
+        <span class="w"><b>T</b><i>engo</i></span>
+        <span class="w"><b>E</b><i>n</i></span>
+        <span class="w"><b>L</b><i>a</i></span>
+        <span class="w"><b>C</b><i>abeza</i></span>
+      </h1>
+      <p class="tagline">Lo que hoy está en tu cabeza, <em>mañana es un sistema.</em></p>
+      <p class="lead">Sistemas de administración completos, balances contables, tableros de indicadores, apps a medida, automatización e integración. Tomamos lo que vive en planillas sueltas y en la memoria de tu equipo, y lo convertimos en información ordenada, al día y fácil de leer.</p>
+      <div class="cta-row">
+        <a class="btn btn-glow" href="#contacto">Pedí un diagnóstico sin cargo <span class="arr">→</span></a>
+        <a class="btn btn-line" href="#proyectos">Ver proyectos</a>
       </div>
-      <figure style="margin:0">
-        <svg class="flow" viewBox="0 0 520 400" role="img" aria-labelledby="flowT">
-          <title id="flowT">Diagrama: planillas, WhatsApp, cobros, facturación y sistema de gestión conectados a un núcleo que alimenta un tablero.</title>
-          <path id="w1" class="wire" d="M120 52 C 200 52, 200 200, 260 200"/>
-          <path id="w2" class="wire" d="M120 136 C 190 136, 200 200, 260 200"/>
-          <path id="w3" class="wire" d="M120 264 C 190 264, 200 200, 260 200"/>
-          <path id="w4" class="wire" d="M120 348 C 200 348, 200 200, 260 200"/>
-          <path id="w5" class="wire" d="M260 200 C 330 200, 330 110, 400 110"/>
-          <path id="w6" class="wire" d="M260 200 C 330 200, 330 290, 400 290"/>
-          <g class="node"><rect x="4" y="28" width="116" height="48" rx="9"/><text x="16" y="50">Planillas</text><text class="sub" x="16" y="66">Excel · Sheets</text></g>
-          <g class="node"><rect x="4" y="112" width="116" height="48" rx="9"/><text x="16" y="134">WhatsApp</text><text class="sub" x="16" y="150">pedidos · avisos</text></g>
-          <g class="node"><rect x="4" y="240" width="116" height="48" rx="9"/><text x="16" y="262">Cobros</text><text class="sub" x="16" y="278">Mercado Pago</text></g>
-          <g class="node"><rect x="4" y="324" width="116" height="48" rx="9"/><text x="16" y="346">Facturación</text><text class="sub" x="16" y="362">ARCA · ERP</text></g>
-          <g class="core"><rect x="190" y="164" width="140" height="72" rx="14"/><text x="206" y="196">Tu operación</text><text class="sub" x="206" y="216">un solo lugar</text></g>
-          <g class="node"><rect x="400" y="86" width="116" height="48" rx="9"/><text x="412" y="108">Tablero</text><text class="sub" x="412" y="124">al día</text></g>
-          <g class="node"><rect x="400" y="266" width="116" height="48" rx="9"/><text x="412" y="288">App / Web</text><text class="sub" x="412" y="304">para clientes</text></g>
-          <g id="packets"></g>
-        </svg>
-        <figcaption class="flow-caption">Cada punto es un dato que antes se copiaba a mano.</figcaption>
-      </figure>
+      <div class="pillars">
+        <div><span>Gestión</span><strong>Administración</strong><p>Compras, ventas, stock y tesorería en un solo sistema.</p></div>
+        <div><span>Contabilidad</span><strong>Balances</strong><p>Estados contables armados desde los datos reales.</p></div>
+        <div><span>Decisión</span><strong>Indicadores</strong><p>Tableros que muestran el impacto de cada número.</p></div>
+        <div><span>Tecnología</span><strong>Desarrollo</strong><p>Apps, automatización e integración a medida.</p></div>
+      </div>
     </div>
   </section>
 
-  <hr class="rule">
-
+  <!-- SERVICIOS -->
   <section id="servicios">
     <div class="wrap">
-      <div class="sec-head">
-        <div><p class="eyebrow">Servicios</p><h2>Lo que hacemos</h2></div>
-        <p>Trabajamos con empresas, comercios y organismos públicos. Empezamos por entender cómo funciona hoy tu operación y construimos sobre lo que ya tenés, sin obligarte a cambiar todo de golpe.</p>
+      <div class="head">
+        <div><p class="eyebrow">Servicios</p><h2>De la administración al tablero de la dirección</h2></div>
+        <p>Trabajamos con empresas, comercios, hoteles, hospitales y organismos públicos. Construimos sobre lo que ya tenés, sin obligarte a cambiar todo de golpe.</p>
       </div>
-      <div class="services">
+      <div class="svcs">
+        <article class="svc star">
+          <span class="badge">Integral</span>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="3"/><path d="M4 11h24M11 11v16M15 16h9M15 21h6"/></svg>
+          <h3>Sistemas de administración completos</h3>
+          <p>Toda la gestión en un sistema: compras, ventas, stock, cuentas corrientes, caja y bancos, facturación electrónica y reportes para la dirección.</p>
+          <p class="tags">compras · ventas · stock · tesorería · ARCA</p>
+        </article>
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4v24M6 9h20M6 9l-4 9h8zM26 9l-4 9h8zM11 28h10"/></svg>
+          <h3>Balances y contabilidad</h3>
+          <p>Balances y estados de situación patrimonial, resultados y flujo de efectivo, con conciliaciones, libros IVA y cierres mensuales.</p>
+          <p class="tags">balances · estados contables · cierres</p>
+        </article>
+        <article class="svc">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h24M8 23V15M14 23V9M20 23v-5M26 23V12"/><path d="M6 12l8-6 6 5 7-6"/></svg>
+          <h3>Visualización e impacto de datos</h3>
+          <p>Indicadores que muestran qué pasó, por qué y cuánto impacta: presupuesto vs. ejecución, costos, rentabilidad y metas.</p>
+          <p class="tags">KPIs · tableros · mapas · Power BI</p>
+        </article>
         <article class="svc">
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="14" height="26" rx="3"/><path d="M14 24h4"/></svg>
-          <h3>Apps y sistemas a medida</h3>
-          <p>Aplicaciones web y móviles pensadas para tu forma de trabajar: gestión de pedidos, turnos, stock, legajos, portales para clientes o proveedores.</p>
-          <p class="tags">web · mobile · paneles de administración</p>
+          <h3>Apps y soluciones a medida</h3>
+          <p>Aplicaciones web y móviles para tu forma de trabajar: pedidos, turnos, legajos, reservas, portales para clientes o proveedores.</p>
+          <p class="tags">web · mobile · portales</p>
         </article>
         <article class="svc">
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="4"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/></svg>
           <h3>Automatización de procesos</h3>
-          <p>Eliminamos el copiar y pegar: reportes que se arman solos, avisos automáticos, carga de datos desde mails o formularios, conciliaciones y controles.</p>
-          <p class="tags">flujos · bots · tareas programadas</p>
+          <p>Reportes que se arman solos, avisos automáticos, carga de datos desde mails o formularios y controles programados.</p>
+          <p class="tags">flujos · bots · n8n</p>
         </article>
         <article class="svc">
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 8h-3a5 5 0 0 0 0 10h3M21 14h3a5 5 0 0 1 0 10h-3M11 13h10M11 19h10"/></svg>
           <h3>Integración de sistemas</h3>
-          <p>Conectamos tu ERP, planillas, plataformas de cobro, facturación electrónica y mensajería mediante APIs, para que un dato se cargue una sola vez.</p>
+          <p>Conectamos ERP, planillas, cobros, facturación electrónica y mensajería por API, para que cada dato se cargue una sola vez.</p>
           <p class="tags">APIs · sincronización · migraciones</p>
-        </article>
-        <article class="svc">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27h24M8 23V14M14 23V8M20 23v-6M26 23V11"/></svg>
-          <h3>Tableros y datos</h3>
-          <p>Tableros de control, presupuesto y seguimiento que se leen en la compu o el celular, con exportación a Excel, PDF y PowerPoint desde los mismos datos.</p>
-          <p class="tags">indicadores · reportes · Power BI · Excel</p>
         </article>
         <article class="svc">
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4l2.6 6.4L25 13l-6.4 2.6L16 22l-2.6-6.4L7 13l6.4-2.6z"/><path d="M25 21l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg>
           <h3>Inteligencia artificial aplicada</h3>
-          <p>Asistentes que responden consultas, clasifican documentos, leen comprobantes o analizan CVs, integrados a tus procesos y con control humano donde importa.</p>
-          <p class="tags">asistentes · extracción de datos · clasificación</p>
+          <p>Asistentes que responden consultas, leen comprobantes, clasifican documentos o analizan CVs, con control humano donde importa.</p>
+          <p class="tags">asistentes · lectura de comprobantes</p>
         </article>
         <article class="svc">
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l11-5 11 5-11 5z"/><path d="M5 16l11 5 11-5M5 23l11 5 11-5"/></svg>
           <h3>Consultoría y acompañamiento</h3>
-          <p>Relevamos procesos, priorizamos qué conviene automatizar primero y capacitamos a tu equipo para que las herramientas se usen de verdad.</p>
-          <p class="tags">relevamiento · roadmap · capacitación</p>
+          <p>Relevamos procesos, priorizamos qué conviene ordenar primero y capacitamos a tu equipo para que las herramientas se usen.</p>
+          <p class="tags">relevamiento · capacitación</p>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="band">
+  <!-- DATOS -->
+  <section id="datos" class="night">
     <div class="wrap">
-      <p class="eyebrow">Qué cambia</p>
-      <h2>Menos horas cargando datos, más tiempo para decidir.</h2>
-      <div class="ba">
-        <div>
-          <h3>Información</h3>
-          <p class="from">Cinco planillas que nadie sabe cuál es la última</p>
-          <p class="to">Una sola fuente de datos, actualizada</p>
+      <div class="head">
+        <div><p class="eyebrow">Datos e indicadores</p><h2>Números que se entienden a primera vista</h2></div>
+        <p>Del balance al tablero: los mismos datos del sistema alimentan los estados contables y los indicadores, así lo que ve la dirección coincide con lo que cierra contabilidad.</p>
+      </div>
+      <div class="screen">
+        <div class="screen-bar"><i></i><i></i><i></i><span>tablero · dirección general</span></div>
+        <div class="dash">
+          <div class="panel">
+            <h3>Ejecución presupuestaria</h3>
+            <p class="meta">Millones de $ por mes · ejecutado vs. presupuestado</p>
+            <div class="kpis">
+              <div class="kpi"><div class="k">Ejecución acumulada</div><div class="v">87,4%</div><div class="d up">▲ 6,1 pp interanual</div></div>
+              <div class="kpi"><div class="k">Margen bruto</div><div class="v">32,8%</div><div class="d up">▲ 2,4 pp</div></div>
+              <div class="kpi"><div class="k">Días de cobro</div><div class="v">28</div><div class="d warn">▼ antes 41 días</div></div>
+            </div>
+            <svg class="chart" id="execChart" viewBox="0 0 560 210" role="img" aria-label="Barras de ejecución mensual con línea de presupuesto"></svg>
+            <div class="legend"><span><i style="background:var(--glow)"></i>Ejecutado</span><span><i style="background:var(--amber)"></i>Presupuestado</span></div>
+          </div>
+          <div class="panel">
+            <h3>Estado de resultados</h3>
+            <p class="meta">Ejercicio en curso · millones de $</p>
+            <table class="bal">
+              <tr><td>Ventas netas</td><td>1.284,6</td></tr>
+              <tr class="sub"><td>Costo de ventas</td><td>(863,2)</td></tr>
+              <tr><td>Resultado bruto</td><td>421,4</td></tr>
+              <tr class="sub"><td>Gastos de administración</td><td>(148,9)</td></tr>
+              <tr class="sub"><td>Gastos de comercialización</td><td>(97,3)</td></tr>
+              <tr class="sub"><td>Resultados financieros</td><td>(31,7)</td></tr>
+              <tr class="tot"><td>Resultado del ejercicio</td><td>143,5</td></tr>
+            </table>
+            <div class="gauge">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--night-line)" stroke-width="7"/><circle cx="32" cy="32" r="26" fill="none" stroke="var(--glow)" stroke-width="7" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="44.1" transform="rotate(-90 32 32)"/><text x="32" y="36" text-anchor="middle" fill="var(--night-fg)" font-family="IBM Plex Mono, monospace" font-size="12">73%</text></svg>
+              <p><strong>Meta anual de resultado</strong><br>143,5 de 196,0 millones alcanzados</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <h3>Tareas</h3>
-          <p class="from">Reporte mensual armado a mano en dos días</p>
-          <p class="to">Reporte que se genera solo, al cierre</p>
-        </div>
-        <div>
-          <h3>Clientes</h3>
-          <p class="from">Consultas que esperan respuesta hasta el lunes</p>
-          <p class="to">Avisos y respuestas automáticas, 24 h</p>
-        </div>
+      </div>
+      <p class="sample">Datos de ejemplo, con fines ilustrativos</p>
+      <div class="impact">
+        <div><strong>Qué pasó</strong><p>El número del período, comparado con lo previsto y con el año anterior.</p></div>
+        <div><strong>Por qué</strong><p>Apertura por área, cuenta o proyecto hasta llegar al comprobante.</p></div>
+        <div><strong>Cuánto impacta</strong><p>Desvíos y metas en contexto, para decidir antes del cierre.</p></div>
       </div>
     </div>
   </section>
 
-  <section id="como-trabajamos">
+  <!-- PROYECTOS -->
+  <section id="proyectos">
     <div class="wrap">
-      <div class="sec-head">
-        <div><p class="eyebrow">Cómo trabajamos</p><h2>De la charla a algo que funciona</h2></div>
-        <p>Entregas cortas y visibles. Ves avances reales desde la primera semana y decidimos juntos el paso siguiente.</p>
+      <div class="head">
+        <div>
+          <p class="eyebrow">Proyectos</p>
+          <div class="count"><b>9</b><span>proyectos en uso</span></div>
+        </div>
+        <p>Salud, hotelería, sector público, análisis político, empleo y empresas. Cada uno empezó con alguien que lo tenía en la cabeza.</p>
       </div>
-      <ol class="steps">
-        <li><h3>Diagnóstico</h3><p>Relevamos cómo trabajás hoy, qué sistemas usás y dónde se pierde el tiempo.</p><span class="t">sin cargo</span></li>
-        <li><h3>Propuesta</h3><p>Definimos alcance, prioridades, plazos y presupuesto cerrado por etapa.</p><span class="t">por escrito</span></li>
-        <li><h3>Desarrollo</h3><p>Construimos en etapas cortas, con una versión de prueba que podés usar desde temprano.</p><span class="t">avances semanales</span></li>
-        <li><h3>Puesta en marcha</h3><p>Implementamos, capacitamos al equipo y quedamos para soporte y mejoras.</p><span class="t">soporte continuo</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <hr class="rule">
-
-  <section id="trabajos">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><p class="eyebrow">Trabajos</p><h2>Algunos proyectos</h2></div>
-        <p>Soluciones en producción, usadas todos los días por equipos de trabajo y por el público.</p>
-      </div>
-      <div class="cases">
-        <article class="case">
-          <span class="kind">Sector público · Tablero de gestión</span>
-          <h3>Presupuesto plurianual interactivo</h3>
-          <p>Tablero para formular y defender el presupuesto anual y plurianual de un organismo: techos, ejecución histórica, apertura mensual y por área.</p>
-          <ul>
-            <li>Red deductiva navegable desde el total hasta cada proyecto y producto</li>
-            <li>Exportación a Excel, PDF y PowerPoint editable con los mismos datos</li>
-            <li>Versión para celular y presentación generada en vivo</li>
-          </ul>
-          <div class="stack"><span class="chip">JavaScript</span><span class="chip">Python</span><span class="chip">Excel</span><span class="chip">PDF · PPTX</span></div>
+      <div class="works">
+        <article class="work wide">
+          <span class="mono" aria-hidden="true">HEC</span>
+          <span class="sec">Salud pública</span>
+          <h3>Sistema para Hospital El Cruce</h3>
+          <p>Sistema a medida para la gestión del hospital: información ordenada y disponible para los equipos que la necesitan.</p>
         </article>
-        <article class="case">
-          <span class="kind">Plataforma web · Empleo regional</span>
+        <article class="work">
+          <span class="mono" aria-hidden="true">GH</span>
+          <span class="sec">Hotelería</span>
+          <h3>Gestión de Hoteles</h3>
+          <p>Reservas, habitaciones, huéspedes y facturación en un solo sistema.</p>
+        </article>
+        <article class="work">
+          <span class="mono" aria-hidden="true">AB</span>
+          <span class="sec">Administración</span>
+          <h3>Administración ABSA</h3>
+          <p>Sistema de administración con circuitos, registros y reportes para la gestión diaria.</p>
+        </article>
+        <article class="work">
+          <span class="mono" aria-hidden="true">GGA</span>
+          <span class="sec">Gestión integral</span>
+          <h3>Sistema GGA</h3>
+          <p>Sistema de gestión desarrollado a medida de la operación.</p>
+        </article>
+        <article class="work">
+          <span class="mono" aria-hidden="true">CP</span>
+          <span class="sec">Control de gestión</span>
+          <h3>Control Profeed</h3>
+          <p>Seguimiento y control con indicadores para tomar decisiones a tiempo.</p>
+        </article>
+        <article class="work">
+          <span class="mono" aria-hidden="true">B</span>
+          <span class="sec">Registro y seguimiento</span>
+          <h3>Bitácora</h3>
+          <p>Registro digital de novedades y actividades, con historial consultable.</p>
+        </article>
+        <article class="work">
+          <span class="mono" aria-hidden="true">P27</span>
+          <span class="sec">Sector público · Indicadores</span>
+          <h3>Presupuesto plurianual</h3>
+          <p>Tablero interactivo de techos, ejecución y proyectos, con exportación a Excel, PDF y PowerPoint.</p>
+        </article>
+        <article class="work wide">
+          <span class="mono" aria-hidden="true">APM</span>
+          <span class="sec">Datos · Cartografía interactiva</span>
+          <h3>Atlas Político Mundial</h3>
+          <p>Cartografía interactiva del poder mundial: 197 países con sistemas electorales, ideología de los gobiernos e indicadores socioeconómicos comparados.</p>
+          <a href="https://atlaspoliticoelectoral.com/" target="_blank" rel="noopener">atlaspoliticoelectoral.com ↗</a>
+        </article>
+        <article class="work wide">
+          <span class="mono" aria-hidden="true">TS</span>
+          <span class="sec">Plataforma web · Empleo regional</span>
           <h3>Trabajar en Saladillo</h3>
-          <p>Bolsa de empleo local para Saladillo, Roque Pérez, 25 de Mayo y Tapalqué. Las personas suben su CV gratis y las empresas publican sus búsquedas.</p>
-          <ul>
-            <li>Análisis del CV al instante con inteligencia artificial</li>
-            <li>Buscador de ofertas y publicación para empleadores</li>
-            <li>Pensada primero para el celular</li>
-          </ul>
-          <div class="stack"><span class="chip">Web app</span><span class="chip">IA</span><span class="chip">SEO local</span></div>
+          <p>Bolsa de empleo para Saladillo y la región: CV gratis con análisis al instante por inteligencia artificial y publicación de búsquedas para empresas.</p>
           <a href="https://trabajarensaladillo.com/" target="_blank" rel="noopener">trabajarensaladillo.com ↗</a>
         </article>
       </div>
     </div>
   </section>
 
-  <section>
+  <!-- ORIGEN -->
+  <section class="origin" aria-labelledby="originT">
     <div class="wrap">
-      <div class="sec-head">
-        <div><p class="eyebrow">Integraciones</p><h2>Nos conectamos con lo que ya usás</h2></div>
-        <p>Si tiene API, exporta archivos o manda mails, lo podemos integrar.</p>
+      <div>
+        <p class="eyebrow" id="originT">Por qué LTELC</p>
+        <p class="quote">"Eso no está escrito en ningún lado, <span>lo tengo en la cabeza</span>."</p>
       </div>
-      <div class="integr">
-        <span>Excel · Google Sheets</span><span>WhatsApp Business</span><span>Mercado Pago</span><span>ARCA · Factura electrónica</span><span>Tango · ERP</span><span>Gmail · Outlook</span><span>Google Drive</span><span>Power BI</span><span>Bases SQL</span><span>APIs REST</span><span>n8n</span><span>Modelos de IA</span>
+      <div>
+        <p class="txt">LTELC son las iniciales de <strong>Lo Tengo en la Cabeza</strong>, el nombre con el que empezamos.</p>
+        <p class="txt">Es la frase que escuchamos en casi todas las organizaciones: cómo se arma el cierre del mes, qué proveedor se paga primero, de dónde sale tal indicador. Todo funciona, pero depende de que alguien lo recuerde.</p>
+        <p class="txt">Nuestro trabajo es sacarlo de ahí y convertirlo en un sistema que funcione igual aunque esa persona esté de vacaciones.</p>
+        <p class="sig">Lo Tengo en la Cabeza → LTELC · ltelc.tech</p>
       </div>
     </div>
   </section>
 
-  <hr class="rule">
+  <!-- PROCESO -->
+  <section id="como-trabajamos">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow">Cómo trabajamos</p><h2>De la charla a algo que funciona</h2></div>
+        <p>Entregas cortas y visibles. Ves avances reales desde la primera semana y decidimos juntos el paso siguiente.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Diagnóstico</h3><p>Relevamos cómo trabajás hoy, qué sistemas usás y dónde se pierde el tiempo.</p><span class="t">sin cargo</span></li>
+        <li><h3>Propuesta</h3><p>Definimos alcance, prioridades, plazos y presupuesto cerrado por etapa.</p><span class="t">por escrito</span></li>
+        <li><h3>Desarrollo</h3><p>Construimos en etapas cortas, con una versión de prueba que usás desde temprano.</p><span class="t">avances semanales</span></li>
+        <li><h3>Puesta en marcha</h3><p>Implementamos, capacitamos al equipo y quedamos para soporte y mejoras.</p><span class="t">soporte continuo</span></li>
+      </ol>
+    </div>
+  </section>
 
-  <section id="contacto" class="contact">
+  <!-- INTEGRACIONES -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="head" style="margin-bottom:32px">
+        <div><p class="eyebrow">Integraciones</p><h2>Nos conectamos con lo que ya usás</h2></div>
+        <p>Si tiene API, exporta archivos o manda mails, lo podemos integrar.</p>
+      </div>
+      <div class="integr">
+        <span>Excel · Google Sheets</span><span>WhatsApp Business</span><span>Mercado Pago</span><span>ARCA · Factura electrónica</span><span>Tango · ERP</span><span>Bancos · extractos</span><span>Gmail · Outlook</span><span>Google Drive</span><span>Power BI</span><span>Bases SQL</span><span>APIs REST</span><span>n8n</span><span>Modelos de IA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="contact night">
     <div class="wrap">
       <div>
         <p class="eyebrow">Contacto</p>
-        <h2>Contanos qué te gustaría resolver</h2>
-        <p class="lead" style="margin-bottom:0">Respondemos en el día hábil. La primera reunión de diagnóstico no tiene costo.</p>
+        <h2>¿Qué tenés <em>en la cabeza?</em></h2>
+        <p class="lead">Contanos qué te gustaría ordenar, automatizar o medir. Respondemos en el día hábil y la primera reunión de diagnóstico no tiene costo.</p>
         <div class="direct">
-          <div class="row"><span class="lbl">Email</span><span class="val" id="mailVal">contacto@ltelc.tech</span><button class="copy" type="button" data-copy="mailVal">Copiar</button></div>
-          <div class="row"><span class="lbl">WhatsApp</span><span class="val" id="waVal">+54 9 11 5706-2947</span><button class="copy" type="button" data-copy="waVal">Copiar</button></div>
+          <div><span class="lbl">WhatsApp</span><div class="row"><span class="val" id="waVal">+54 9 11 5706-2947</span><button class="copy" type="button" data-copy="waVal">Copiar</button></div></div>
+          <div><span class="lbl">Email</span><div class="row"><span class="val" id="mailVal">agencialtelc@gmail.com</span><button class="copy" type="button" data-copy="mailVal">Copiar</button></div></div>
         </div>
       </div>
       <form id="contactForm" novalidate>
@@ -380,18 +537,20 @@ footer .mono{font-family:var(--font-mono)}
         <div class="field">
           <label for="f-topic">¿Qué necesitás?</label>
           <select id="f-topic" name="tema">
+            <option>Sistema de administración</option>
+            <option>Balances y contabilidad</option>
+            <option>Tablero de indicadores</option>
             <option>App o sistema a medida</option>
             <option>Automatizar un proceso</option>
             <option>Integrar sistemas</option>
-            <option>Tablero o reportes</option>
             <option>Inteligencia artificial</option>
             <option>No estoy seguro, quiero asesoramiento</option>
           </select>
         </div>
-        <div class="field"><label for="f-msg">Contanos brevemente</label><textarea id="f-msg" name="mensaje" required placeholder="Ej.: armamos los pedidos con WhatsApp y una planilla, y queremos que el stock se actualice solo."></textarea></div>
+        <div class="field"><label for="f-msg">Contanos brevemente</label><textarea id="f-msg" name="mensaje" required placeholder="Ej.: llevamos la administración en tres planillas y el balance lo armamos a mano cada mes."></textarea></div>
         <div class="form-actions">
-          <button class="btn btn-primary" type="submit" data-via="wa">Enviar por WhatsApp</button>
-          <button class="btn btn-ghost" type="submit" data-via="mail">Enviar por email</button>
+          <button class="btn btn-glow" type="submit" data-via="wa">Enviar por WhatsApp <span class="arr">→</span></button>
+          <button class="btn btn-line" type="submit" data-via="mail">Enviar por email</button>
         </div>
         <p class="status" id="formStatus" role="status"></p>
       </form>
@@ -401,33 +560,83 @@ footer .mono{font-family:var(--font-mono)}
 
 <footer>
   <div class="wrap">
-    <span>© <span id="yr">2026</span> LTELC · Consultora en apps, automatización e integración</span>
+    <span>© <span id="yr">2026</span> <b>LTELC</b> · Lo Tengo en la Cabeza</span>
     <span class="mono">ltelc.tech · Buenos Aires, Argentina</span>
   </div>
 </footer>
 
 <script>
 (function(){
-  var CONTACT = { mail: 'contacto@ltelc.tech', wa: '5491157062947' };
+  var CONTACT = { mail: 'agencialtelc@gmail.com', wa: '5491157062947', waShow: '+54 9 11 5706-2947' };
   document.getElementById('yr').textContent = new Date().getFullYear();
-
-  // paquetes de datos recorriendo los cables del diagrama
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var g = document.getElementById('packets'), NS = 'http://www.w3.org/2000/svg';
-  [['w1',0],['w2',1.1],['w3',.5],['w4',1.7],['w5',2.2],['w6',2.9]].forEach(function(p){
-    var c = document.createElementNS(NS,'circle');
-    c.setAttribute('r','5'); c.setAttribute('class','packet');
-    if (reduce){
-      var path = document.getElementById(p[0]), pt = path.getPointAtLength(path.getTotalLength()*.55);
-      c.setAttribute('cx',pt.x); c.setAttribute('cy',pt.y);
-    } else {
-      var m = document.createElementNS(NS,'animateMotion');
-      m.setAttribute('dur','3.4s'); m.setAttribute('repeatCount','indefinite'); m.setAttribute('begin', p[1]+'s');
-      var mp = document.createElementNS(NS,'mpath'); mp.setAttribute('href','#'+p[0]);
-      m.appendChild(mp); c.appendChild(m);
+
+  // la frase se asienta en la sigla
+  setTimeout(function(){ document.body.classList.add('settled'); }, reduce ? 0 : 900);
+
+  // héroe: ideas sueltas que se ordenan en una grilla conectada
+  (function(){
+    var cv = document.getElementById('mind'); if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d'), pts = [], W = 0, H = 0, cols = 0, rows = 0, gap = 0, t0 = performance.now(), pulses = [];
+    function build(){
+      var r = cv.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+      gap = W < 640 ? 46 : 64; cols = Math.ceil(W / gap) + 1; rows = Math.ceil(H / gap) + 1; pts = [];
+      for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++){
+        pts.push({ gx: i * gap, gy: j * gap, sx: W * .5 + (Math.random() - .5) * W * .9, sy: H * .45 + (Math.random() - .5) * H * .8,
+                   ph: Math.random() * 6.28, d: Math.random() * .5, i: i, j: j });
+      }
     }
-    g.appendChild(c);
-  });
+    function ease(x){ return x < 0 ? 0 : x > 1 ? 1 : 1 - Math.pow(1 - x, 3); }
+    function pos(p, k){ var e = ease((k - p.d) / (1 - p.d * .6)), w = (1 - e) * 10;
+      return [p.sx + (p.gx - p.sx) * e + Math.cos(p.ph + k * 4) * w, p.sy + (p.gy - p.sy) * e + Math.sin(p.ph + k * 4) * w, e]; }
+    function line(a, b){ var al = Math.min(a[2], b[2]) * .16; if (al < .01) return;
+      ctx.strokeStyle = 'rgba(63,214,200,' + al + ')'; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+    function frame(now){
+      var k = reduce ? 1 : Math.min((now - t0) / 3200, 1);
+      ctx.clearRect(0, 0, W, H);
+      var P = pts.map(function(p){ return pos(p, k); });
+      ctx.lineWidth = 1;
+      for (var n = 0; n < pts.length; n++){
+        if (pts[n].i < cols - 1) line(P[n], P[n + 1]);
+        if (pts[n].j < rows - 1) line(P[n], P[n + cols]);
+      }
+      for (n = 0; n < pts.length; n++){
+        ctx.fillStyle = 'rgba(231,241,240,' + (.25 + .35 * (1 - P[n][2])) + ')';
+        ctx.beginPath(); ctx.arc(P[n][0], P[n][1], 1.6 + (1 - P[n][2]) * 1.4, 0, 6.283); ctx.fill();
+      }
+      if (!reduce && k >= 1){
+        if (pulses.length < 6 && Math.random() < .05){
+          var s = pts[(Math.random() * pts.length) | 0], hz = Math.random() < .5;
+          pulses.push({ x: s.gx, y: s.gy, dx: hz ? 1 : 0, dy: hz ? 0 : 1, life: 0, len: gap * (3 + Math.random() * 4) });
+        }
+        pulses = pulses.filter(function(q){ q.life += 1.6; var x = q.x + q.dx * q.life, y = q.y + q.dy * q.life;
+          ctx.fillStyle = '#F5B544'; ctx.shadowColor = '#F5B544'; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(x, y, 2.6, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0;
+          return q.life < q.len; });
+      }
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    build(); requestAnimationFrame(frame);
+    var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ build(); if (reduce) frame(0); }, 150); });
+  })();
+
+  // gráfico de ejemplo: barras ejecutadas y línea de presupuesto en la misma escala
+  (function(){
+    var svg = document.getElementById('execChart'); if (!svg) return;
+    var NS = 'http://www.w3.org/2000/svg', M = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    var ej = [82,88,95,91,104,99,108,112,106,118,0,0], pl = [90,92,100,100,105,108,110,112,115,118,120,140];
+    var x0 = 34, x1 = 552, y0 = 182, y1 = 12, max = 150, bw = (x1 - x0) / 12;
+    var y = function(v){ return y0 - (v / max) * (y0 - y1); };
+    var el = function(n, a, t){ var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); if (t != null) e.textContent = t; svg.appendChild(e); return e; };
+    [0,50,100,150].forEach(function(v){ el('line', {x1:x0, x2:x1, y1:y(v), y2:y(v), 'class':'grid'}); el('text', {x:x0 - 6, y:y(v) + 3, 'text-anchor':'end'}, v); });
+    M.forEach(function(m, i){
+      var cx = x0 + bw * i + bw / 2;
+      if (ej[i]) el('rect', {x:cx - bw * .32, y:y(ej[i]), width:bw * .64, height:y0 - y(ej[i]), rx:3, 'class':'bar', opacity: i === 9 ? 1 : .7});
+      el('text', {x:cx, y:y0 + 16, 'text-anchor':'middle'}, m);
+    });
+    el('polyline', {points: pl.map(function(v, i){ return (x0 + bw * i + bw / 2) + ',' + y(v); }).join(' '), 'class':'plan'});
+    pl.forEach(function(v, i){ el('circle', {cx:x0 + bw * i + bw / 2, cy:y(v), r:2.6, 'class':'dot'}); });
+  })();
 
   // botones de copiar
   document.querySelectorAll('.copy').forEach(function(b){
@@ -453,7 +662,7 @@ footer .mono{font-family:var(--font-mono)}
     var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
     status.textContent = via === 'mail'
       ? 'Abrimos tu programa de correo con el mensaje listo. Si no se abrió, escribinos a ' + CONTACT.mail + '.'
-      : 'Abrimos WhatsApp con el mensaje listo para enviar. Si no se abrió, escribinos al +54 9 11 5706-2947.';
+      : 'Abrimos WhatsApp con el mensaje listo para enviar. Si no se abrió, escribinos al ' + CONTACT.waShow + '.';
   });
 })();
 </script>

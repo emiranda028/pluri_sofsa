@@ -109,6 +109,8 @@ section{position:relative}
 .client{display:flex;align-items:center;gap:12px;color:#8C98A1;font-weight:700;font-size:1.25rem;white-space:nowrap;letter-spacing:-.01em;transition:color .2s ease}
 .client:hover{color:var(--ink)}
 .client svg{width:30px;height:30px;flex:none}
+.client img{width:auto;max-width:210px;filter:brightness(0);opacity:.62;transition:opacity .2s ease}
+.client:hover img{opacity:.85}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* ---------- ejes de solución ---------- */
@@ -158,6 +160,43 @@ section{position:relative}
 .sector p{margin:6px auto 0;color:var(--muted);font-size:.95rem;max-width:22em}
 @media (max-width:980px){.sector-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.sector-grid{grid-template-columns:1fr}}
+
+
+/* ---------- casos destacados: todo en 1 ---------- */
+.cases{padding-top:clamp(100px,12vw,160px)}
+.case{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center;background:var(--surface);border-radius:var(--r-xl);padding:clamp(26px,4.4vw,64px);margin-top:18px}
+.case .tag{display:inline-block;font-size:.85rem;font-weight:600;color:var(--blue);margin-bottom:14px}
+.case h3{font-size:clamp(2rem,3.6vw,3rem);font-weight:400;letter-spacing:-.03em}
+.case h3 b{font-weight:700}
+.case > div > p{color:var(--muted);margin:16px 0 0;max-width:32em}
+.case .outs{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.case .outs span{font-size:.85rem;font-weight:600;padding:8px 14px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+.flow{position:relative;display:grid;gap:14px;padding-left:34px}
+.flow::before{content:"";position:absolute;left:11px;top:22px;bottom:22px;width:2px;background:linear-gradient(var(--blue),#B8C8F5)}
+.flow .dot{position:absolute;left:6px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 6px rgba(255,181,71,.25);animation:flowdot 4.8s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes flowdot{0%{transform:translateY(0)}100%{transform:translateY(var(--flow-h,300px))}}
+.flow .step{display:flex;align-items:center;gap:16px;background:#fff;border-radius:18px;padding:16px 18px;box-shadow:0 1px 0 var(--line),0 14px 30px -24px rgba(12,26,51,.5)}
+.flow .step i{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#EAF0FF;color:var(--blue);flex:none}
+.flow .step i svg{width:20px;height:20px}
+.flow .step b{display:block;font-weight:600}
+.flow .step small{color:var(--muted);font-size:.86rem}
+.flow .step.end{background:var(--navy);color:#fff}
+.flow .step.end i{background:var(--blue);color:#fff}
+.flow .step.end small{color:var(--on-navy-muted)}
+.mods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mods span{background:#fff;border-radius:14px;padding:16px 14px;font-weight:600;font-size:.95rem;box-shadow:0 1px 0 var(--line);display:flex;flex-direction:column;gap:8px}
+.mods span i{width:22px;height:4px;border-radius:2px;background:var(--blue)}
+.mods span:nth-child(3n+2) i{background:#7FA6FF}.mods span:nth-child(3n) i{background:var(--amber)}
+.merge{display:flex;justify-content:center;padding:6px 0;color:var(--muted)}
+.merge svg{width:28px;height:28px}
+.decide{background:var(--navy);color:#fff;border-radius:18px;padding:20px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.decide .ring{width:64px;height:64px}
+.decide b{display:block;font-weight:600}
+.decide small{color:var(--on-navy-muted)}
+.decide .mini{display:flex;align-items:flex-end;gap:5px;height:34px;margin-top:10px}
+.decide .mini i{flex:1;border-radius:2px;background:#2F5BD8}
+.decide .mini i:nth-child(5){background:var(--amber)}
+@media (max-width:900px){.case{grid-template-columns:1fr}.case.rev > :first-child{order:2}}
 
 /* ---------- proyectos: recorrido horizontal ---------- */
 .work{padding-top:clamp(100px,12vw,160px);overflow:hidden}
@@ -281,7 +320,7 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
 
 /* animaciones de entrada (solo con JS y sin preferencia de movimiento reducido) */
 .js .rise{transform:translateY(36px);opacity:.001}
-@media (prefers-reduced-motion:reduce){.js .rise{transform:none;opacity:1}.marquee-track{animation:none}.manifesto .w{opacity:1}}
+@media (prefers-reduced-motion:reduce){.js .rise{transform:none;opacity:1}.marquee-track,.flow .dot{animation:none}.manifesto .w{opacity:1}}
 </style>
 </head>
 <body>
@@ -295,6 +334,7 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
     <nav aria-label="Secciones">
       <ul>
         <li><a href="#soluciones">Soluciones</a></li>
+        <li><a href="#casos">Casos</a></li>
         <li><a href="#sectores">Sectores</a></li>
         <li><a href="#proyectos">Proyectos</a></li>
         <li><a href="#nosotros">Nosotros</a></li>
@@ -342,13 +382,14 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
     <h3 id="clientsT">Organizaciones que confiaron en nosotros</h3>
     <div class="marquee">
       <div class="marquee-track" id="mq">
-        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="2" y="2" width="26" height="26" rx="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 19h14M10 15h10M12 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Trenes Argentinos Operaciones</span>
-        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M4 20c4 4 18 4 22 0M15 4v16M9 11h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Cooperativa de Practicaje</span>
+        <span class="client"><img src="img/logos/trenes.svg" alt="Trenes Argentinos Operaciones" style="height:34px"></span>
+        <span class="client"><img src="img/logos/marriott.svg" alt="Marriott Buenos Aires" style="height:46px"></span>
         <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M15 4v22M4 15h22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Hospital El Cruce</span>
+        <span class="client"><img src="img/logos/absa.png" alt="ABSA Aguas Bonaerenses" style="height:42px"></span>
+        <span class="client"><img src="img/logos/sheraton.svg" alt="Sheraton Bariloche y Sheraton Mar del Plata" style="height:44px"></span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M4 20c4 4 18 4 22 0M15 4v16M9 11h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Cooperativa de Practicaje</span>
+        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M5 25V11l10-6 10 6v14M11 25v-7h8v7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>City Express by Marriott</span>
         <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="11" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 17l4-6 6 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Profeed</span>
-        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M15 4c5 6 8 10 8 14a8 8 0 0 1-16 0c0-4 3-8 8-14z" fill="none" stroke="currentColor" stroke-width="2"/></svg>ABSA</span>
-        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="4" y="4" width="10" height="10" rx="2" fill="currentColor"/><rect x="16" y="16" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>GGA</span>
-        <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M5 25V11l10-6 10 6v14M11 25v-7h8v7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>[Hotel]</span>
         <span class="client"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M6 21q9-15 18 0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="8" cy="10" r="3" fill="currentColor"/><circle cx="22" cy="10" r="3" fill="currentColor"/></svg>Trabajar en Saladillo</span>
       </div>
     </div>
@@ -401,10 +442,10 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
       <p class="kicker">LTELC en números</p>
       <h2 id="numT">Sistemas que sostienen <b>operaciones reales</b>, todos los días</h2>
       <div class="stats">
-        <div class="stat"><b data-count="10">10</b><span>sistemas y plataformas en producción</span></div>
-        <div class="stat"><b data-count="4">4</b><span>sectores: transporte, puertos, salud y hotelería</span></div>
+        <div class="stat"><b data-count="9">9</b><span>sistemas y plataformas en producción</span></div>
+        <div class="stat"><b data-count="5">5</b><span>sectores: transporte, puertos, salud, hotelería y agua</span></div>
         <div class="stat"><b data-count="197">197</b><span>países analizados en el Atlas Político Mundial</span></div>
-        <div class="stat"><b data-count="100" data-suffix="%">100%</b><span>desarrollo propio y a medida</span></div>
+        <div class="stat"><b data-count="4">4</b><span>hoteles de Marriott y Sheraton en Buenos Aires, Bariloche y Mar del Plata</span></div>
       </div>
     </div>
   </section>
@@ -414,13 +455,59 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
     <div class="wrap">
       <p class="kicker">Sectores</p>
       <h2>Donde la información <b>no puede fallar</b></h2>
-      <p class="lead">En la vía, en el puerto, en la guardia y en la recepción. Conocemos las operaciones que no se detienen.</p>
+      <p class="lead">En la vía, en el puerto, en el hospital, en la recepción del hotel y en el servicio de agua. Conocemos las operaciones que no se detienen.</p>
       <div class="sector-grid">
         <article class="sector rise"><div class="ph"><img src="img/transporte.jpg" alt="Formación ferroviaria" loading="lazy"></div><h3>Transporte ferroviario</h3><p>Presupuesto, ejecución y planificación plurianual.</p></article>
-        <article class="sector rise"><div class="ph"><img src="img/puerto.jpg" alt="Puerto visto desde el aire" loading="lazy"></div><h3>Puertos y practicaje</h3><p>Gestión de servicios y administración de la cooperativa.</p></article>
-        <article class="sector rise"><div class="ph"><img src="img/salud.jpg" alt="Edificio hospitalario" loading="lazy"></div><h3>Salud</h3><p>Sistemas para la gestión hospitalaria.</p></article>
-        <article class="sector rise"><div class="ph"><img src="img/hoteleria.jpg" alt="Hotel con piscina al atardecer" loading="lazy"></div><h3>Hotelería</h3><p>Reservas, huéspedes y facturación integradas.</p></article>
+        <article class="sector rise"><div class="ph"><img src="img/puerto.jpg" alt="Puerto visto desde el aire" loading="lazy"></div><h3>Puertos y practicaje</h3><p>Bitácora: guardia, operación y facturación sin papel.</p></article>
+        <article class="sector rise"><div class="ph"><img src="img/salud-cruce.jpg" alt="Fachada del Hospital El Cruce" loading="lazy"></div><h3>Salud</h3><p>Administración integral del Hospital El Cruce.</p></article>
+        <article class="sector rise"><div class="ph"><img src="img/hoteleria.jpg" alt="Hotel con piscina al atardecer" loading="lazy"></div><h3>Hotelería</h3><p>Marriott Buenos Aires, Sheraton Bariloche, Sheraton Mar del Plata y City Express by Marriott.</p></article>
       </div>
+    </div>
+  </section>
+
+  <!-- CASOS: TODO EN 1 -->
+  <section class="cases" id="casos" aria-labelledby="casesT">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="kicker">Todo en 1</p><h2 id="casesT">Un solo sistema, <b>de punta a punta</b></h2></div>
+        <p class="lead">Donde había papeles, planillas y sistemas que no se hablaban, hoy hay una sola plataforma que sincroniza todo y ayuda a decidir.</p>
+      </div>
+
+      <article class="case rise">
+        <div>
+          <span class="tag">Puerto · Cooperativa de Practicaje</span>
+          <h3><b>Bitácora</b>, la operación del puerto sin papel</h3>
+          <p>Resuelve todo de punta a punta: desde la guardia y la operación diaria hasta la facturación. Se dejó el papel y cada registro se sincroniza solo con el sistema de facturación.</p>
+          <div class="outs"><span>Sin papel</span><span>Sincronización automática</span><span>Facturación integrada</span><span>Todo en 1</span></div>
+        </div>
+        <div class="flow" id="flow">
+          <span class="dot" aria-hidden="true"></span>
+          <div class="step"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></i><div><b>Guardia</b><small>Turnos, novedades y asignaciones</small></div></div>
+          <div class="step"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18h18M5 18l2-7h10l2 7M9 11V6h6v5"/></svg></i><div><b>Operación</b><small>Maniobras y servicios registrados en el momento</small></div></div>
+          <div class="step"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></i><div><b>Sincronización</b><small>Cada dato se carga una sola vez</small></div></div>
+          <div class="step end"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></i><div><b>Facturación</b><small>Comprobantes generados desde la operación</small></div></div>
+        </div>
+      </article>
+
+      <article class="case rev rise">
+        <div>
+          <div class="mods">
+            <span><i></i>Contabilidad</span><span><i></i>Finanzas</span><span><i></i>Patrimonio</span>
+            <span><i></i>Cuentas a pagar</span><span><i></i>Impuestos</span><span><i></i>RRHH</span>
+          </div>
+          <div class="merge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v14M6 12l6 6 6-6"/></svg></div>
+          <div class="decide">
+            <svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="none" stroke="#1C2C4A" stroke-width="7"/><circle cx="32" cy="32" r="26" fill="none" stroke="#0A5BFF" stroke-width="7" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="38" transform="rotate(-90 32 32)"/></svg>
+            <div><b>Tablero para decidir</b><small>Toda la administración en una sola vista</small><div class="mini" aria-hidden="true"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:70%"></i><i style="height:90%"></i><i style="height:62%"></i><i style="height:76%"></i></div></div>
+          </div>
+        </div>
+        <div>
+          <span class="tag">Salud pública · Hospital El Cruce</span>
+          <h3>Toda la administración del hospital, <b>en un solo sistema</b></h3>
+          <p>Contabilidad, finanzas, patrimonio, cuentas a pagar, impuestos y recursos humanos dejaron de ser sistemas separados. Hoy funcionan integrados, con información consolidada para tomar decisiones con facilidad.</p>
+          <div class="outs"><span>6 áreas integradas</span><span>Información consolidada</span><span>Decisiones con datos</span></div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -519,7 +606,7 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
         <p>Lo Tengo en la Cabeza. Consultora en sistemas de gestión, datos y software a medida.</p>
       </div>
       <div><h4>Soluciones</h4><ul><li><a href="#soluciones">Administración</a></li><li><a href="#soluciones">Balances</a></li><li><a href="#soluciones">Indicadores</a></li><li><a href="#soluciones">Software a medida</a></li><li><a href="#soluciones">Automatización e IA</a></li></ul></div>
-      <div><h4>Sectores</h4><ul><li><a href="#sectores">Transporte</a></li><li><a href="#sectores">Puertos</a></li><li><a href="#sectores">Salud</a></li><li><a href="#sectores">Hotelería</a></li></ul></div>
+      <div><h4>Sectores</h4><ul><li><a href="#sectores">Transporte</a></li><li><a href="#sectores">Puertos</a></li><li><a href="#sectores">Salud</a></li><li><a href="#sectores">Hotelería</a></li><li><a href="#sectores">Agua y saneamiento</a></li></ul></div>
       <div><h4>Contacto</h4><ul><li><a href="https://wa.me/5491157062947" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="mailto:agencialtelc@gmail.com">agencialtelc@gmail.com</a></li><li><a href="#contacto">Formulario</a></li></ul></div>
     </div>
     <div class="legal"><span>© <span id="yr">2026</span> LTELC · Lo Tengo en la Cabeza</span><span>ltelc.tech · Buenos Aires, Argentina</span></div>
@@ -541,16 +628,15 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
 
   /* ---------------- proyectos ---------------- */
   var PROJECTS = [
+    { name: 'Bitácora', sector: 'Puerto · Cooperativa de Practicaje', desc: 'De punta a punta: guardia, operación y facturación sincronizadas, sin papel.', url: 'sistema interno' },
+    { name: 'Administración integral', sector: 'Hospital El Cruce', desc: 'Contabilidad, finanzas, patrimonio, cuentas a pagar, impuestos y RRHH en uno.', url: 'sistema interno' },
     { name: 'Presupuesto plurianual', sector: 'Trenes Argentinos Operaciones', desc: 'Tablero de techos, ejecución y proyectos con exportación a Excel, PDF y PowerPoint.', url: 'tablero interno' },
-    { name: 'Sistema para Hospital El Cruce', sector: 'Salud pública', desc: '[Qué resuelve y para qué áreas del hospital]', url: 'sistema interno' },
-    { name: 'Practicaje', sector: 'Cooperativa de Practicaje', desc: '[Qué resuelve el sistema para la cooperativa]', url: 'sistema interno' },
     { name: 'Atlas Político Mundial', sector: 'Datos y cartografía', desc: '197 países: sistemas electorales, gobiernos e indicadores comparados.', url: 'atlaspoliticoelectoral.com', href: 'https://atlaspoliticoelectoral.com/', img: 'img/atlas.jpg' },
-    { name: 'Control Profeed', sector: 'Control de gestión', desc: 'Seguimiento y control con indicadores para decidir a tiempo.', url: 'sistema interno' },
-    { name: 'Gestión de Hoteles', sector: 'Hotelería', desc: 'Reservas, habitaciones, huéspedes y facturación en un solo sistema.', url: 'sistema interno' },
+    { name: 'Gestión hotelera', sector: 'Marriott · Sheraton · City Express', desc: 'Marriott Buenos Aires, Sheraton Bariloche, Sheraton Mar del Plata y City Express by Marriott Buenos Aires.', url: 'sistema interno' },
+    { name: 'Administración ABSA', sector: 'Aguas Bonaerenses', desc: 'Circuitos, registros y reportes para la gestión administrativa.', url: 'sistema interno' },
     { name: 'Trabajar en Saladillo', sector: 'Empleo regional', desc: 'Bolsa de empleo con análisis de CV por inteligencia artificial.', url: 'trabajarensaladillo.com', href: 'https://trabajarensaladillo.com/', img: 'img/saladillo.jpg' },
-    { name: 'Administración ABSA', sector: 'Administración', desc: 'Circuitos, registros y reportes para la gestión diaria.', url: 'sistema interno' },
-    { name: 'Sistema GGA', sector: 'Gestión integral', desc: 'Sistema de gestión desarrollado a medida de la operación.', url: 'sistema interno' },
-    { name: 'Bitácora', sector: 'Registro y seguimiento', desc: 'Registro digital de novedades y actividades con historial.', url: 'sistema interno' }
+    { name: 'Control Profeed', sector: 'Control de gestión', desc: 'Seguimiento y control con indicadores para decidir a tiempo.', url: 'sistema interno' },
+    { name: 'Sistema GGA', sector: 'Gestión integral', desc: 'Sistema de gestión desarrollado a medida de la operación.', url: 'sistema interno' }
   ];
   var arrowSvg = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15L15 5M7 5h8v8"/></svg>';
   var lockSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
@@ -581,6 +667,11 @@ footer{padding-block:clamp(56px,7vw,90px) 36px}
   /* ---------------- marquesina: duplicar para el bucle ---------------- */
   var mq = document.getElementById('mq'); mq.innerHTML += mq.innerHTML;
   Array.prototype.forEach.call(mq.children, function(el, i){ if (i >= mq.children.length / 2) el.setAttribute('aria-hidden', 'true'); });
+
+  /* ---------------- flujo de Bitácora: recorrido del punto ---------------- */
+  (function(){ var f = document.getElementById('flow'); if (!f) return;
+    function set(){ f.style.setProperty('--flow-h', Math.max(0, f.clientHeight - 44) + 'px'); }
+    set(); addEventListener('resize', set); })();
 
   /* ---------------- manifiesto: palabras ---------------- */
   var man = document.getElementById('manifesto');

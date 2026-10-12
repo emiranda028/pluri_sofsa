@@ -35,3 +35,8 @@ Hoy el dominio apunta a los nameservers de *parking* de Hostinger (`lunar/solar.
 
 ## Contacto
 El sitio usa `agencialtelc@gmail.com` y el WhatsApp +54 9 11 5706-2947 (bloque `CONTACT` en `index.html`).
+
+## Créditos de imágenes
+- Fotos de ambiente: Unsplash (licencia Unsplash, uso comercial libre).
+- Fachada del Hospital El Cruce (`img/salud-cruce.jpg`): Mariano Puentes, Wikimedia Commons, dominio público.
+- Logos de clientes (`img/logos/`): marcas de sus titulares, usadas para identificar clientes. Confirmar autorización de cada uno antes de publicar. Faltan los archivos de Hospital El Cruce y City Express by Marriott (hoy se muestran como texto).
